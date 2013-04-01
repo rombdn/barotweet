@@ -1,0 +1,17 @@
+{
+	"name": "nite!live",
+	"version": "0.0.1",
+	"private": true,
+	"dependencies": {
+		"express": "latest"
+	},
+	"devDependencies": {
+		"mocha": "latest",
+		"chai": "1.5.0",
+		"grunt": "latest",
+		"grunt-exec": "latest"
+	},
+	"scripts": {
+		"grunt": "node_modules/.bin/grunt"
+	}
+}
