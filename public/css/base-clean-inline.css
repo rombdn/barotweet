@@ -1,0 +1,153 @@
+/* body */
+body {
+	padding-top: 60px;
+}
+
+@media (max-width: 979px) {
+	body {
+		padding-top: 0;
+		font-size: 12px;
+        padding-left: 10px;
+        padding-right: 10px;
+	}
+
+	.navbar-fixed-top {
+		margin-bottom: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+	}
+
+	.navbar-fixed-top .navbar-inner {
+		padding-top: 2px;
+		padding-bottom: 2px;
+	}
+    
+    .container {
+        padding: 0px;
+    }
+}
+
+
+/* map */
+.map { 
+	height: 180px;
+	margin-bottom: 10px;
+	background-color: #DDDDEE;
+}
+
+@media (max-width: 767px) {
+    .map {
+        height: 100px;
+    }
+}
+
+
+/* profile */
+.profile {
+   position: relative;
+   margin-bottom: 10px;
+}
+
+
+.profile-row {
+   display: table-row;
+}
+
+
+.profile-col {
+   width: auto;
+   display: inline-block;
+   vertical-align: top;
+   margin-right: 5px;
+   border: 0px #000 solid;
+}
+
+@media (max-width: 767px) {
+	.profile-col.middle {
+		width: 160px;
+		margin-right: 60px;
+	}
+}
+
+.profile-col-right {
+   width: 50;
+   display: inline-block;
+   position: absolute;
+   top: 0;
+   right: 0;
+   border: 0px #000 solid;
+}
+
+
+.profile-img {
+	width: 80px;
+	height: 80px;
+}
+
+@media (max-width: 979px) {
+	.profile-img {
+		width: 60px;
+		height: 60px;
+	}
+}
+
+@media (max-width: 767px) {
+	.profile-img {
+		width: 50px;
+		height: 50px;
+	}
+}
+
+
+
+/*event */
+
+hr {
+    margin-bottom: 10px;
+}
+
+.alert {
+    position: relative;
+    padding: 10px;
+    padding-top: 5px;
+}
+
+.event-cost {
+    position: absolute;
+    /*top: 0;*/
+    right: 10px;
+    /*float: right;*/
+}
+
+
+
+/* comment */
+
+.comment-button {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+
+
+
+/* icons */
+
+.icon-beer {
+   background-image: url("../img/icons/glyphicons_274_beer.png");
+   background-position: center center;
+   background-size: 14px 14px;
+   height: 14px;
+   line-height: 14px;
+   width: 14px;
+}
+
+
+.icon-drink {
+   background-image: url("../img/icons/glyphicons_273_drink.png");
+   background-position: center center;
+   background-size: 14px 14px;
+   height: 14px;
+   line-height: 14px;
+   width: 14px;
+}

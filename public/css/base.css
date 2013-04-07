@@ -13,7 +13,7 @@ body {
 
 /* debug */
 .container {
-	border: 1px #000 solid;
+	border: 0px #000 solid;
 }
 
 
@@ -25,16 +25,43 @@ body {
 
 
 span {
-	border: 1px #000 dotted;
+	border: 0px #000 dotted;
 }
 
 
 
 /* activity */
 .activity {
-	border: 1px #000 solid;
+	border: 0px #000 solid;
 	margin-bottom: 5px;
 }
+
+.activity.row-fluid {
+   display: table;
+}
+
+.row-profile {
+   display: table-row;
+}
+
+.activity .span2 {
+   width: auto;
+   float: left;
+   display: table-column;
+   margin-right: 10px;
+}
+
+
+.activity .span6 {
+   width: auto;
+   float: left;
+   display: table-column;
+}
+
+.activity div {
+   border: 0px #cc00cc solid;
+}
+
 
 @media (min-width: 979px) {
 	.activity img {
@@ -56,5 +83,39 @@ span {
 		width: 50px;
 		height: 50px;
 	}
+    
+    .map {
+        height: 100px;
+    }
 }
 
+
+
+/* icons */
+
+.icon-beer {
+   background-image: url("../img/icons/glyphicons_274_beer.png");
+   background-position: center center;
+   background-size: 14px 14px;
+   height: 14px;
+   line-height: 14px;
+   width: 14px;
+}
+
+
+.icon-drink {
+   background-image: url("../img/icons/glyphicons_273_drink.png");
+   background-position: center center;
+   background-size: 14px 14px;
+   height: 14px;
+   line-height: 14px;
+   width: 14px;
+}
+
+/*
+.icon-large {
+    height: 14px;
+    line-height: 14px;
+    width: 14px;   
+}
+*/
