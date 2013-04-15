@@ -1,0 +1,69 @@
+<form id="form-place" action="#">
+    <fieldset>
+        <legend>Add/Edit Place</legend>
+
+        <div class="control-group" id="control-group-name">
+            <label class="control-label" for="name">Name</label>
+            <div class="controls">
+                <input id="name" type="text" class="input-medium" value="<%= name %>">
+                <span class="help-inline">Less than 15 characters</span>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-open">
+            <label class="control-label" for="open">Open hour</label>
+            <div class="controls">
+                <select id="open">
+                    <% for(var i = 16; i<24; ++i) {
+                        if(i == open) {
+                            print('<option value="' + i + '" selected>' + i + 'h</option>');
+                        }
+                        else {
+                            print('<option value="' + i + '">' + i + 'h</option>');
+                        }
+                    } %>
+
+                    <option value="0">00h</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-close">
+            <label class="control-label" for="close">Close hour</label>
+            <div class="controls">
+                <select id="close">
+                    <% for(var i = 1; i<11; ++i) {
+                        if(i == close) {
+                            print('<option value="' + i + '" selected>' + i + 'h</option>');
+                        }
+                        else {
+                            print('<option value="' + i + '">' + i + 'h</option>');
+                        }
+                    } %>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-beer">
+            <label class="control-label" for="beer">Beer price</label>
+            <div class="controls">
+                <input id="beer" type="text" class="input-small" value="<%= beerPrice %>">
+                <span class="help-inline">Number between 0.5 and 20</span>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-cocktail">
+            <label class="control-label" for="cocktail">Cocktail price</label>
+            <div class="controls">
+                <input id="cocktail" type="text" class="input-small" value="<%= cocktailPrice %>">
+                <span class="help-inline">Number between 0.5 and 20</span>
+            </div>
+        </div>
+
+
+        <div>
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
+        </div>
+
+    </fieldset>
+</form>

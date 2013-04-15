@@ -9,13 +9,15 @@
 	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css" media="screen">
 	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-responsive.min.css" media="screen">
 
+	<link rel="stylesheet" href="lib/leaflet/leaflet.css">
 
-	<link rel="stylesheet" href="css/base-clean-inline.css" media="screen">
+	<link rel="stylesheet" href="css/base.css" media="screen">
+	<link rel="stylesheet" href="css/map.css">
 </head>
 <body>
 	
 	<!-- menu -->
-	<div id="nav" class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
 				
@@ -27,11 +29,13 @@
 				</button>
 	
 				<!-- Nav no collapse -->
-				<a class="brand" href="#">Home</a></li>
+				<ul class="nav">
+					<li class="active"><a class="brand" href="#">Home</a></li>
+				</ul>
 				
 
 				<form class="navbar-form pull-right">
-					<input type="text" class="input-small search-query" placeholder="Search">
+					<input type="text" class="input-medium search-query" placeholder="Search">
 				</form>
 
 				<!-- collapsable menu -->
@@ -59,7 +63,7 @@
 					</ul>
 				</div>
 
-		   </div>
+			</div>
 		</div>
 	</div>
 	<!-- end menu -->
@@ -67,27 +71,77 @@
    
    <!-- content -->
 
-	<div id="content" class="container">
+	<div class="container">
+   
+      <!-- map -->
+		<div class="row-fluid">
+			<div id="map" class="map"></div>
+		</div>
 
+      <!-- activities -->
+		<div class="row-fluid activity">
+			<img src="#">
+			<strong>DAMN</strong> qlskjd lkds mljlkjmds mjql lkd l lqlal
+		</div>
+		
+		<div class="row-fluid activity">
+			<img src="#">
+			<strong>DAMN</strong> qlskjd lkds mljlkjmds mjql lkd l lqlal
+		</div>
+      
+      <div class="row-fluid activity">
+			<img src="#">
+			<strong>DAMN</strong> qlskjd lkds mljlkjmds mjql lkd l lqlal
+		</div>
+<!--
+		<div class="row-fluid">
+
+			<div class="span3">
+				<h1>CSC</h1>
+			</div>
+
+			<div class="span9">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th>id</th>
+							<th>Name</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>1</td>
+							<td>Rom</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Jo</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+-->
 	</div>
 
 
 	<!-- libs/scripts -->
-	<script data-main="js/main" src="lib/require.js"></script>
+	<!--<script data-main="js/main" src="lib/require.js"></script>-->
 
-	<!-- leaflet
+	<!-- leaflet -->
 	<script src="lib/leaflet/leaflet.js"></script>
 	<script type="text/javascript">
-		var map = L.map('map').setView([48.837393, 2.391672], 13);
+		
+		var map = L.map('map').setView([51.505, -0.09], 13);
 
 		var layer = L.tileLayer(
 			'http://{s}.tile.osm.org/{z}/{x}/{y}.png', 
 			{
-				attribution: '&copy; OpenStreetMap'
+				attribution: 'Map data &copy; OpenStreetMap contributors'
 			}
 		).addTo(map);
 
-	</script>-->
+	</script>
 
 </body>
 </html>

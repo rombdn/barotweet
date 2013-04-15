@@ -1,6 +1,10 @@
-/* body */
+/* body et navbar */
 body {
 	padding-top: 60px;
+}
+
+.brand.brand-button {
+	padding: 0;
 }
 
 @media (max-width: 979px) {
@@ -26,6 +30,14 @@ body {
         padding: 0px;
     }
 }
+
+
+/* forms */
+/*
+.error {
+  border: 2px solid #ff0000;
+}
+*/
 
 
 /* map */

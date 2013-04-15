@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+
+
 /*
 app.get('/wines', function(req, res) {
 	res.send([
@@ -17,5 +19,5 @@ app.use('/node_modules', express.static(__dirname + '/node_modules'));
 app.use('/test', express.static(__dirname + '/public'));
 app.use('/test', express.static(__dirname + '/tests/'));
 
-app.listen(process.env.PORT);
-console.log("listening on port " + process.env.PORT);
+app.listen(3000);
+console.log("listening on port 3000");

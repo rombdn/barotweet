@@ -10,12 +10,12 @@
 	<link rel="stylesheet" href="lib/bootstrap/css/bootstrap-responsive.min.css" media="screen">
 
 
-	<link rel="stylesheet" href="css/base-clean-inline.css" media="screen">
+	<link rel="stylesheet" href="css/base-clean-comment.css" media="screen">
 </head>
 <body>
 	
 	<!-- menu -->
-	<div id="nav" class="navbar navbar-inverse navbar-fixed-top">
+	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
 				
@@ -27,7 +27,7 @@
 				</button>
 	
 				<!-- Nav no collapse -->
-				<a class="brand" href="#">Home</a></li>
+				<a class="brand" href="#"><i class="icon-hand-left"></i></a></li>
 				
 
 				<form class="navbar-form pull-right">
@@ -67,18 +67,40 @@
    
    <!-- content -->
 
-	<div id="content" class="container">
+	<div class="container">
+   
+		<div class="row-fluid">
+        
+            <form>
+                <fieldset>
+                    <legend>Le Canon de la nation</legend>
+                    <label>Pint price</label>
+                    <input type="text" class="input-small" placeholder="5 &euro;">
+                    <span class="help-block">Example block-level help text here.</span>
+                    <label>Cocktail price</label>
+                    <input type="text" class="input-small" placeholder="Type something…">
+                    <label>Cocktail price</label>
+                    <input type="text" class="input-small" placeholder="Type something…">
+                    <label class="checkbox">
+                        <input type="checkbox"> Check me out
+                    </label>
+                    <button type="submit" class="btn">Submit</button>
+                </fieldset>
+            </form>
+			
+		</div>
 
 	</div>
 
 
 	<!-- libs/scripts -->
-	<script data-main="js/main" src="lib/require.js"></script>
+	<!--<script data-main="js/main" src="lib/require.js"></script>-->
 
-	<!-- leaflet
+	<!-- leaflet 
 	<script src="lib/leaflet/leaflet.js"></script>
 	<script type="text/javascript">
-		var map = L.map('map').setView([48.837393, 2.391672], 13);
+		
+		var map = L.map('map').setView([51.505, -0.09], 13);
 
 		var layer = L.tileLayer(
 			'http://{s}.tile.osm.org/{z}/{x}/{y}.png', 
@@ -88,6 +110,9 @@
 		).addTo(map);
 
 	</script>-->
+
+	<script src="lib/jquery-min.js"></script>
+	<script src="lib/bootstrap/js/bootstrap.min.js"></script>
 
 </body>
 </html>

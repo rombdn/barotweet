@@ -1,18 +1,28 @@
-define( [ 'jquery', 'underscore', 'backbone', 'models/book', 'views/booksview', 'views/bookview' ],
-	function( $ , _ , Backbone , Book, BooksView, BookView ){
+define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/navig' ],
+	function( $ , _ , Backbone , Bootstrap , NavigView){
 
 		function App() {
 
-			this.booksView = new BooksView();
+			this.navigView = new NavigView();
+			//this.booksView = new BooksView();
+
+/*
+			this.navRegion = new Backbone.Marionette.Region({
+				el: "#nav"
+			});
+
+			this.contentRegion = new Backbone.Marionette.Region({
+				el: "#content"
+			});*/
 
 		}
 
 		App.prototype = {
 			start: function(){
+				//this.contentRegion.show(this.profileView);
 
-				$('#content').append( this.booksView.el );
-				this.booksView.render();
-
+				$('.container').append(this.navigView.el);
+				this.navigView.render();
 			}
 		};
 
