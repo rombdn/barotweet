@@ -12,10 +12,10 @@ define(['jquery', 'underscore', 'backbone', 'views/place'],
 				"click #place": 'editPlace'
 			},
 
-			initialize: function(){
-				console.log("creating ProfileView with place: " + this.options.place.get("name"));
+			initialize: function(options){
+				console.log("creating ProfileView with place: " + options.place.get("name"));
 
-				var tplace = this.options.place;
+				var tplace = options.place;
 				//var tevent = new Event({place: tplace});
 				//var tcoms = new ComCollection({place: tplace});
 				//var tmap = new Map({place: tplace});

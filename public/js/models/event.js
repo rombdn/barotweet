@@ -4,30 +4,23 @@ define(function(require, exports, module){
 
 	var _ = require('underscore');
 	var Backbone = require('backbone');
-	var LocalStorage = require('localstorage');
 
 	var Place = Backbone.Model.extend({
 
 		initialize: function() {
-			this.listenTo(this, 'invalid', function() {
-				console.log('Place: validation error(s)');
-			});
+			console.log('event creation');
 		},
 
 		defaults: {
-			pic: "img/place/placeholder.png",
-			name: "Unnamed place",
-			open: '20',
-			close: '2',
-			cocktailPrice: '7.5',
-			beerPrice: '5.5',
-			address: '12 rue de Charenton',
-			city: 'Paris'
+			name: "Unnamed event",
+			price: '15',
+			label: '2',
+			parentPlaceId: -1
 		},
 
 		validate: function(attr) {
 			var errors = [];
-
+/*
 			//=== PIC ===
 
 			if( !(/(jpg|png|gif)$/.test(attr.pic)) ) {
@@ -84,14 +77,13 @@ define(function(require, exports, module){
 			if(attr.cocktailPrice <= 0.5 || attr.cocktailPrice > 20) {
 				errors.push({name: 'cocktail', message: "cocktail price must be a number between 0.5 and 20"});
 			}
+			*/
 
 			return errors.length > 0 ? errors : false;
-		},
-
-		localStorage: new Backbone.LocalStorage("place")
+		}
 
 	});
 
-	return Place;
+	return Event;
 
 });
