@@ -4,6 +4,8 @@ define(function(require, exports, module){
 
 	var _ = require('underscore');
 	var Backbone = require('backbone');
+	var PEvent = require('models/pevent');
+	var EventCollection = require('collections/events');
 	//var LocalStorage = require('localstorage');
 
 	var Place = Backbone.Model.extend({
@@ -12,6 +14,8 @@ define(function(require, exports, module){
 			this.listenTo(this, 'invalid', function() {
 				console.log('Place: validation error(s)');
 			});
+
+			this.eventCollection = new EventCollection();
 		},
 
 		defaults: {
@@ -23,6 +27,28 @@ define(function(require, exports, module){
 			beerPrice: '5.5',
 			address: '12 rue de Charenton',
 			city: 'Paris'
+		},
+
+		findEvent: function(callback) {
+			if(this.isNew())
+				callback(undefined);
+
+			this.eventCollection.fetch({
+				data: {parentPlaceId: this.id},
+
+				success: function(collection, response) {
+					console.log('Events found: ' + collection.length);
+					
+					if(collection.length > 0) {
+						//duplicate events shouldn't exist
+						callback(collection.models[0]);
+					}
+
+					else {
+						callback(undefined);
+					}
+				}
+			});
 		},
 
 		validate: function(attr) {
