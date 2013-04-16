@@ -5,7 +5,7 @@ define(function(require, exports, module){
 	var _ = require('underscore');
 	var Backbone = require('backbone');
 
-	var Place = Backbone.Model.extend({
+	var PEvent = Backbone.Model.extend({
 
 		initialize: function() {
 			console.log('event creation');
@@ -84,6 +84,6 @@ define(function(require, exports, module){
 
 	});
 
-	return Event;
+	return PEvent;
 
 });

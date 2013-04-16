@@ -1,8 +1,8 @@
-define(['jquery', 'underscore', 'backbone', 'collections/events.js', 'text!templates/event.html'],
+define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events', 'text!templates/event.html'],
 
-	function( $ , _ , Backbone , EventsList, eventTpl ){
+	function( $ , _ , Backbone , PEvent, EventCollection, eventTpl ){
 
-		var PlaceView = Backbone.View.extend({
+		var EventView = Backbone.View.extend({
 
 			tagname: 'div',
 			id: 'profile-event',
@@ -10,18 +10,17 @@ define(['jquery', 'underscore', 'backbone', 'collections/events.js', 'text!templ
 			template: _.template( eventTpl ),
 
 			initialize: function(options) {
-				//recherche dans la collection
-				//si !isNew(options.place)
-					//this.event = collection.findWhere({parentPlaceId: options.place.id})
-				//si pas dans la collection -> this.event = undefined
+				console.log('creating Event view');
 			},
 
 			render: function(){
 
-				//si this.event defini
-					this.$el.html( this.template( this.model.toJSON() ));
-
-				//sinon templace pas d'event
+				if(!this.model.isNew()) {
+					this.$el.html( this.template(this.model.toJSON()) );
+				}
+				else {
+					this.$el.html( 'no event 2nite -_-' );
+				}
 
 				return this;
 			}

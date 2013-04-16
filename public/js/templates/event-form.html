@@ -1,0 +1,43 @@
+<form id="form-place" action="#">
+    <fieldset>
+        <legend>Add/Edit Place</legend>
+
+        <div class="control-group" id="control-group-name">
+            <label class="control-label" for="name">Place Name</label>
+            <div class="controls">
+                <input id="parentName" type="text" class="input-medium" value="<%= parentName %>">
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-name">
+            <label class="control-label" for="name">Name</label>
+            <div class="controls">
+                <input id="name" type="text" class="input-medium" value="<%= name %>">
+                <span class="help-inline">Less than 15 characters</span>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-open">
+            <label class="control-label" for="open">Label</label>
+            <div class="controls">
+                <select id="label">
+                    <option value="club" selected>club</option>
+                    <option value="rock">rock</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-beer">
+            <label class="control-label" for="beer">Ticket price</label>
+            <div class="controls">
+                <input id="price" type="text" class="input-small" value="<%= price %>">
+                <span class="help-inline">Number between 0.5 and 100</span>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
+        </div>
+
+    </fieldset>
+</form>
