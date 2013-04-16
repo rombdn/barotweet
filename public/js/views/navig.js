@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places', 'views/profile', 'views/place-form', 'views/event-form'],
+define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places', 'views/profile', 'views/place-form', 'views/event-form', 'views/com-form'],
 
-	function( $ , _ , Backbone , Place, PlaceCollection, ProfileView, PlaceFormView, EventFormView ){
+	function( $ , _ , Backbone , Place, PlaceCollection, ProfileView, PlaceFormView, EventFormView, ComFormView ){
 
 		var NavigView = Backbone.View.extend({
 
@@ -31,6 +31,7 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 				this.listenTo(this.currentView, 'eSaved', this.showProfile);
 				this.listenTo(this.currentView, 'eEditPlace', this.editPlace);
 				this.listenTo(this.currentView, 'eEditEvent', this.editEvent);
+				this.listenTo(this.currentView, 'eAddComment', this.addComment);
 			},
 
 
@@ -63,17 +64,22 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 
 
 			editPlace: function() {
-				console.log('EDIT!');
+				console.log('NavigView: edit place');
 				this.render(new PlaceFormView({model: this.place}));
 			},
 
 			editEvent: function(event, place) {
-				console.log('EDIT EVENT!');
+				console.log('NavigView: edit event');
 				this.render(new EventFormView({model: event, place: place}));
 			},
 
+			addComment: function(com, place) {
+				console.log('NavigView: add comment');
+				this.render(new ComFormView({model: com, place: place}));
+			},
+
 			showProfile: function() {
-				console.log('SHOW!');
+				console.log('NavigView: show profile');
 				this.render(new ProfileView({place: this.place}));
 			}
 		});

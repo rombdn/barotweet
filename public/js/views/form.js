@@ -1,20 +1,8 @@
-define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/event-form.html'],
+define(['jquery', 'underscore', 'backbone'],
 
-	function( $ , _ , Backbone , PEvent, eventFormTpl ){
+	function( $ , _ , Backbone ){
 
-		var EventFormView = Backbone.View.extend({
-
-			initialize: function(options){
-				if(!this.model) {
-					this.model = new PEvent();
-				}
-
-				this.listenTo(this.model, 'invalid', this.showErrors);
-
-				this.place = options.place;
-
-				console.log('creating event-form for ' + this.model.get('id') + ' for place ' + this.place.get('id'));
-			},
+		var FormView = Backbone.View.extend({
 
 			events: {
 				'change': 'checkForm',
@@ -22,29 +10,20 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/eve
 			},
 
 			tagname: 'div',
-			className: 'row-fluid form-event',
-			template: _.template( eventFormTpl ),
 
-			render: function(){
-				if(this.model)
-					this.$el.html( this.template( _.extend(this.model.toJSON(), {parentName: this.place.get('name')} )));
-				else
-					this.$el.html( this.template() );
-				return this;
+			initialize: function(){
+				console.log('initializing FormView model ' + this.model.get('name'));
+				this.listenTo(this.model, 'invalid', this.showErrors);
 			},
 
 			checkForm: function(e) {
-				console.log('check form');
+				console.log('FormView: check form');
+
 				this.$('.control-group').removeClass('error');
 
+				//!MUST BE DEFINED
 				this.setValues();
-				
-				this.model.set({
-					name: this.$('#name').val(),
-					label: this.$('#label option:selected').val(),
-					price: this.$('#price').val(),
-					parentPlaceId: this.place.get('id')
-				});
+				console.log('values setted, ' + this.model.get('beerPrice'));
 
 				//set alone doesnt fire invalid event
 				//and {validate: true} cause save to pass in every case...
@@ -53,7 +32,7 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/eve
 			},
 
 			savePlace: function(e) {
-				console.log('button save');
+				console.log('FormView: button save');
 				if(e !== undefined) e.preventDefault();
 
 				this.checkForm();
@@ -71,8 +50,9 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/eve
 
 
 			showErrors: function() {
+				console.log('FormView: showErrors');
 				_.each(this.model.validationError, function(err) {
-					console.log('EventFormView.showErrors: ' + err.name + ': ' + err.message);
+					console.log('FormView.showErrors: ' + err.name + ': ' + err.message);
 					this.$('#control-group-' + err.name).addClass('error');
 				}, this);
 			}
@@ -80,5 +60,5 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/eve
 		});
 
 
-		return EventFormView;
+		return FormView;
 });

@@ -1,29 +1,25 @@
-define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/event-form.html'],
+define(['jquery', 'underscore', 'backbone', 'views/form', 'models/pevent', 'text!templates/event-form.html'],
 
-	function( $ , _ , Backbone , PEvent, eventFormTpl ){
+	function( $ , _ , Backbone , FormView, PEvent, eventFormTpl ){
 
-		var EventFormView = Backbone.View.extend({
+		var EventFormView = FormView.extend({
+
+			className: 'row-fluid form-event',
+			template: _.template( eventFormTpl ),
+
 
 			initialize: function(options){
 				if(!this.model) {
 					this.model = new PEvent();
 				}
 
-				this.listenTo(this.model, 'invalid', this.showErrors);
-
 				this.place = options.place;
 
 				console.log('creating event-form for ' + this.model.get('id') + ' for place ' + this.place.get('id'));
-			},
 
-			events: {
-				'change': 'checkForm',
-				'click #save': 'savePlace'
+				//initialize() redeclaration overrided this from FormView
+				this.listenTo(this.model, 'invalid', this.showErrors);
 			},
-
-			tagname: 'div',
-			className: 'row-fluid form-event',
-			template: _.template( eventFormTpl ),
 
 			render: function(){
 				if(this.model)
@@ -33,48 +29,14 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'text!templates/eve
 				return this;
 			},
 
-			checkForm: function(e) {
-				console.log('check form');
-				this.$('.control-group').removeClass('error');
-
+			setValues: function(e) {
 				this.model.set({
 					name: this.$('#name').val(),
 					label: this.$('#label option:selected').val(),
 					price: this.$('#price').val(),
 					parentPlaceId: this.place.get('id')
 				});
-
-				//set alone doesnt fire invalid event
-				//and {validate: true} cause save to pass in every case...
-				//so we simply use isValid instead of {validate: true} in set
-				this.model.isValid();
-			},
-
-			savePlace: function(e) {
-				console.log('button save');
-				if(e !== undefined) e.preventDefault();
-
-				this.checkForm();
-				this.model.save({}, {
-					success: _.bind(function(model, response) {
-						console.log(model.attributes.name + ': save ok');
-						this.trigger('eSaved');
-					}, this),
-
-					error: function() {
-						console.log(model.attributes.name + ': save error');
-					}
-				});
-			},
-
-
-			showErrors: function() {
-				_.each(this.model.validationError, function(err) {
-					console.log('EventFormView.showErrors: ' + err.name + ': ' + err.message);
-					this.$('#control-group-' + err.name).addClass('error');
-				}, this);
 			}
-
 		});
 
 

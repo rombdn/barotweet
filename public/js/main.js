@@ -3,7 +3,8 @@ require.config({
 	baseUrl: 'js',
 
 	paths: {
-		backbone: '../lib/backbone-min',
+		backbone: '../lib/backbone',
+		//backbonefull: '../lib/backbone',
 		underscore: '../lib/underscore-min',
 		jquery: '../lib/jquery-min',
 		text: '../lib/text',
@@ -18,7 +19,12 @@ require.config({
 			deps: [ 'underscore' , 'jquery' ],
 			exports: 'Backbone'
 		},
-
+/*
+		backbonefull: {
+			deps: [ 'underscore' , 'jquery' ],
+			exports: 'BackboneFull'
+		},
+*/
 		underscore: { exports: '_' },
 
 		handlebars: { exports: 'Handlebars' },

@@ -7,7 +7,7 @@ define(function(require, exports, module){
 
 	var EventCollection = Backbone.Collection.extend( {
 		model: PEvent,
-		localStorage: new Backbone.LocalStorage("event-store")
+		localStorage: new Backbone.LocalStorage("event-store-2")
 	});
 
 
