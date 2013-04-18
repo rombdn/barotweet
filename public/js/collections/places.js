@@ -7,7 +7,8 @@ define(function(require, exports, module){
 
 	var PlaceCollection = Backbone.Collection.extend( {
 		model: Place,
-		localStorage: new Backbone.LocalStorage("place-store")
+		url: '/places'
+		//localStorage: new Backbone.LocalStorage("place-store")
 	});
 
 

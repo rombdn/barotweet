@@ -434,7 +434,11 @@
       var model = this;
       var success = options.success;
       options.success = function(resp) {
+        console.log('RETOUR1');
+        console.log(model);
         if (!model.set(model.parse(resp, options), options)) return false;
+        console.log(model.parse(resp, options));
+        console.log('RETOUR2');
         if (success) success(model, resp, options);
         model.trigger('sync', model, resp, options);
       };
@@ -559,12 +563,12 @@
     // Run validation against the next complete set of model attributes,
     // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
     _validate: function(attrs, options) {
-      console.log('***BACKBONE: _validate: start');
+      console.log('_validate: start');
       if (!options.validate || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
       var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;
-      console.log('***BACKBONE: _validate: trigger');
+      console.log('_validate: trigger');
       this.trigger('invalid', this, error, _.extend(options || {}, {validationError: error}));
       return false;
     }

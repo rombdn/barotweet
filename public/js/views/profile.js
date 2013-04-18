@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'models/place', 'views/place', 'models/pevent', 'collections/events', 'views/event', 'models/com', 'collections/coms', 'views/coms-list'],
+define(['jquery', 'underscore', 'backbone', 'views/place', 'models/pevent', 'collections/events', 'views/event', 'collections/coms', 'views/coms-list'],
 
-	function( $ , _ , Backbone , Place, PlaceView, PEvent, EventCollection, EventView, Com, ComsCollection, ComsListView){
+	function( $ , _ , Backbone , PlaceView, PEvent, EventCollection, EventView, ComsCollection, ComsListView){
 
 		var ProfileView = Backbone.View.extend({
 
@@ -19,71 +19,31 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'views/place', 'mode
 
 
 				//event
-				this.event = undefined;
-				this.eventCollection = new EventCollection();
-				this.eventView = undefined;
+				this.pevent = new PEvent({ parentPlaceId: this.place.id });
+				this.eventCollection = new EventCollection([this.pevent]);
+				this.eventView = new EventView({model: this.pevent});
+				this.pevent.fetch({ data: { parentPlaceId: this.place.id } });
 
-				this.place.findEvent(_.bind(function(eventFound) {
-					if(eventFound) {
-						this.event = eventFound;
-						this.eventView = new EventView({model: this.event});
-					}
-					else {
-						this.event = new PEvent();
-						this.eventCollection.add(this.event);						
-					}
-				}, this));
-
+				this.listenTo(this.place, 'sync', this.render());
 
 				//coms
-				this.place.findComs(_.bind( function(comsFound) {
-
-				}, this));
-
-				
+				/*
 				this.comsCollection = new ComsCollection();
-				this.comsListView = undefined;
-
-				//find the event associated with the place
-				if(!options.place.isNew()) {
-					this.comsCollection.fetch({
-						
-						data: {parentPlaceId: options.place.id},
-						success: _.bind(function(){
-							this.comsListView = new ComsListView({model: this.comsCollection, place: this.place});
-						}, this)
-					});
-				}
-
-				this.setListeners();
+				this.comsListView = new ComsListView({model: this.comsCollection});
+				this.comsCollection.fetch({ data: {place: this.place.id} } );
+				*/
 			},
 
 			render: function(){
+				console.log('      * rendering profile');
 
-				//place view
 				this.$el.append(this.placeView.el);
+				this.$el.append( this.eventView.el );
+				//this.$el.append( this.comsListView.el );
+
 				this.placeView.render();
-
-				//event view
-				//this.eventView is defined by fetch success
-				//!!!!!!!!!!! THIS TEST SHOULD BE IN THE VIEW !!!!!!!!!!!
-				//!!!!!!!!! REFRESH PROBLEM !!!!!!!!!!!!
-				if(this.eventView) {
-					this.$el.append( this.eventView.el );
-					this.eventView.render();
-				}
-				else {
-					this.$el.append( 'loading event' );
-				}
-
-				//coms view
-				if(this.comsListView) {
-					this.$el.append( this.comsListView.el );
-					this.comsListView.render();
-				}
-				else {
-					this.$el.append( 'loading comments' );
-				}
+				this.eventView.render();
+				//this.comsListView.render();				
 
 				return this;
 			},
@@ -100,13 +60,26 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'views/place', 'mode
 			},
 
 			editEvent: function() {
-				this.trigger('eEditEvent', this.event, this.place);
+				//disable click until the event is fetched
+				if( this.pevent.get('fetched')) {
+					this.trigger('eEditEvent', this.pevent);
+				}
 			},
 
 			addComment: function() {
+				/*
 				var comment = new Com();
 				this.comsCollection.add(comment);
 				this.trigger('eAddComment', comment, this.place);
+				*/
+			},
+
+			remove: function() {
+				this.placeView.remove();
+				this.eventView.remove();
+				//this.comsListView.remove();
+
+				Backbone.View.prototype.remove.call(this);
 			}
 
 		});

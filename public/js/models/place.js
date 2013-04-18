@@ -29,28 +29,6 @@ define(function(require, exports, module){
 			city: 'Paris'
 		},
 
-		findEvent: function(callback) {
-			if(this.isNew())
-				callback(undefined);
-
-			this.eventCollection.fetch({
-				data: {parentPlaceId: this.id},
-
-				success: function(collection, response) {
-					console.log('Events found: ' + collection.length);
-					
-					if(collection.length > 0) {
-						//duplicate events shouldn't exist
-						callback(collection.models[0]);
-					}
-
-					else {
-						callback(undefined);
-					}
-				}
-			});
-		},
-
 		validate: function(attr) {
 			var errors = [];
 

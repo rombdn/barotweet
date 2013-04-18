@@ -7,16 +7,38 @@ define(function(require, exports, module){
 
 	var PEvent = Backbone.Model.extend({
 
+		//urlRoot: '/events',
+
 		initialize: function() {
-			console.log('event creation');
+		console.log('event creation');
+			//_.bindAll(this);
 		},
 
 		defaults: {
 			name: "Unnamed event",
 			price: '15',
-			label: '2',
-			parentPlaceId: -1
+			label: 'rock',
+			parentPlaceId: -1,
+			fetched: false
 		},
+
+
+		//fetch augmentation
+		//setting this.fetched = true after fetch
+		fetch: function(options) {
+			args = _.extend(options, { 
+				success: _.bind(this.postFetch, this),
+				error: _.bind(this.postFetch, this)
+			});
+
+			Backbone.Model.prototype.fetch.call(this, args);
+		},
+
+		postFetch: function() {
+			console.log('           FETCH OK, model :' + this.get('name'));
+			this.set({fetched: true});
+		},
+
 
 		validate: function(attr) {
 			var errors = [];

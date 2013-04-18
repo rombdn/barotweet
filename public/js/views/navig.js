@@ -9,11 +9,22 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 			initialize: function(){
 				console.log("creating Navig View");
 
-				this.placeCollection = new PlaceCollection();
-				this.placeCollection.fetch();
+				this.fetched = false;
+
+				this.place = new Place({id: 1});
+				this.placeCollection = new PlaceCollection([this.place]);
+				//this.profileView = new ProfileView({place: this.place});
+
+				this.place.fetch({
+					success: _.bind(function() {
+						this.fetched = true;
+					}, this)
+				});
+
+				this.listenTo(this.place, 'sync', this.render);
 
 				//debug - default value
-				this.place = this.placeCollection.at(0);
+				
 
 				//new place creation
 				/*
@@ -22,9 +33,7 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 				*/
 
 				//debug
-				this.placeCollection.forEach(function(model) {
-					console.log(model.id);
-				});
+
 			},
 
 			setListeners: function(view) {
@@ -36,11 +45,18 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 
 
 			render: function(view){
-				console.log('rendering');
+				console.log('          rendering');
+				console.log(view instanceof Backbone.Model);
 
+				if(!this.fetched) {
+					console.log('************ fetch non termine');
+					return;
+				}
+					
 				//default view if render() is called
 				//without argument
-				if(!view) {
+				if(! (view instanceof Backbone.View)) {
+					console.log('************ view non definie');
 					return this.render(new ProfileView({place: this.place}));
 				}
 
@@ -53,8 +69,8 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 
 				//show the new view
 				this.currentView = view;
-				this.$el.append( view.el );
-				view.render();
+				this.$el.append( this.currentView.el );
+				this.currentView.render();
 
 				//rebind events
 				this.setListeners();
@@ -68,9 +84,9 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 				this.render(new PlaceFormView({model: this.place}));
 			},
 
-			editEvent: function(event, place) {
+			editEvent: function(pevent) {
 				console.log('NavigView: edit event');
-				this.render(new EventFormView({model: event, place: place}));
+				this.render(new EventFormView({model: pevent}));
 			},
 
 			addComment: function(com, place) {

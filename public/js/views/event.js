@@ -11,16 +11,27 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 
 			initialize: function(options) {
 				console.log('creating Event view');
+
+				this.listenTo(this.model, 'change', this.changed);
+			},
+
+			changed: function() {
+				console.log('model has changed');
+				this.render();
 			},
 
 			render: function(){
 
-				if(!this.model.isNew()) {
+				if( !this.model.get('fetched') ) {
+					this.$el.html( 'loading...' );
+				}
+				else if( !this.model.isNew() ) {
 					this.$el.html( this.template(this.model.toJSON()) );
 				}
 				else {
 					this.$el.html( 'no event 2nite -_-' );
 				}
+
 
 				return this;
 			}

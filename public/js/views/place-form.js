@@ -7,20 +7,7 @@ define(['jquery', 'underscore', 'backbone', 'views/form', 'text!templates/place-
 			className: 'row-fluid form-place',
 			template: _.template( placeFormTpl ),
 
-			render: function(){
-				this.$el.html( this.template( this.model.toJSON() ));
-				return this;
-			},
-
-			setValues: function(e) {
-				this.model.set({
-					name: this.$('#name').val(),
-					open: this.$('#open option:selected').val(),
-					close: this.$('#close option:selected').val(),
-					beerPrice: this.$('#beer').val(),
-					cocktailPrice: this.$('#cocktail').val()
-				});
-			}
+			inputs: [ 'name', 'open', 'close', 'beerPrice', 'cocktailPrice' ]
 		});
 
 
