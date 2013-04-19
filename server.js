@@ -1,15 +1,22 @@
 var express = require('express');
 var app = express();
+var mongo = require('mongodb');
+//var Places = require('./server/models/places');
+
+//database
+var server = new mongo.Server('127.0.0.1', 27017, {auto_reconnect: true});
+var db = new mongo.Db('nitedb', server);
+var Places = require('./server/routes/places');
+
+var places = new Places(app, db, delay);
 
 
-
-app.get('/places', delay, function(req, res) {
-	console.log('GET /places');
-	res.send([
-		{id: 1, name: "schon place", open: 21, close: 3, beerPrice: 5, cocktailPrice: 3.4},
-		{id: 2, name: "foo", open: 19, close: 1, beerPrice: 3, cocktailPrice: 5}
-	]);
+db.open(function(err, db) {
+	if(!err) {
+		console.log('connected to nitedb database');
+	}
 });
+
 
 app.get('/places/:id', delay, function(req, res) {
 	console.log('GET /places/' + req.params.id);
