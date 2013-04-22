@@ -3,12 +3,25 @@ var app = express();
 var mongo = require('mongodb');
 //var Places = require('./server/models/places');
 
+
+app.use(express.logger('dev'));
+app.use(express.bodyParser());
+app.use('/', express.static(__dirname + '/public'));
+app.use('/node_modules', express.static(__dirname + '/node_modules'));
+app.use('/test', express.static(__dirname + '/public'));
+app.use('/test', express.static(__dirname + '/tests/'));
+
+
+
 //database
 var server = new mongo.Server('127.0.0.1', 27017, {auto_reconnect: true});
 var db = new mongo.Db('nitedb', server);
-var Places = require('./server/routes/places');
 
+var Places = require('./server/routes/places');
 var places = new Places(app, db, delay);
+
+var Events = require('./server/routes/events');
+var events = new Events(app, db, delay);
 
 
 db.open(function(err, db) {
@@ -17,14 +30,14 @@ db.open(function(err, db) {
 	}
 });
 
-
+/*
 app.get('/places/:id', delay, function(req, res) {
 	console.log('GET /places/' + req.params.id);
 	res.send({name: "in and out", open: 22, close: 4, beerPrice: 4, cocktailPrice: 6.5});
 	//res.send(null);
 });
-
-
+*/
+/*
 app.get('/events', delay, function(req, res) {
 	if(req.query.parentPlaceId) {
 		console.log('GET /events?parentPlaceId=' + req.query.parentPlaceId);
@@ -45,17 +58,12 @@ app.get('/events/:id', delay, function(req, res) {
 	res.send({name: "phatty", price: 15, label: "club"});
 	//res.send(null);
 });
-
-
-app.use('/', express.static(__dirname + '/public'));
-app.use('/node_modules', express.static(__dirname + '/node_modules'));
-app.use('/test', express.static(__dirname + '/public'));
-app.use('/test', express.static(__dirname + '/tests/'));
+*/
 
 
 //network simulation
 function delay(req, res, next) {
-	setTimeout(next, 1000);
+	setTimeout(next, 200);
 }
 
 

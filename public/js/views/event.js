@@ -22,7 +22,7 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 
 			render: function(){
 
-				if( !this.model.get('fetched') ) {
+				if( !this.model.get('_fetched') ) {
 					this.$el.html( 'loading...' );
 				}
 				else if( !this.model.isNew() ) {

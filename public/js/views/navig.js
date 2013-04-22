@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places', 'views/profile', 'views/place-form', 'views/event-form', 'views/com-form'],
+define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places', 'views/profile', 'views/place-form', 'views/event-form', 'views/com-form', 'views/form', 'views/wall'],
 
-	function( $ , _ , Backbone , Place, PlaceCollection, ProfileView, PlaceFormView, EventFormView, ComFormView ){
+	function( $ , _ , Backbone , Place, PlaceCollection, ProfileView, PlaceFormView, EventFormView, ComFormView, FormView, WallView ){
 
 		var NavigView = Backbone.View.extend({
 
@@ -8,16 +8,19 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 
 			initialize: function(){
 				console.log("creating Navig View");
+/*
+				//temp
+				//don't create view until place is fetched
+				this.placeFetched = false;
 
-				this.fetched = false;
-
-				this.place = new Place({id: 1});
+				this.place = new Place({_id: '517563469a3ff90815000001'});
 				this.placeCollection = new PlaceCollection([this.place]);
 				//this.profileView = new ProfileView({place: this.place});
+				//this.place.save();
 
 				this.place.fetch({
 					success: _.bind(function() {
-						this.fetched = true;
+						this.placeFetched = true;
 					}, this)
 				});
 
@@ -34,30 +37,32 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 
 				//debug
 
+				this.currentView = new WallView();
 			},
 
 			setListeners: function(view) {
 				this.listenTo(this.currentView, 'eSaved', this.showProfile);
-				this.listenTo(this.currentView, 'eEditPlace', this.editPlace);
+				Backbone.on('profile:clickPlace', this.editPlace, this);
 				this.listenTo(this.currentView, 'eEditEvent', this.editEvent);
 				this.listenTo(this.currentView, 'eAddComment', this.addComment);
+				Backbone.on('wall:clickPlace', this.showProfile, this);
 			},
 
 
 			render: function(view){
 				console.log('          rendering');
 				console.log(view instanceof Backbone.Model);
-
-				if(!this.fetched) {
+/*
+				if(!this.placeFetched) {
 					console.log('************ fetch non termine');
 					return;
 				}
-					
+				
 				//default view if render() is called
 				//without argument
 				if(! (view instanceof Backbone.View)) {
 					console.log('************ view non definie');
-					return this.render(new ProfileView({place: this.place}));
+					return this.render(new WallView());
 				}
 
 				//remove the view currently displayed
@@ -68,7 +73,7 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 				}
 
 				//show the new view
-				this.currentView = view;
+				this.currentView = view;*/
 				this.$el.append( this.currentView.el );
 				this.currentView.render();
 
@@ -79,9 +84,14 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 			},
 
 
-			editPlace: function() {
+			editPlace: function(place) {
 				console.log('NavigView: edit place');
-				this.render(new PlaceFormView({model: this.place}));
+				if(place) {
+					this.render(new PlaceFormView({model: place}));
+				}
+				else {
+					console.log('Error: NavigView.editPlace: place undefined');
+				}
 			},
 
 			editEvent: function(pevent) {
@@ -94,9 +104,14 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 				this.render(new ComFormView({model: com, place: place}));
 			},
 
-			showProfile: function() {
+			showProfile: function(place) {
 				console.log('NavigView: show profile');
-				this.render(new ProfileView({place: this.place}));
+				this.render(new ProfileView({place: place}));
+			},
+
+			wall: function() {
+				console.log('NavigView: show wall');
+				this.render(new WallView());
 			}
 		});
 

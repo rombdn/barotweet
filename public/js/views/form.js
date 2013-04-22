@@ -15,10 +15,12 @@ define(['jquery', 'underscore', 'backbone'],
 			tagname: 'div',
 
 			initialize: function(){
-				console.log('initializing FormView model ' + this.model.get('name'));
+				console.log('initializing FormView model ' + this.model.get('_id'));
 
 				if( !this.inputs ) {
-					throw 'FormView: no inputs set';
+					this.inputs = _.reject( Object.keys(this.model.attributes), function(attr) { return attr[0] === '_'; }, this );
+					
+					throw 'ERROR: FormView: no inputs set';
 				}
 
 				this.listenTo(this.model, 'invalid', this.showErrors);
@@ -48,16 +50,24 @@ define(['jquery', 'underscore', 'backbone'],
 			//called by checkForm
 			//this.inputs is an array of values to be set
 			setValues: function() {
-				var data = {};
+				this.data = {};
+				var fields = _.reject(this.inputs, function(input) { return input[0] === '_'; } );
 
 				_.each( this.inputs, function(input) {
-					console.log(input+'='+$('#'+input).val());
-
-					data[input] = $('#'+input).val();
+					
+					if(input[0] !== '_') {
+						console.log(input+'='+$('#'+input).val());
+						this.data[input] = $('#'+input).val();
+					}
+					else {
+						this.data[input] = this.model.get(input);
+					}
 
 				}, this);
 
-				this.model.set(data);
+				this.model.set(this.data);
+				console.log(this.model);
+				console.log(this.data);
 			},
 
 			showErrors: function() {
@@ -80,7 +90,8 @@ define(['jquery', 'underscore', 'backbone'],
 				this.checkForm();
 
 				//trigger event after save
-				this.model.save({}, {
+				
+				this.model.save(this.data, {
 					success: _.bind(function(model, response) {
 						console.log(model.attributes + ': save ok');
 						this.trigger('eSaved');
@@ -90,6 +101,7 @@ define(['jquery', 'underscore', 'backbone'],
 						console.log(model.attributes + ': save error');
 					}
 				});
+
 			}
 
 		});

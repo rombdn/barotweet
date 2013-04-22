@@ -5,8 +5,7 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/place.html'],
 		var PlaceView = Backbone.View.extend({
 
 			tagname: 'div',
-			id: 'place',
-			className: 'row-fluid profile',
+			className: 'row-fluid profile place',
 			template: _.template( placeTpl ),
 
 			render: function(){

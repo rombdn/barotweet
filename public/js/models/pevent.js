@@ -7,6 +7,8 @@ define(function(require, exports, module){
 
 	var PEvent = Backbone.Model.extend({
 
+		idAttribute: '_id',
+		
 		//urlRoot: '/events',
 
 		initialize: function() {
@@ -18,8 +20,7 @@ define(function(require, exports, module){
 			name: "Unnamed event",
 			price: '15',
 			label: 'rock',
-			parentPlaceId: -1,
-			fetched: false
+			_fetched: false
 		},
 
 
@@ -36,7 +37,7 @@ define(function(require, exports, module){
 
 		postFetch: function() {
 			console.log('           FETCH OK, model :' + this.get('name'));
-			this.set({fetched: true});
+			this.set({_fetched: true});
 		},
 
 

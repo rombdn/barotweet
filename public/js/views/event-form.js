@@ -7,7 +7,7 @@ define(['jquery', 'underscore', 'backbone', 'views/form', 'models/pevent', 'text
 			className: 'row-fluid form-event',
 			template: _.template( eventFormTpl ),
 			
-			inputs: [ 'name', 'label', 'price' ]
+			inputs: [ 'name', 'label', 'price', '_parentPlaceId' ]
 
 		});
 

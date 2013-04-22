@@ -9,8 +9,8 @@ define(function(require, exports, module){
 	var Com = Backbone.Model.extend({
 
 		defaults: {
-			userId: -1,
-			parentPlaceId: -1,
+			_userId: -1,
+			_parentPlaceId: -1,
 			text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
 		},
 

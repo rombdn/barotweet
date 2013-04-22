@@ -10,6 +10,8 @@ define(function(require, exports, module){
 
 	var Place = Backbone.Model.extend({
 
+		idAttribute: '_id',
+
 		initialize: function() {
 			this.listenTo(this, 'invalid', function() {
 				console.log('Place: validation error(s)');

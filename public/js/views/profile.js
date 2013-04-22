@@ -19,10 +19,13 @@ define(['jquery', 'underscore', 'backbone', 'views/place', 'models/pevent', 'col
 
 
 				//event
-				this.pevent = new PEvent({ parentPlaceId: this.place.id });
+				this.pevent = new PEvent({ _parentPlaceId: this.place.id });
 				this.eventCollection = new EventCollection([this.pevent]);
 				this.eventView = new EventView({model: this.pevent});
-				this.pevent.fetch({ data: { parentPlaceId: this.place.id } });
+				this.pevent.fetch({ 
+					data: { _parentPlaceId: this.place.id }
+				});
+
 
 				this.listenTo(this.place, 'sync', this.render());
 
@@ -56,12 +59,12 @@ define(['jquery', 'underscore', 'backbone', 'views/place', 'models/pevent', 'col
 			},
 
 			editPlace: function() {
-				this.trigger('eEditPlace');
+				Backbone.trigger('profile:clickPlace', this.place);
 			},
 
 			editEvent: function() {
 				//disable click until the event is fetched
-				if( this.pevent.get('fetched')) {
+				if( this.pevent.get('_fetched')) {
 					this.trigger('eEditEvent', this.pevent);
 				}
 			},
