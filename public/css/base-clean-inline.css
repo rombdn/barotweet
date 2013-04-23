@@ -111,6 +111,10 @@ body {
 }
 
 
+.profile a {
+  text-decoration: none;
+}
+
 
 /*event */
 

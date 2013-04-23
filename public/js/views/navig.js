@@ -1,67 +1,91 @@
-define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places', 'views/profile', 'views/place-form', 'views/event-form', 'views/com-form', 'views/form', 'views/wall'],
+define(['jquery', 'underscore', 'backbone', 'views/profile', 'views/place-form', 'views/event-form', 'views/com-form', 'views/wall', 'models/place'],
 
-	function( $ , _ , Backbone , Place, PlaceCollection, ProfileView, PlaceFormView, EventFormView, ComFormView, FormView, WallView ){
+	function( $ , _ , Backbone , ProfileView, PlaceFormView, EventFormView, ComFormView, WallView, Place ){
 
 		var NavigView = Backbone.View.extend({
 
 			tagname: 'div',
 
 			initialize: function(){
-				console.log("creating Navig View");
-/*
-				//temp
-				//don't create view until place is fetched
-				this.placeFetched = false;
+				this.currentView = null;
+				this.setListeners();
 
-				this.place = new Place({_id: '517563469a3ff90815000001'});
-				this.placeCollection = new PlaceCollection([this.place]);
-				//this.profileView = new ProfileView({place: this.place});
-				//this.place.save();
+				//var place = new Place({'_id': '517545675d5621d00a000001'});
+				//console.log('********* ' + place.url());
+				//place.fetch();
 
-				this.place.fetch({
-					success: _.bind(function() {
-						this.placeFetched = true;
-					}, this)
-				});
+			},
 
-				this.listenTo(this.place, 'sync', this.render);
-
-				//debug - default value
+			setListeners: function() {
+				Backbone.on('pevent:save', this.eSavedEvent, this);
+				Backbone.on('pevent:click', this.eClikedPEvent, this);
+				Backbone.on('pevent:cancel', this.eClikedCancelPEvent, this);
+				Backbone.on('pevent:delete', this.eClikedDeletePEvent, this);
 				
-
-				//new place creation
-				/*
-				this.place = new Place();
-				this.placeCollection.add(this.place);
-				*/
-
-				//debug
-
-				this.currentView = new WallView();
-			},
-
-			setListeners: function(view) {
-				this.listenTo(this.currentView, 'eSaved', this.showProfile);
-				Backbone.on('profile:clickPlace', this.editPlace, this);
-				this.listenTo(this.currentView, 'eEditEvent', this.editEvent);
-				this.listenTo(this.currentView, 'eAddComment', this.addComment);
-				Backbone.on('wall:clickPlace', this.showProfile, this);
+				Backbone.on('coms:add', this.eClickedAddCom, this);
+				Backbone.on('com:save', this.eSavedCom, this);
+				
+				Backbone.on('place:click', this.eClickedPlace, this);
+				Backbone.on('place:save', this.eSavedPlace, this);
 			},
 
 
-			render: function(view){
-				console.log('          rendering');
-				console.log(view instanceof Backbone.Model);
+			//events handlers
+			eClikedPEvent: function(pevent) {
+				this.render(new EventFormView({model: pevent}));
+			},
+
+			eClickedAddCom: function(com) {
+				console.log('Navig: create com form view for place ' + com.get('_parentPlaceId'));
+				this.render(new ComFormView({model: com}));
+			},
 /*
-				if(!this.placeFetched) {
-					console.log('************ fetch non termine');
-					return;
+			eClickedCom: function(com) {
+				console.log('destroy com ' + com.get('text'));
+				var placeId = com.get('_parentPlaceId');
+				com.destroy({wait: true});
+
+				this.render(new ProfileView({_id: placeId}));
+			},
+*/
+			eSavedEvent: function(pevent) {
+				console.log('event saved, go to place ' + pevent.get('_parentPlaceId'));
+				this.render(new ProfileView({_id: pevent.get('_parentPlaceId')}));
+			},
+
+			eClikedCancelPEvent: function(pevent) {
+				this.render(new ProfileView({_id: pevent.get('_parentPlaceId')}));
+			},
+
+			eClikedDeletePEvent: function(pevent) {
+				var placeId = pevent.get('_parentPlaceId');
+				pevent.destroy({wait:true});
+
+				this.render(new ProfileView({_id: placeId}));
+			},
+
+			eSavedCom: function(com) {
+				this.render(new ProfileView({_id: com.get('_parentPlaceId')}));
+			},
+
+			eSavedPlace: function(place) {
+				this.render(new ProfileView({place: place}));
+			},
+
+			eClickedPlace: function(place) {
+				if(this.currentView instanceof WallView) {
+					this.render(new ProfileView({place: place}));
 				}
-				
+				else {
+					this.render(new PlaceFormView({model: place}));
+				}
+			},
+
+
+			render: function(view){			
 				//default view if render() is called
 				//without argument
 				if(! (view instanceof Backbone.View)) {
-					console.log('************ view non definie');
 					return this.render(new WallView());
 				}
 
@@ -73,45 +97,14 @@ define(['jquery', 'underscore', 'backbone', 'models/place', 'collections/places'
 				}
 
 				//show the new view
-				this.currentView = view;*/
+				this.currentView = view;
 				this.$el.append( this.currentView.el );
 				this.currentView.render();
 
 				//rebind events
-				this.setListeners();
+				//this.setListeners();
 
 				return this;
-			},
-
-
-			editPlace: function(place) {
-				console.log('NavigView: edit place');
-				if(place) {
-					this.render(new PlaceFormView({model: place}));
-				}
-				else {
-					console.log('Error: NavigView.editPlace: place undefined');
-				}
-			},
-
-			editEvent: function(pevent) {
-				console.log('NavigView: edit event');
-				this.render(new EventFormView({model: pevent}));
-			},
-
-			addComment: function(com, place) {
-				console.log('NavigView: add comment');
-				this.render(new ComFormView({model: com, place: place}));
-			},
-
-			showProfile: function(place) {
-				console.log('NavigView: show profile');
-				this.render(new ProfileView({place: place}));
-			},
-
-			wall: function() {
-				console.log('NavigView: show wall');
-				this.render(new WallView());
 			}
 		});
 

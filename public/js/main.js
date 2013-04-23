@@ -9,7 +9,7 @@ require.config({
 		jquery: '../lib/jquery-min',
 		text: '../lib/text',
 		handlebars: '../lib/handlebars',
-		localstorage: '../lib/backbone.localStorage-min',
+		//localstorage: '../lib/backbone.localStorage-min',
 		bootstrap: '../lib/bootstrap/js/bootstrap.min',
 		marionette: '../lib/backbone.marionette'
 	},

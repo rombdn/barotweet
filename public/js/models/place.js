@@ -5,20 +5,12 @@ define(function(require, exports, module){
 	var _ = require('underscore');
 	var Backbone = require('backbone');
 	var PEvent = require('models/pevent');
-	var EventCollection = require('collections/events');
-	//var LocalStorage = require('localstorage');
 
 	var Place = Backbone.Model.extend({
 
 		idAttribute: '_id',
 
-		initialize: function() {
-			this.listenTo(this, 'invalid', function() {
-				console.log('Place: validation error(s)');
-			});
-
-			this.eventCollection = new EventCollection();
-		},
+		urlRoot: '/places',
 
 		defaults: {
 			pic: "img/place/placeholder.png",

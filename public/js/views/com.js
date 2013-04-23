@@ -8,15 +8,24 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/com.html'],
 			className: 'row-fluid profile',
 			template: _.template( Tpl ),
 
-			initialize: function(options) {
-				this.user = this.model.findUser();
+			events: {
+				'click': 'clickCom'
+			},
+
+			initialize: function() {
+				//this.user = this.model.findUser();
+				this.listenTo(this.model, 'all', this.render);
 			},
 
 			render: function(){
 
-				this.$el.html( this.template( _.extend(this.model.toJSON(), {userPic: this.user.pic}) ));
+				this.$el.html( this.template( _.extend(this.model.toJSON()) ));
 
 				return this;
+			},
+
+			clickCom: function() {
+				Backbone.trigger('com:click', this.model);
 			}
 
 		});

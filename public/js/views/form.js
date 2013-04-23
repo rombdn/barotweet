@@ -9,7 +9,9 @@ define(['jquery', 'underscore', 'backbone'],
 
 			events: {
 				'change': 'checkForm',
-				'click #save': 'savePlace'
+				'click #save': 'clickSave',
+				'click #cancel': 'clickCancel',
+				'click #delete': 'clickDelete'
 			},
 
 			tagname: 'div',
@@ -66,8 +68,10 @@ define(['jquery', 'underscore', 'backbone'],
 				}, this);
 
 				this.model.set(this.data);
+				/*
 				console.log(this.model);
 				console.log(this.data);
+				*/
 			},
 
 			showErrors: function() {
@@ -81,29 +85,28 @@ define(['jquery', 'underscore', 'backbone'],
 				}, this);
 			},
 
-			savePlace: function(e) {
-				console.log('FormView: button save');
-
+			clickSave: function(e) {
 				if(e !== undefined) e.preventDefault();
 
 				//just to be sure the values are set
 				this.checkForm();
 
-				//trigger event after save
-				
 				this.model.save(this.data, {
 					success: _.bind(function(model, response) {
-						console.log(model.attributes + ': save ok');
-						this.trigger('eSaved');
+						console.log('FORM: save ok: ' + model.toJSON());
+
+						this.eventSaved();
+
 					}, this),
 
 					error: function() {
-						console.log(model.attributes + ': save error');
+						console.log('FORM: save ko: ' + model.toJSON());
 					}
 				});
 
-			}
+			},
 
+			eventSaved: function() {}
 		});
 
 

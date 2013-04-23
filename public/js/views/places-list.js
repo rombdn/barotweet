@@ -1,14 +1,18 @@
-define([ 'jquery', 'underscore', 'backbone', 'views/place' ], 
+define([ 'jquery', 'underscore', 'backbone', 'collections/places', 'views/place' ], 
 
-	function( $ , _ , Backbone , ElementView){
+	function( $ , _ , Backbone , PlaceCollection, ElementView){
 
 	var ListView = Backbone.View.extend({
 
 		tagName: "div",
 
-		initialize: function(options){		
+		initialize: function(options){
 			this.views = [];
-			this.listenTo(this.model, 'sync', this.populateViews);
+
+			this.placeCollection = new PlaceCollection();
+			this.placeCollection.fetch();
+
+			this.listenTo(this.placeCollection, 'all', this.populateViews);
 		},
 
 		populateViews: function(){
@@ -23,11 +27,11 @@ define([ 'jquery', 'underscore', 'backbone', 'views/place' ],
 				this.views.length = 0;
 			}
 
-			_.each(this.model.models, function(model){
-				console.log(model);
+			_.each(this.placeCollection.models, function(model){
 				this.views.push( new ElementView({model: model}) );
 			}, this);
 
+			this.render();
 		},
 
 		render: function(){

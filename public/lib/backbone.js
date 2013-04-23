@@ -509,20 +509,33 @@
         model.trigger('destroy', model, model.collection, options);
       };
 
+      console.log('*** BACKBONE 1');
+
       options.success = function(resp) {
         if (options.wait || model.isNew()) destroy();
         if (success) success(model, resp, options);
         if (!model.isNew()) model.trigger('sync', model, resp, options);
       };
 
+      console.log('*** BACKBONE 2');
+
       if (this.isNew()) {
+        console.log('*** BACKBONE : IS NEW');
         options.success();
         return false;
       }
       wrapError(this, options);
 
+      console.log('*** BACKBONE 3');
+
       var xhr = this.sync('delete', this, options);
+
+      console.log('*** BACKBONE 4');
+
       if (!options.wait) destroy();
+
+      console.log('*** BACKBONE 5');
+
       return xhr;
     },
 
@@ -559,12 +572,12 @@
     // Run validation against the next complete set of model attributes,
     // returning `true` if all is well. Otherwise, fire an `"invalid"` event.
     _validate: function(attrs, options) {
-      console.log('***BACKBONE: _validate: start');
+      //console.log('***BACKBONE: _validate: start');
       if (!options.validate || !this.validate) return true;
       attrs = _.extend({}, this.attributes, attrs);
       var error = this.validationError = this.validate(attrs, options) || null;
       if (!error) return true;
-      console.log('***BACKBONE: _validate: trigger');
+      //console.log('***BACKBONE: _validate: trigger');
       this.trigger('invalid', this, error, _.extend(options || {}, {validationError: error}));
       return false;
     }

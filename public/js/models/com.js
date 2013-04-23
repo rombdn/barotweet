@@ -8,6 +8,8 @@ define(function(require, exports, module){
 
 	var Com = Backbone.Model.extend({
 
+		idAttribute: '_id',
+		
 		defaults: {
 			_userId: -1,
 			_parentPlaceId: -1,

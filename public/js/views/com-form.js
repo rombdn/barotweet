@@ -8,26 +8,10 @@ define(['jquery', 'underscore', 'backbone', 'views/form', 'models/com', 'text!te
 			template: _.template( Tpl ),
 
 
-			initialize: function(options){
-				this.place = options.place;
+			inputs: [ 'text', '_parentPlaceId' ],
 
-				console.log('creating com-form for place ' + this.place.get('name'));
-
-				//initialize() redeclaration overrided this from FormView
-				this.listenTo(this.model, 'invalid', this.showErrors);
-			},
-
-			render: function(){
-				this.$el.html( this.template( { parentName: this.place.get('name') } ) );
-
-				return this;
-			},
-
-			setValues: function(e) {
-				this.model.set({
-					text: this.$('#text').val(),
-					parentPlaceId: this.place.get('id')
-				});
+			eventSaved: function() {
+				Backbone.trigger('com:save', this.model);
 			}
 		});
 

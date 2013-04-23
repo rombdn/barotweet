@@ -7,7 +7,11 @@ define(['jquery', 'underscore', 'backbone', 'views/form', 'text!templates/place-
 			className: 'row-fluid form-place',
 			template: _.template( placeFormTpl ),
 
-			inputs: [ 'name', 'open', 'close', 'beerPrice', 'cocktailPrice' ]
+			inputs: [ 'name', 'open', 'close', 'beerPrice', 'cocktailPrice' ],
+
+			eventSaved: function() {
+				Backbone.trigger('place:save', this.model);
+			}
 		});
 
 
