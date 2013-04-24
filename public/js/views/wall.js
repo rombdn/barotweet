@@ -1,10 +1,11 @@
-define(['jquery', 'underscore', 'backbone', 'views/places-list'],
+define(['jquery', 'underscore', 'backbone', 'views/places/places-list'],
 
 	function( $ , _ , Backbone , PlaceListView ){
 
 		var WallView = Backbone.View.extend({
 
 			tagname: 'div',
+			className: 'wall',
 
 
 			initialize: function(){

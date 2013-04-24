@@ -1,4 +1,4 @@
-define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/com', 'models/com', 'text!templates/coms-list.html' ], 
+define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments/com', 'models/com', 'text!templates/coms-list.html' ], 
 
 	function( $ , _ , Backbone , ComsCollection , ComView, Com, ComListTpl ){
 
@@ -11,8 +11,7 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/com', 'm
 			'click #comment-add': 'clickAdd'
 		},
 
-		initialize: function(options){		
-			console.log('init com list');
+		initialize: function(options) {
 			this.views = [];
 			
 			this.place = options.place;
@@ -26,7 +25,6 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/com', 'm
 		},
 
 		populateViews: function(e){
-			//console.log('Event ' + e);
 			//attached views allready present
 			if(this.views.length > 0) {
 				_.each(this.views, function(view){

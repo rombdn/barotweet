@@ -106,7 +106,13 @@ define(['jquery', 'underscore', 'backbone'],
 
 			},
 
-			eventSaved: function() {}
+			clickCancel: function() { 
+				this.eventCanceled(); 
+			},
+			clickDelete: function() { 
+				this.eventDeleted();
+			}
+
 		});
 
 

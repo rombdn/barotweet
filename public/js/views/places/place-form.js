@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'views/form', 'text!templates/place-form.html'],
+define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'text!templates/place-form.html'],
 
 	function( $ , _ , Backbone , FormView, placeFormTpl ){
 
@@ -10,7 +10,11 @@ define(['jquery', 'underscore', 'backbone', 'views/form', 'text!templates/place-
 			inputs: [ 'name', 'open', 'close', 'beerPrice', 'cocktailPrice' ],
 
 			eventSaved: function() {
-				Backbone.trigger('place:save', this.model);
+				Backbone.trigger('place:save', this.model, this.model.get('_id'));
+			},
+
+			eventCanceled: function() {
+				Backbone.trigger('pevent:cancel', this.model, this.model.get('_id'));
 			}
 		});
 

@@ -17,7 +17,7 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/place.html'],
 			},
 
 			clickPlace: function() {
-				Backbone.trigger('place:click', this.model);
+				Backbone.trigger('place:click', this.model, this.model.get('_id'));
 			},
 
 			render: function(){

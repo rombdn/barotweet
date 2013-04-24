@@ -11,6 +11,7 @@
 
 
 	<link rel="stylesheet" href="css/base-clean-inline.css" media="screen">
+	<link rel="stylesheet" href="lib/leaflet/leaflet.css" media="screen">
 </head>
 <body>
 	
@@ -27,7 +28,7 @@
 				</button>
 	
 				<!-- Nav no collapse -->
-				<a class="brand" href="#">Home</a></li>
+				<a id="home" class="brand" href="#">Home</a></li>
 				
 
 				<form class="navbar-form pull-right">
@@ -75,19 +76,6 @@
 	<!-- libs/scripts -->
 	<script data-main="js/main" src="lib/require.js"></script>
 
-	<!-- leaflet
-	<script src="lib/leaflet/leaflet.js"></script>
-	<script type="text/javascript">
-		var map = L.map('map').setView([48.837393, 2.391672], 13);
-
-		var layer = L.tileLayer(
-			'http://{s}.tile.osm.org/{z}/{x}/{y}.png', 
-			{
-				attribution: '&copy; OpenStreetMap'
-			}
-		).addTo(map);
-
-	</script>-->
 
 </body>
 </html>

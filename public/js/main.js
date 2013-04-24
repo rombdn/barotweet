@@ -11,7 +11,9 @@ require.config({
 		handlebars: '../lib/handlebars',
 		//localstorage: '../lib/backbone.localStorage-min',
 		bootstrap: '../lib/bootstrap/js/bootstrap.min',
-		marionette: '../lib/backbone.marionette'
+		leaflet: '../lib/leaflet/leaflet'
+		//marionette: '../lib/backbone.marionette',
+		//stamen: '../lib/tile.stamen'
 	},
 
 	shim: {
@@ -29,15 +31,18 @@ require.config({
 
 		handlebars: { exports: 'Handlebars' },
 
+		//leaflet: { deps: [ 'jquery' ], exports: 'Leaflet' },
+
 		bootstrap: {
 			deps: [ 'jquery' ],
 			exports: 'Bootstrap'
-		},
-
+		}
+/*
 		marionette: {
 			deps: [ 'jquery', 'underscore', 'backbone' ],
 			exports: [ 'Marionette']
 		}
+*/
 	}
 
 });
@@ -47,7 +52,7 @@ require.config({
 require( [ 'app' ], function( App ){
 
 	window.app = new App();
-	window.app.start();
+	window.app.render();
 	console.log('App started');
 
 });

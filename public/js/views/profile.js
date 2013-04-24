@@ -1,15 +1,22 @@
-define(['jquery', 'underscore', 'backbone', 'views/place', 'models/pevent', 'collections/events', 'views/event', 'collections/coms', 'views/coms-list', 'models/place'],
+define(['jquery', 'underscore', 'backbone', 
+	'views/maps/map',
+	'models/place', 'views/places/place', 
+	'views/events/event', 
+	'views/comments/coms-list'],
 
-	function( $ , _ , Backbone , PlaceView, PEvent, EventCollection, EventView, ComsCollection, ComsListView, Place){
+	function( $ , _ , Backbone , MapView, Place, PlaceView, EventView, ComsListView){
+
 
 		var ProfileView = Backbone.View.extend({
 
+			constructorName: 'ProfileView',
 			tagname: 'div',
 			className: 'profile-all',
 			//template: _.template( profileAllTpl ),
 
 			initialize: function(options){
 				//map
+				this.mapView = new MapView();
 
 				//place
 				//if only id is given
@@ -27,34 +34,26 @@ define(['jquery', 'underscore', 'backbone', 'views/place', 'models/pevent', 'col
 
 				this.placeView = new PlaceView({model: this.place});
 
+				//events
+				this.eventView = new EventView({place: this.place});
 
-				//event
-				/*if(options.pevent) {
-					this.eventView = new EventView({model: options.pevent});
-				}
-				else {*/
-					this.eventView = new EventView({place: this.place});
-				//}
-
-
-				//this.listenTo(this.place, 'sync', this.render());
 
 				//coms
 				this.comsListView = new ComsListView({place: this.place});
-				/*
-				this.comsCollection = new ComsCollection();
-				this.comsListView = new ComsListView({model: this.comsCollection});
-				this.comsCollection.fetch({ data: {place: this.place.id} } );
-				*/
 
-				this.setListeners();
+
+				//events
+				this.listenTo(Backbone, 'com:click', this.destroyCom);
+				//Backbone.on('com:click', this.destroyCom, this);
 			},
 
 			render: function(){
+				this.$el.append(this.mapView.el);
 				this.$el.append(this.placeView.el);
 				this.$el.append( this.eventView.el );
 				this.$el.append( this.comsListView.el );
 
+				this.mapView.render();
 				this.placeView.render();
 				this.eventView.render();
 				this.comsListView.render();				
@@ -72,16 +71,11 @@ define(['jquery', 'underscore', 'backbone', 'views/place', 'models/pevent', 'col
 			},
 
 
-			setListeners: function() {
-				this.listenTo(Backbone, 'com:click', this.eClickedCom);
-			},
-
-			eClickedCom: function(com) {
+			destroyCom: function(com) {
 				com.destroy({wait: true});
 			}
 
 		});
-
 
 		return ProfileView;
 });

@@ -1,10 +1,11 @@
-define([ 'jquery', 'underscore', 'backbone', 'collections/places', 'views/place' ], 
+define([ 'jquery', 'underscore', 'backbone', 'collections/places', 'views/places/place' ], 
 
 	function( $ , _ , Backbone , PlaceCollection, ElementView){
 
 	var ListView = Backbone.View.extend({
 
 		tagName: "div",
+		className: 'place-list',
 
 		initialize: function(options){
 			this.views = [];

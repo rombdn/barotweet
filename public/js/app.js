@@ -1,31 +1,27 @@
-define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/navig' ],
-	function( $ , _ , Backbone , Bootstrap , NavigView){
+define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/content'],
+	function( $ , _ , Backbone , Bootstrap , ContentView){
 
-		function App() {
+		var App = Backbone.View.extend({
 
-			this.navigView = new NavigView();
-			//this.booksView = new BooksView();
+			el: $('body'),
 
-/*
-			this.navRegion = new Backbone.Marionette.Region({
-				el: "#nav"
-			});
+			events: {
+				'click #home': 'navigHome'
+			},
 
-			this.contentRegion = new Backbone.Marionette.Region({
-				el: "#content"
-			});*/
+			initialize: function() {
+				this.contentView = new ContentView();
+			},
 
-		}
+			render: function(){
+				$('#content').html(this.contentView.el);
+				this.contentView.render();
+			},
 
-		App.prototype = {
-			start: function(){
-				//this.contentRegion.show(this.profileView);
-
-				$('.container').append(this.navigView.el);
-				this.navigView.render();
+			navigHome: function() {
+				this.contentView.navigWall();
 			}
-		};
+		});
 
 		return App;
-
 });

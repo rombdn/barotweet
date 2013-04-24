@@ -13,7 +13,6 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/com.html'],
 			},
 
 			initialize: function() {
-				//this.user = this.model.findUser();
 				this.listenTo(this.model, 'all', this.render);
 			},
 

@@ -14,13 +14,7 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 			},
 
 			initialize: function(options) {
-				//if model is given
-				/*
-				if(this.model) {
-					this.pevent = this.model;
-				}
-				//or if place is given
-				else */if(options.place) {
+				if(options.place) {
 					this.pevent = new PEvent( { _parentPlaceId: options.place.get('_id') });
 					this.pevent.fetch();
 				}

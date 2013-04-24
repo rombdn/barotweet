@@ -1542,7 +1542,11 @@
     // by us to simply call the parent's constructor.
     if (protoProps && _.has(protoProps, 'constructor')) {
       child = protoProps.constructor;
-    } else {
+    } 
+    else if (_.has(protoProps, 'constructorName')) {
+      eval("child = function " + protoProps.constructorName + "() { return parent.apply(this, arguments); };");
+    }
+    else {
       child = function(){ return parent.apply(this, arguments); };
     }
 
