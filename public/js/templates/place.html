@@ -1,15 +1,17 @@
 
-	<div class="profile-col">
+	<div class="profile-col place-info">
 	   <img class="profile-img" src="<%= pic %>">
 	</div>
 
 	<div class="profile-col middle">
-	   <span class="label label-inverse"><%= name %></span><br>
+	   <span class="label label-inverse place-info"><%= name %></span><br>
 	   <i class="icon-time"></i>
 	   <%= open %>:00 - <%= close %>:00<br>
+	   <button class="btn btn-mini btn-link" id="btn-edit-place">Edit place</button>
 	</div>
 
-	<div class="profile-col-right"> 
+	<div class="profile-col-right place-drink"> 
 	   <i class="icon-glass"></i> = <%= beerPrice %> &euro;<br>
 	   <i class="icon-glass"></i> = <%= cocktailPrice %> &euro;<br>
+	   <button class="btn btn-mini btn-link" id="btn-edit-prices">Change prices</button>
 	</div>

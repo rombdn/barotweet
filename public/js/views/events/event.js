@@ -10,7 +10,7 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 			template: _.template( eventTpl ),
 
 			events: {
-				'click': 'clickEvent'
+				'click #btn-edit-event': 'clickEvent'
 			},
 
 			initialize: function(options) {

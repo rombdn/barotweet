@@ -10,6 +10,22 @@
             </div>
         </div>
 
+        <div class="control-group" id="control-group-address">
+            <label class="control-label" for="cocktail">Address</label>
+            <div class="controls">
+                <input id="address" type="text" class="input-medium" value="<%= address %>">
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-position">
+            <label class="control-label" for="cocktail">Position</label>
+            <div class="controls">
+                <input id="lat" type="text" class="input-small" value="<%= lat %>">
+                <input id="lon" type="text" class="input-small" value="<%= lon %>">
+                <button type="submit" class="btn" id="locate-user">Use my location</button>
+            </div>
+        </div>
+
         <div class="control-group" id="control-group-open">
             <label class="control-label" for="open">Open hour</label>
             <div class="controls">

@@ -1,0 +1,27 @@
+<form id="form-place" action="#">
+    <fieldset>
+        <legend>Add/Edit Place</legend>
+
+        <div class="control-group" id="control-group-beer">
+            <label class="control-label" for="beer">Beer price</label>
+            <div class="controls">
+                <input id="beerPrice" type="text" class="input-small" value="<%= beerPrice %>">
+                <span class="help-inline">Number between 0.5 and 20</span>
+            </div>
+        </div>
+
+        <div class="control-group" id="control-group-cocktail">
+            <label class="control-label" for="cocktail">Cocktail price</label>
+            <div class="controls">
+                <input id="cocktailPrice" type="text" class="input-small" value="<%= cocktailPrice %>">
+                <span class="help-inline">Number between 0.5 and 20</span>
+            </div>
+        </div>
+
+        <div>
+            <button type="submit" class="btn btn-primary" id="save">Save</button>
+            <button type="submit" class="btn" id="cancel">Cancel</button>
+        </div>
+
+    </fieldset>
+</form>

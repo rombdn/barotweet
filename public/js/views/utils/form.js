@@ -29,6 +29,7 @@ define(['jquery', 'underscore', 'backbone'],
 			},
 
 			render: function(){
+				console.log('rendering form');
 				this.$el.html( this.template( this.model.toJSON() ));
 				return this;
 			},
@@ -40,6 +41,9 @@ define(['jquery', 'underscore', 'backbone'],
 				console.log('FormView: check form');
 
 				this.$('.control-group').removeClass('error');
+				this.$('.control-group').removeClass('warning');
+				this.$('.control-group').removeClass('success');
+				this.$('.control-group').removeClass('info');
 
 				this.setValues();
 

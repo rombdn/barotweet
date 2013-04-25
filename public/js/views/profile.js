@@ -18,15 +18,19 @@ define(['jquery', 'underscore', 'backbone',
 				//map
 				this.mapView = new MapView();
 
+
 				//place
 				//if only id is given
 				if(options._id) {
 					this.place = new Place({'_id': options._id});
-					this.place.fetch();
+					this.place.fetch({
+						success: _.bind(this.initPostFetch, this)
+					});
 				}
 				//or if whole model is given
 				else if (options.place) {
 					this.place = options.place;
+					this.mapView.setPosition([this.place.get('lat'), this.place.get('lon')]);
 				}
 				else {
 					throw 'ERROR Profile: no place specified';
@@ -45,6 +49,12 @@ define(['jquery', 'underscore', 'backbone',
 				//events
 				this.listenTo(Backbone, 'com:click', this.destroyCom);
 				//Backbone.on('com:click', this.destroyCom, this);
+			},
+
+			initPostFetch: function() {
+				console.log('post fetch');
+				this.mapView.setPosition([this.place.get('lat'), this.place.get('lon')]);
+				this.mapView.render();
 			},
 
 			render: function(){
@@ -66,6 +76,7 @@ define(['jquery', 'underscore', 'backbone',
 				this.placeView.remove();
 				this.eventView.remove();
 				this.comsListView.remove();
+				this.mapView.remove();
 
 				Backbone.View.prototype.remove.call(this);
 			},

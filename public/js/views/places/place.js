@@ -9,7 +9,8 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/place.html'],
 			template: _.template( placeTpl ),
 
 			events: {
-				'click': 'clickPlace'
+				'click .place-info': 'clickPlace',
+				'click #btn-edit-place': 'editPlace'
 			},
 
 			initialize: function() {
@@ -18,6 +19,11 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/place.html'],
 
 			clickPlace: function() {
 				Backbone.trigger('place:click', this.model, this.model.get('_id'));
+			},
+
+
+			editPlace: function() {
+				Backbone.trigger('place:edit', this.model, this.model.get('_id'));
 			},
 
 			render: function(){

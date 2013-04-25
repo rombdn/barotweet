@@ -5,6 +5,7 @@ define(function(require, exports, module){
 	var _ = require('underscore');
 	var Backbone = require('backbone');
 	var PEvent = require('models/pevent');
+	var Map = require('models/map');
 
 	var Place = Backbone.Model.extend({
 
@@ -19,9 +20,34 @@ define(function(require, exports, module){
 			close: '2',
 			cocktailPrice: '7.5',
 			beerPrice: '5.5',
-			address: '12 rue de Charenton',
-			city: 'Paris'
+			address: -1,
+			city: 'Paris',
+			country: 'FR',
+			lat: 0,
+			lon: 0
 		},
+
+		initialize: function() {
+			this.map = new Map();
+		},
+/*
+		save: function(attr, options) {
+			
+			console.log('save go' + attr.lat + ' ' + attr.lon);
+
+			if(attr.lat == 0 || attr.lon == 0) {
+				this.map.geoCode(attr.address, 
+					_.bind(function(data) {
+						attr.lat = data[0].lat;
+						attr.lon = data[0].lon;
+						console.log(attr);
+						//Backbone.Model.prototype.save.call(this, attr, options);
+					}, this),
+					function() { console.log('Error: geocode failed'); }
+				);
+			}
+		},
+*/
 
 		validate: function(attr) {
 			var errors = [];
@@ -82,6 +108,14 @@ define(function(require, exports, module){
 			if(attr.cocktailPrice <= 0.5 || attr.cocktailPrice > 20) {
 				errors.push({name: 'cocktail', message: "cocktail price must be a number between 0.5 and 20"});
 			}
+
+
+			//===
+
+			if(attr.lat == 0 || attr.lon == 0) {
+				errors.push({name: 'position', message: "position cannot be 0"});
+			}
+
 
 			return errors.length > 0 ? errors : false;
 		}

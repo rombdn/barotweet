@@ -30,9 +30,11 @@ define(['jquery', 'underscore', 'backbone',
 				Backbone.on('com:save', this.navigProfile, this);
 				Backbone.on('com:cancel', this.navigProfile, this);
 				
-				Backbone.on('place:click', this.eClickedPlace, this);
+				Backbone.on('place:click', this.navigProfile, this);
+				Backbone.on('place:edit', this.eClickedPlace, this);
 				Backbone.on('place:save', this.navigProfile, this);
-				Backbone.on('place:cancel', this.navigProfile, this);
+				Backbone.on('place:cancel', this.navigWall, this);
+				Backbone.on('place-list:add', this.navigFormPlace, this);
 			},
 
 
@@ -43,7 +45,8 @@ define(['jquery', 'underscore', 'backbone',
 			},
 
 			navigProfile: function(model, placeId) {
-				this.render(new ProfileView({_id: placeId}));
+				if(!(this.currentView instanceof ProfileView))
+					this.render(new ProfileView({_id: placeId}));
 			},
 
 			navigFormEvent: function(pevent) {
@@ -54,13 +57,12 @@ define(['jquery', 'underscore', 'backbone',
 				this.render(new ComFormView({model: com}));
 			},
 
+			navigFormPlace: function(place) {
+				this.render(new PlaceFormView({model: place}));
+			},
+
 			eClickedPlace: function(place) {
-				if(this.currentView instanceof WallView) {
-					this.render(new ProfileView({place: place}));
-				}
-				else {
-					this.render(new PlaceFormView({model: place}));
-				}
+				this.render(new PlaceFormView({model: place}));
 			},
 
 

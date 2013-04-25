@@ -1,11 +1,16 @@
-define([ 'jquery', 'underscore', 'backbone', 'collections/places', 'views/places/place' ], 
+define([ 'jquery', 'underscore', 'backbone', 'models/place', 'collections/places', 'views/places/place', 'text!templates/place-list.html' ], 
 
-	function( $ , _ , Backbone , PlaceCollection, ElementView){
+	function( $ , _ , Backbone , Place, PlaceCollection, ElementView, Tpl){
 
 	var ListView = Backbone.View.extend({
 
 		tagName: "div",
 		className: 'place-list',
+		template: _.template( Tpl ),
+
+		events: {
+			'click #button-add-place': 'clickAdd'
+		},
 
 		initialize: function(options){
 			this.views = [];
@@ -36,11 +41,21 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/places', 'views/places
 		},
 
 		render: function(){
+			this.$el.html('');
+
 			_.each(this.views, function(view){
 				this.$el.append( view.el );
 				view.render();
 			}, this);
 
+			this.$el.append(this.template());
+		},
+
+		clickAdd: function() {
+			var place = new Place();
+			this.placeCollection.add(place);
+
+			Backbone.trigger('place-list:add', place);
 		}
 
 	});

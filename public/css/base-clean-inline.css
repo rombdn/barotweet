@@ -88,6 +88,7 @@ body {
    top: 0;
    right: 0;
    border: 0px #000 solid;
+   text-align: right;
 }
 
 
@@ -132,6 +133,15 @@ hr {
     position: absolute;
     /*top: 0;*/
     right: 10px;
+    /*float: right;*/
+    text-align: right;
+}
+
+.event-modify {
+    position: absolute;
+    /*top: 0;*/
+    right: 10px;
+    bottom: 10px;
     /*float: right;*/
 }
 

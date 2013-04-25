@@ -1,9 +1,13 @@
 <div class="event-cost">
-    <i class="icon-tag"></i> = <%= price %> &euro;
+	<i class="icon-heart"></i>
+	<i class="icon-heart"></i>
+	<i class="icon-heart"></i>
+	<i class="icon-heart"></i><br>
+	<button class="btn btn-mini btn-link" id="btn-vote-event">Vote</button>
 </div>
-<strong><%= name %></strong><br>
-<span class="label label-info"><%= label %></span>
-<i class="icon-star"></i>
-<i class="icon-star"></i>
-<i class="icon-star"></i>
-<i class="icon-star-empty"></i>
+<div id="event-info">
+	<span class="label label-info"><%= name %></span><br>
+	<i class="icon-tag"></i> Prix : <strong><%= price %> &euro;</strong><br>
+	<i class="icon-music"></i> Son : <strong><%= label %></strong><br>
+	<button class="btn btn-mini btn-link" id="btn-edit-event">Edit event</button>
+</div>
