@@ -54,6 +54,15 @@ body {
 }
 
 
+.map-container {
+  position: relative;
+}
+
+#map-info {
+  display: none;
+}
+
+
 /* profile */
 .profile {
    position: relative;
@@ -150,8 +159,13 @@ hr {
 /* comment */
 
 .comment-button {
-    text-align: center;
+    text-align: right;
     margin-bottom: 10px;
+}
+
+.com-img {
+  width: 30px;
+  height: 30px;
 }
 
 

@@ -16,6 +16,7 @@ define(['jquery', 'underscore', 'backbone',
 
 			initialize: function(options){
 				//map
+				this.mapPositioned = false;
 				this.mapView = new MapView();
 
 
@@ -31,6 +32,7 @@ define(['jquery', 'underscore', 'backbone',
 				else if (options.place) {
 					this.place = options.place;
 					this.mapView.setPosition([this.place.get('lat'), this.place.get('lon')]);
+					this.mapPositioned = true;
 				}
 				else {
 					throw 'ERROR Profile: no place specified';
@@ -54,6 +56,7 @@ define(['jquery', 'underscore', 'backbone',
 			initPostFetch: function() {
 				console.log('post fetch');
 				this.mapView.setPosition([this.place.get('lat'), this.place.get('lon')]);
+				this.mapPositioned = true;
 				this.mapView.render();
 			},
 
@@ -63,7 +66,9 @@ define(['jquery', 'underscore', 'backbone',
 				this.$el.append( this.eventView.el );
 				this.$el.append( this.comsListView.el );
 
-				this.mapView.render();
+				if(this.mapPositioned)
+					this.mapView.render();
+				
 				this.placeView.render();
 				this.eventView.render();
 				this.comsListView.render();				

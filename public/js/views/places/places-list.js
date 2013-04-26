@@ -14,15 +14,52 @@ define([ 'jquery', 'underscore', 'backbone', 'models/place', 'collections/places
 
 		initialize: function(options){
 			this.views = [];
+			this.callbacks = [];
+			this._fetched = false;
 
-			this.placeCollection = new PlaceCollection();
-			this.placeCollection.fetch();
+			if(!this.model) {
+				this.placeCollection = new PlaceCollection();
+				this.placeCollection.fetch();
+			}
+			else {
+				this.placeCollection = this.model;
+			}
 
 			this.listenTo(this.placeCollection, 'all', this.populateViews);
+			this.listenTo(this.placeCollection, 'sync', this.doCallbacks);
+		},
+
+		getCollectionCoords: function(callback) {
+			if(this._fetched) {
+				this._getCollectionCoords();
+			}
+			else {
+				this.callbacks.push([this._getCollectionCoords, callback]);
+			}
+		},
+
+		_getCollectionCoords: function(callback) {
+			var coords = this.placeCollection.models.map(function(model) {
+				return [model.get('lat'), model.get('lon')];
+			});
+
+			callback(coords);
+		},
+
+		doCallbacks: function() {
+			for(var i = 0; i<this.callbacks.length; i++) {
+				var func = this.callbacks[i][0];
+				var args = this.callbacks[i][1];
+
+				func.call(this, args);
+			}
+
+			this.callbacks.length = 0;
+
+			this._fetched = true;
 		},
 
 		populateViews: function(){
-
 			//attached views allready present
 			if(this.views.length > 0) {
 				_.each(this.views, function(view){

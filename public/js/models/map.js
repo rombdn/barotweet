@@ -5,7 +5,6 @@ define(function(require, exports, module){
 	var _ = require('underscore');
 	var Backbone = require('backbone');
 	var Leaflet = require('leaflet');
-	//var UserCollection = require('collections/users');
 
 	var Map = Backbone.Model.extend({
 
@@ -16,11 +15,11 @@ define(function(require, exports, module){
 
 
 		initialize: function() {
-
+			this.zoom = 14;
 		},
 
-		setLeafletMap: function(leafletMap) {
-			this.leafletMap = leafletMap;
+		setLeafletMap: function(htmlelement) {
+			this.leafletMap = L.map(htmlelement);
 
 			this.layer = L.tileLayer(
 				'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -30,22 +29,34 @@ define(function(require, exports, module){
 			);
 
 			this.leafletMap.addLayer(this.layer);
+
+			//events
+			this.leafletMap.on('locationfound', this.locFound);
+			this.leafletMap.on('locationerror', this.locError);
+			this.layer.on('loading', function() { Backbone.trigger('map:loading'); });
+			this.layer.on('load', function() { Backbone.trigger('map:loaded'); });
 		},
 
 		locate: function() {
-			this.leafletMap.locate({setView: true, maxZoom: 14});
+			this.leafletMap.locate({setView: false, maxZoom: this.zoom, timeout: 2000});
+			Backbone.trigger('map:locating');
+		},
+
+		locFound: function(data) {
+			this.setView(data.latlng.lat, data.latlng.lng);
+			Backbone.trigger('map:located', data);
+		},
+
+		locError: function(data) {
+			console.log(data);
+			Backbone.trigger('map:locatefail', data);
 		},
 
 		gotoAddress: function(address) {
 			//TODO: check if address already geocoded
-			if(true) {
-				this.setView(48.8371922, 2.3915462);
-			}
-			else {
-				this.geoCode(address, _.bind(function(data) {
-					this.setView(data[0].lat, data[0].lon);
-				}, this));
-			}
+			this.geoCode(address, _.bind(function(data) {
+				this.setView(data[0].lat, data[0].lon);
+			}, this));
 		},
 
 		gotoPosition: function(position) {
@@ -63,7 +74,11 @@ define(function(require, exports, module){
 		},
 
 		setView: function(lat, lon) {
-			this.leafletMap.setView([lat, lon], 15);
+			this.leafletMap.setView([lat, lon], this.zoom);
+			L.marker( [lat, lon] ).addTo(this.leafletMap);
+		},
+
+		setMarker: function(lat, lon) {
 			L.marker( [lat, lon] ).addTo(this.leafletMap);
 		},
 

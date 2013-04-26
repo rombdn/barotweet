@@ -23,6 +23,9 @@ var places = new Places(app, db, delay);
 var Events = require('./server/routes/events');
 var events = new Events(app, db, delay);
 
+var Coms = require('./server/routes/coms');
+var coms = new Coms(app, db, delay);
+
 
 db.open(function(err, db) {
 	if(!err) {
@@ -63,7 +66,7 @@ app.get('/events/:id', delay, function(req, res) {
 
 //network simulation
 function delay(req, res, next) {
-	setTimeout(next, 200);
+	setTimeout(next, 500);
 }
 
 

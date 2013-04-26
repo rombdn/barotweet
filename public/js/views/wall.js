@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'views/places/places-list'],
+define(['jquery', 'underscore', 'backbone', 'views/places/places-list', 'views/maps/map'],
 
-	function( $ , _ , Backbone , PlaceListView ){
+	function( $ , _ , Backbone , PlaceListView, MapView ){
 
 		var WallView = Backbone.View.extend({
 
@@ -11,12 +11,24 @@ define(['jquery', 'underscore', 'backbone', 'views/places/places-list'],
 			initialize: function(){
 				console.log("creating Wall View");
 
+				this.mapView = new MapView();
+				this.mapView.setPosition([48.8582609, 2.29450008726263]);
+
 				this.placeListView = new PlaceListView();
+
+				this.placeListView.getCollectionCoords(
+					_.bind(this.mapView.setMarkers, this.mapView)
+				);
 			},
 
 			render: function(view){
 
+				this.$el.append( this.mapView.el );
 				this.$el.append( this.placeListView.el );
+
+				this.mapView.render();
+				this.mapView.locateUser();
+
 				this.placeListView.render();
 
 				return this;

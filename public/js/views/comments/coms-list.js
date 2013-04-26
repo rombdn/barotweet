@@ -44,13 +44,14 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 		},
 
 		render: function(){
-
-			this.$el.html( this.template( { parentName: this.place.get('name') }) );
-
+			this.$el.html('');
+			
 			_.each(this.views, function(view){
 				this.$el.append( view.el );
 				view.render();
 			}, this);
+
+			this.$el.append( this.template( { parentName: this.place.get('name') }) );
 
 		},
 

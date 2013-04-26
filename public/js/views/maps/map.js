@@ -4,12 +4,9 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 
 		var MapView = Backbone.View.extend({
 
-			className: 'row-fluid',
+			className: 'row-fluid map-container',
 			template: _.template(Tpl),
 
-			events: {
-				'click': 'clickMap'
-			},
 
 			initialize: function(options) {
 				this.map = new Map();
@@ -19,29 +16,51 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 					if(options.address) this.address = options.address;
 				}
 
-				this.listenTo(Backbone, 'menu:locate', this.locate);
+				this.listenTo(Backbone, 'menu:locate', _.bind(this.map.locate, this.map));
+
+				//map events
+				//used to display infos
+				this.listenTo(Backbone, 'map:loading', function() { console.log('***MAP:LOADING'); });
+				this.listenTo(Backbone, 'map:loaded', function() { console.log('***MAP:LOADED'); });
+				this.listenTo(Backbone, 'map:locating', function() { console.log('***MAP:LOCATING'); });
+				this.listenTo(Backbone, 'map:located', function() { console.log('***MAP:LOCATED'); });
+				this.listenTo(Backbone, 'map:locatefail', this.showErrorLoc);
 			},
 
 			setPosition: function(position) {
 				this.position = position;
 			},
 
-			clickMap: function() {
-				console.log('map clicked');
+			locateUser: function() {
+				this.map.locate();
 			},
 
+			setMarkers: function(coords) {
+				this.markers = coords;
 
-			locate: function() {
-				this.map.locate();
+				if(this.rendered) {
+					this._setMarkers();
+				}
+			},
+
+			_setMarkers: function() {
+				if(this.markers) {
+					for(var i = 0; i<this.markers.length; i++) {
+						this.map.setMarker(this.markers[i][0], this.markers[i][1]);
+					}
+				}
 			},
 
 			render: function(){
 				console.log('render map');
 				this.$el.html( this.template() );
-				this.leafletMap = L.map('map');
+				
+				//leaflet map must have a rendered map div
+				//to be initialized
+				//so we do it in render...
+				this.map.setLeafletMap('map');
 
-				this.map.setLeafletMap(this.leafletMap);
-
+				//render a position, an address or user location
 				if(this.position) {
 					this.map.gotoPosition(this.position);
 				}
@@ -49,27 +68,28 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 					this.map.gotoAddress(this.address);
 				}
 
+				this._setMarkers();
+
+				this.rendered = true;
+
 				return this;
+			},
+
+			showErrorLoc: function() {
+				$('#map-info').hide();
+				$('#map-info-text').html('<strong>Erreur :</strong> localisation impossible');
+				$('#map-info').show();
+			},
+
+			hideInfo: function() {
+				console.log('loaded');
+				$('#map-info').hide();
 			},
 
 			remove: function() {
 				this.map.removeMap();
 				Backbone.View.prototype.remove.call(this);
 			}
-/*
-			hideMap: function() {
-				console.log('hide map');
-				this.$el.children('#map').hide();
-				this.$el.append('<div id="map-load">Loading...</div>');
-			},
-
-			showMap: function() {
-				console.log('show map');
-				this.$el.children('#map-load').remove();
-				this.$el.children('#map').show();
-				this.leafletMap.invalidateSize();
-			}
-*/
 		});
 
 

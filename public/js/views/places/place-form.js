@@ -25,6 +25,8 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'text!templates/
 					if(e.target.id !== "address")
 						FormView.prototype.checkForm.call(this);
 				}
+				else
+					FormView.prototype.checkForm.call(this);
 			},
 
 			useUserLocation: function() {
