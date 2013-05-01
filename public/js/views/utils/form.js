@@ -91,7 +91,7 @@ define(['jquery', 'underscore', 'backbone'],
 
 			clickSave: function(e) {
 				if(e !== undefined) e.preventDefault();
-
+				console.log('saving');
 				//just to be sure the values are set
 				this.checkForm();
 

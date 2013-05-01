@@ -48,18 +48,18 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'text!templates/
 			positionFail: function(error) {
 				console.log('position fail');
 				console.log(error);
-				$('#control-group-position').addClass('warning');			
+				$('#control-group-position').addClass('warning');
 			},
 
 			geoCode: function() {
-				this.map.geoCode($('#address').val(), 
+				this.map.geoCode($('#address').val(),
 					_.bind(function(data) {
 						$('#lat').val(data[0].lat);
 						$('#lon').val(data[0].lon);
 						$('#control-group-position').addClass('success');
 					}, this),
 					function() { console.log('Error: geocode failed'); }
-				);				
+				);
 			},
 
 			eventSaved: function() {
