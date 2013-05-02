@@ -40,7 +40,12 @@ define([ 'jquery', 'underscore', 'backbone', 'models/place', 'collections/places
 
 		_getCollectionCoords: function(callback) {
 			var coords = this.placeCollection.models.map(function(model) {
-				return [model.get('lat'), model.get('lon')];
+				return {
+					lat: model.get('lat'),
+					lon: model.get('lon'),
+					icon: 'place',
+					infos: model.get('name')
+				};
 			});
 
 			callback(coords);

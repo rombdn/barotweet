@@ -45,7 +45,7 @@ define(function(require, exports, module){
 
 		locFound: function(data) {
 			this.setView(data.latlng.lat, data.latlng.lng);
-			this.setMarkerUser(data.latlng.lat, data.latlng.lng);
+			this.setMarkerUser(data.latlng.lat, data.latlng.lng, 'user', "it's me!");
 			Backbone.trigger('map:located', data);
 		},
 
@@ -57,12 +57,12 @@ define(function(require, exports, module){
 		gotoAddress: function(address) {
 			//TODO: check if address already geocoded
 			this.geoCode(address, _.bind(function(data) {
-				this.setView(data[0].lat, data[0].lon, true);
+				this.setView(data[0].lat, data[0].lon, false);
 			}, this));
 		},
 
 		gotoPosition: function(position) {
-			this.setView(position[0], position[1], true);
+			this.setView(position[0], position[1], false);
 		},
 
 		geoCode: function(address, callback) {
@@ -84,15 +84,14 @@ define(function(require, exports, module){
 			}
 		},
 
-		setMarker: function(lat, lon, icon) {
-			if(icon)
-				L.marker( [lat, lon], {icon: Icons[icon]} ).addTo(this.leafletMap);
-			else
-				L.marker( [lat, lon] ).addTo(this.leafletMap);
-		},
+		setMarker: function(lat, lon, icon, infos) {
+			var marker = L.marker( [lat, lon] );
 
-		setMarkerUser: function(lat, lon) {
-			this.setMarker(lat, lon, 'user');
+			if(icon) marker.setIcon(Icons[icon]);
+
+			if(infos) marker.bindPopup(infos);
+
+			marker.addTo(this.leafletMap);
 		},
 
 		removeMap: function() {

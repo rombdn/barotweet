@@ -8,7 +8,7 @@ define(['leaflet'],
 			    shadowSize:   [50, 64],
 			    iconAnchor:   [0, 0],
 			    shadowAnchor: [4, 62],
-			    popupAnchor:  [-3, -76]
+			    popupAnchor:  [25, 10]
     		}
 		});
 

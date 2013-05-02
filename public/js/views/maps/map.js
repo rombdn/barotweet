@@ -46,7 +46,8 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			_setMarkers: function() {
 				if(this.markers) {
 					for(var i = 0; i<this.markers.length; i++) {
-						this.map.setMarker(this.markers[i][0], this.markers[i][1]);
+						console.log(this.markers[i]);
+						this.map.setMarker(this.markers[i].lat, this.markers[i].lon, 'user', this.markers[i].infos);
 					}
 				}
 			},
