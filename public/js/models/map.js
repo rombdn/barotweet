@@ -16,7 +16,7 @@ define(function(require, exports, module){
 
 
 		initialize: function() {
-			this.zoom = 13;
+			this.zoom = 12;
 		},
 
 		setLeafletMap: function(htmlelement) {
@@ -45,7 +45,7 @@ define(function(require, exports, module){
 
 		locFound: function(data) {
 			this.setView(data.latlng.lat, data.latlng.lng);
-			this.setMarkerUser(data.latlng.lat, data.latlng.lng, 'user', "it's me!");
+			this.setMarker(data.latlng.lat, data.latlng.lng, 'user', "it's me!");
 			Backbone.trigger('map:located', data);
 		},
 

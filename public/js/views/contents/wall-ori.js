@@ -12,7 +12,7 @@ define(['jquery', 'underscore', 'backbone', 'views/places/places-list', 'views/m
 				console.log("creating Wall View");
 
 				this.mapView = new MapView();
-				this.mapView.setPosition([48.8582609, 2.29450008726263]);
+				this.mapView.setPosition([48.85293755, 2.35005223818182]);
 
 				this.placeListView = new PlaceListView();
 

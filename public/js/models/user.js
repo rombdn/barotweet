@@ -4,27 +4,35 @@ define(function(require, exports, module){
 
 	var _ = require('underscore');
 	var Backbone = require('backbone');
-	var User = require('models/user');
-	//var UserCollection = require('collections/users');
 
-	var Com = Backbone.Model.extend({
+	var Model = Backbone.Model.extend({
 
 		idAttribute: '_id',
+
+		urlRoot: '/users',
 		
 		defaults: {
-			_userId: -1,
-			_parentPlaceId: -1,
-			text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
+			name: ''
 		},
 
 		validate: function(attr) {
 			var errors = [];
 
 			return errors.length > 0 ? errors : false;
-		}
+		}/*,
+
+		url: function() {
+			if(this.isNew() && this.get('name').length > 0) {
+				var url = this.urlRoot + '?name=' + this.get('name');
+				console.log(url);
+				return url;
+			}
+			
+			return this.urlRoot;
+		}*/
 
 	});
 
-	return Com;
+	return Model;
 
 });

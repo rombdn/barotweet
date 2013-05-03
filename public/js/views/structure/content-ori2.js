@@ -1,10 +1,10 @@
 define(['jquery', 'underscore', 'backbone', 
-	'views/contents/profile', 
+	'views/profile', 
 	'views/places/place-form', 
 	'views/events/event-form', 
 	'views/comments/com-form', 
-	'views/contents/wall',
-	'views/contents/login',
+	'views/wall',
+	'views/login',
 	'utils/auth'],
 
 	function( $ , _ , Backbone , ProfileView, PlaceFormView, EventFormView, ComFormView, WallView, LoginView, Auth ){
@@ -39,7 +39,7 @@ define(['jquery', 'underscore', 'backbone',
 				Backbone.on('place:cancel', this.navigWall, this);
 				Backbone.on('place-list:add', this.navigFormPlace, this);
 
-				Backbone.on('auth:logged', this.render, this);
+				Backbone.on('logged', this.render, this);
 			},
 
 

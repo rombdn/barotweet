@@ -1,6 +1,6 @@
-define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments/com', 'models/com', 'text!templates/coms-list.html' ], 
+define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments/com', 'models/com', 'text!templates/coms-list.html', 'utils/auth' ], 
 
-	function( $ , _ , Backbone , ComsCollection , ComView, Com, ComListTpl ){
+	function( $ , _ , Backbone , ComsCollection , ComView, Com, ComListTpl, Auth ){
 
 	var ComsListView = Backbone.View.extend({
 
@@ -56,7 +56,7 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 		},
 
 		clickAdd: function() {
-			var com = new Com( { _parentPlaceId: this.place.get('_id') });
+			var com = new Com( { _parentPlaceId: this.place.get('_id'), _userId: Auth.getUserId()});
 			this.comsCollection.add(com);
 
 			Backbone.trigger('coms:add', com);
