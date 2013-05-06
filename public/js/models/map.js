@@ -16,7 +16,7 @@ define(function(require, exports, module){
 
 
 		initialize: function() {
-			this.zoom = 13;
+			this.zoom = 12;
 		},
 
 		setLeafletMap: function(htmlelement) {

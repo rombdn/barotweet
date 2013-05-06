@@ -8,7 +8,7 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'models/com', 't
 			template: _.template( Tpl ),
 
 
-			inputs: [ 'text', '_parentPlaceId' ],
+			inputs: [ 'text', '_parentPlaceId', '_userId' ],
 
 			eventSaved: function() {
 				Backbone.trigger('com:save', this.model, this.model.get('_parentPlaceId'));

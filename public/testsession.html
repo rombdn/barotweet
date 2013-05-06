@@ -1,0 +1,32 @@
+<html>
+<body>
+<form>
+<input name="name" id="name" placeholder="type name"></input>
+<button id="submit">Login</button>
+</form>
+
+<script src="lib/jquery-min.js"></script>
+
+<script>
+$('#submit').on('click', function(e) {
+	//console.log(e);
+	e.preventDefault();
+	//e.stopPropagation();
+	console.log($('#name').val());
+	
+	$.ajax({
+		type: 'POST',
+		url: '/login',
+		data: {
+			name: $('#name').val()
+		},
+		success: function(data, status, jqXHR) { console.log('SUCESS'); },
+		error: function(jqXHR, status, error) { console.log('ERROR'); }
+	})
+
+	//return false;
+});
+</script>
+
+</body>
+</html>

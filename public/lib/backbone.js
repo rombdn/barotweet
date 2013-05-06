@@ -456,6 +456,7 @@
         (attrs = {})[key] = val;
       }
 
+
       // If we're not waiting and attributes exist, save acts as `set(attr).save(null, opts)`.
       if (attrs && (!options || !options.wait) && !this.set(attrs, options)) return false;
 
