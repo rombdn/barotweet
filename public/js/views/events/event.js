@@ -32,6 +32,7 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 				}
 				else {
 					this.$el.html( this.template(this.pevent.toJSON()) );
+					$('#btn-vote-event').popover();
 				}
 
 				return this;
@@ -40,7 +41,6 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 			clickEvent: function() {
 				Backbone.trigger('pevent:click', this.pevent);
 			}
-
 		});
 
 

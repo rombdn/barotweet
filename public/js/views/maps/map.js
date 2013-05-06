@@ -55,7 +55,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			render: function(){
 				console.log('render map');
 				this.$el.html( this.template() );
-				
+
 				//leaflet map must have a rendered map div
 				//to be initialized
 				//so we do it in render...
