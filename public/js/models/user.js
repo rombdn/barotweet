@@ -19,7 +19,9 @@ define(function(require, exports, module){
 			var errors = [];
 
 			return errors.length > 0 ? errors : false;
-		}/*,
+		},
+
+		/*,
 
 		url: function() {
 			if(this.isNew() && this.get('name').length > 0) {

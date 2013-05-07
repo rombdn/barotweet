@@ -26,15 +26,15 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 			},
 
 			findUser: function() {
-				console.log('finding user associated');
+				console.log('finding user associated with ' + this.model.get('_userId'));
 				this.user.set({_id: this.model.get('_userId')});
-				this.user.fetch();
+				this.user.fetch({success: _.bind(function() { this.userFetched = true; }, this)});
 			},
 
 			render: function(){
 				console.log('rendering');
 
-				if(!this.user.isNew() /* DON'T WORK cause _id is always OK */) {
+				if(this.userFetched) {
 					console.log('rendering with user' + this.user.get('name'));
 					this.$el.html( this.template( _.extend(this.model.toJSON(), {name: this.user.get('name')} ) ));
 				}
