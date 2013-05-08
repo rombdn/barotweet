@@ -30,6 +30,7 @@ define(function(require, exports, module){
 			name: "Unnamed event",
 			price: '15',
 			label: 'rock',
+			hearts: {number: 0, users: []},
 			_parentPlaceId: -1
 		},
 

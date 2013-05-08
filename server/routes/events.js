@@ -22,6 +22,8 @@ events.prototype.setRoutes = function(app, middleware) {
 	app.post('/events', mw, this.add);
 	app.put('/events/:id', mw, this.update);
 	app.delete('/events/:id', mw, this.remove);
+
+	app.post('/events/vote/:id', mw, this.vote);
 };
 
 
@@ -57,6 +59,29 @@ events.prototype.findById = function(req, res) {
 			}
 			else {
 				res.send(items);				
+			}
+		});
+	});
+};
+
+
+events.prototype.vote = function(req, res) {
+	var id = req.params.id;
+	var db = this.db;
+
+	console.log('POST /events/vote/' + id);
+
+	db.collection('events2', function(err, collection) {
+		collection.findOne( {'_id': mongo.BSONPure.ObjectID(id)}, function(err, item) {
+			if(err) {
+				console.log('!ERROR finding event id ' + id + ': ' + err);
+			}
+			else {
+				/*
+				if(user._id in item.hearts.users;
+				*/
+				console.log('Adding a heart');
+				res.send(item);				
 			}
 		});
 	});

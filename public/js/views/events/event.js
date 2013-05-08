@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events', 'text!templates/event.html'],
+define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events', 'text!templates/event.html', 'utils/auth'],
 
-	function( $ , _ , Backbone , PEvent, PEventCollection, eventTpl ){
+	function( $ , _ , Backbone , PEvent, PEventCollection, eventTpl, Auth ){
 
 		var EventView = Backbone.View.extend({
 
@@ -10,7 +10,8 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 			template: _.template( eventTpl ),
 
 			events: {
-				'click #btn-edit-event': 'clickEvent'
+				'click #btn-edit-event': 'clickEvent',
+				'click #btn-vote-event': 'voteEvent'
 			},
 
 			initialize: function(options) {
@@ -32,7 +33,10 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 				}
 				else {
 					this.$el.html( this.template(this.pevent.toJSON()) );
-					$('#btn-vote-event').popover();
+					$('#btn-vote-event').popover({
+						html: true,
+						content: '<a href="#" id="vote-1"><i class="icon-heart"></i></a>'
+					});
 				}
 
 				return this;
@@ -40,6 +44,21 @@ define(['jquery', 'underscore', 'backbone', 'models/pevent', 'collections/events
 
 			clickEvent: function() {
 				Backbone.trigger('pevent:click', this.pevent);
+			},
+
+			voteEvent: function() {
+				var hearts = this.pevent.get('hearts').number;
+				var users = this.pevent.get('hearts').users;
+				
+				hearts += 1;
+				users.push(Auth.getUserId());
+
+				console.log(hearts);
+				console.log(users);
+
+				this.pevent.set('hearts', {number: hearts, users: users});
+				this.pevent.save();
+				console.log(this.pevent.get('hearts'));
 			}
 		});
 

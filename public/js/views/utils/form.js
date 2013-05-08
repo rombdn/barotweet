@@ -90,6 +90,7 @@ define(['jquery', 'underscore', 'backbone'],
 			},
 
 			clickSave: function(e) {
+				console.log('clickSave');
 				if(e !== undefined) e.preventDefault();
 				console.log('saving');
 				//just to be sure the values are set

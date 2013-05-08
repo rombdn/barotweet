@@ -65,6 +65,14 @@ define(['backbone', 'models/user'],
 				}
 
 				return -1;
+			},
+
+			getUserName: function() {
+				if(this.user) {
+					return this.user.get('_id');
+				}
+
+				return -1;
 			}
 		};
 
