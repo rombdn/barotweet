@@ -90,7 +90,6 @@ define(['jquery', 'underscore', 'backbone'],
 			},
 
 			clickSave: function(e) {
-				console.log('clickSave');
 				if(e !== undefined) e.preventDefault();
 				console.log('saving');
 				//just to be sure the values are set
@@ -111,10 +110,12 @@ define(['jquery', 'underscore', 'backbone'],
 
 			},
 
-			clickCancel: function() { 
+			clickCancel: function(e) { 
+				e.preventDefault();
 				this.eventCanceled(); 
 			},
-			clickDelete: function() { 
+			clickDelete: function(e) { 
+				e.preventDefault();
 				this.eventDeleted();
 			}
 
