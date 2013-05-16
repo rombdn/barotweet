@@ -168,7 +168,9 @@ hr {
   height: 30px;
 }
 
-
+.com-right-container {
+  float: right;
+}
 
 
 /* icons */

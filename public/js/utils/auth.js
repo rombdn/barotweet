@@ -5,11 +5,12 @@ define(['backbone', 'models/user'],
 			login: function(userName) {
 				var user = new User({name: userName});
 				Backbone.trigger('auth:login');
+				
 				user.fetch({
 					url: '/users?name=' + user.get('name'),
 					success: function(model, resp, opts) {
 						console.log('user trouve');
-						window.user = user.get('name');
+						//window.user = user.get('name');
 						Backbone.trigger('auth:logged');
 					},
 					error: function(model, resp, opts) { 
@@ -19,7 +20,7 @@ define(['backbone', 'models/user'],
 
 						user.save(null, {
 							success: function() {
-								window.user = user.get('name');
+								//window.user = user.get('name');
 								Backbone.trigger('auth:logged');
 							},
 							error: function() {
@@ -29,10 +30,11 @@ define(['backbone', 'models/user'],
 				
 					}
 				});
+				
 
 				this.user = user;
 
-
+				//console.log('********** LOGIN - this.user.get("id"):' + this.user.get('_id'));
 
 				/*
 				$.ajax({
@@ -48,11 +50,17 @@ define(['backbone', 'models/user'],
 			},
 
 			logout: function() {
-				window.user = '';
+				$.ajax({
+					type: 'GET',
+					url: '/logout',
+					success: function(data, status, jqXHR) { console.log('LOGOUT OK'); },
+					error: function(jqXHR, status, error) { console.log('LOGOUT KO'); }
+				});					
+				delete this.user;
 			},
 
 			isLogged: function() {
-				if(window.user != '') {
+				if(this.getUserId()) {
 					return true;
 				}
 
@@ -64,15 +72,15 @@ define(['backbone', 'models/user'],
 					return this.user.get('_id');
 				}
 
-				return -1;
+				return false;
 			},
 
 			getUserName: function() {
 				if(this.user) {
-					return this.user.get('_id');
+					return this.user.get('name');
 				}
 
-				return -1;
+				return false;
 			}
 		};
 

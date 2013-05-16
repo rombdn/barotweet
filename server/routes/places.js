@@ -1,8 +1,10 @@
 var mongo = require('mongodb');
+var BackboneModel = require('models/place.js');
 
 
 var Places = function(app, db, middleware) {
 	this.db = db;
+	this.backboneModel = new BackboneModel();
 
 	this.findAll = this.findAll.bind(this);
 	this.findById = this.findById.bind(this);
@@ -70,6 +72,8 @@ Places.prototype.add = function(req, res) {
 	console.log('POST /places');
 	console.log(JSON.stringify(place));
 
+	if(!this.validate(place)) return false;
+
 	this.db.collection('places2', function(err, collection) {
 		collection.insert( place, {safe: true}, function(err, result) {
 			if(err) {
@@ -87,6 +91,8 @@ Places.prototype.add = function(req, res) {
 Places.prototype.update = function(req, res) {
 	var id = req.params.id;
 	var place = req.body;
+
+	if(!this.validate(place)) return false;
 
 	//backbone send _id as a string
 	//so update ObjectID -> String fails
@@ -124,6 +130,22 @@ Places.prototype.remove = function(req, res) {
 			}
 		});
 	});
+};
+
+
+
+Places.prototype.validate = function(attr) {
+	//validation with backbone model
+	var validErrors = this.backboneModel.validate(attr);
+
+	if( validErrors != false) {
+		console.log('model not valid');
+		res.send(400);
+
+		return false;
+	}
+
+	return true;
 };
 
 

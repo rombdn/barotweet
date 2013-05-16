@@ -34,6 +34,20 @@ define(function(require, exports, module){
 			_parentPlaceId: -1
 		},
 
+		vote: function() {
+			this.fetch({
+				url: '/events/vote/' + this.get('_id')
+			});
+			/*
+			$.ajax({
+				type: 'POST',
+				url: '/events/vote/' + this.get('_id'),
+				success: function(data, status, jqXHR) { console.log('Vote for event = SUCCESS'); },
+				error: function(jqXHR, status, error) { console.log('Vote for event = FAIL'); }
+			});
+			*/
+		},
+
 
 		//fetch augmentation
 		//setting this.fetched = true after fetch

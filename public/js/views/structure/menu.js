@@ -15,7 +15,7 @@ define(['jquery', 'underscore', 'backbone',
 
 			render: function() {
 				if(Auth.isLogged())
-					this.$el.html(this.template({user: window.user}));
+					this.$el.html(this.template({user: Auth.getUserName()}));
 				else
 					this.$el.html(this.template({user: 'not identified'}));
 

@@ -9,7 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 			template: _.template( Tpl ),
 
 			events: {
-				'click': 'clickCom'
+				'click #com-btn-delete': 'clickCom'
 			},
 
 			initialize: function() {

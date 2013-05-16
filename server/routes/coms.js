@@ -1,7 +1,44 @@
 var mongo = require('mongodb');
+var RouteBase = require('./route-base');
+var _ = require('underscore');
 
 
 var Coms = function(app, db, middleware) {
+	RouteBase.call(this, app, db, middleware, this.modelName, this.backboneModelPath);
+};
+
+
+_.extend(Coms.prototype, RouteBase.prototype, {
+	modelName: 'coms',
+	backboneModelPath: 'models/com.js',
+	attributesFindable: ['_parentPlaceId']
+/*
+	findAll: function(req, res) {
+		if(req.query._parentPlaceId) {
+			this.db.collection(this.modelName, function(err, collection) {
+				collection.find( {'_parentPlaceId': req.query._parentPlaceId}).toArray(function(err, items) {
+					res.send(items);
+				});
+			});
+		}
+		else {
+			this.db.collection(this.modelName, function(err, collection) {
+				collection.find().toArray(function(err, items) {
+					res.send(items);
+				});
+			});
+		}
+	}
+*/
+});
+
+//Coms.prototype.
+
+
+//_.extend(Coms.prototype, RouteBase);
+
+/*
+function(app, db, middleware) {
 	this.db = db;
 
 	this.findAll = this.findAll.bind(this);
@@ -125,6 +162,6 @@ Coms.prototype.remove = function(req, res) {
 		});
 	});
 };
-
+*/
 
 module.exports = Coms;

@@ -5,7 +5,7 @@ define(function(require, exports, module){
 	var _ = require('underscore');
 	var Backbone = require('backbone');
 	var PEvent = require('models/pevent');
-	var Map = require('models/map');
+	//var Map = require('models/map');
 
 	var Place = Backbone.Model.extend({
 
@@ -28,7 +28,7 @@ define(function(require, exports, module){
 		},
 
 		initialize: function() {
-			this.map = new Map();
+			//this.map = new Map();
 		},
 /*
 		save: function(attr, options) {

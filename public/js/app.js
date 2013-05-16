@@ -11,10 +11,11 @@ define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu
 			},
 
 			initialize: function() {
+				Auth.logout();
 				this.menuView = new MenuView();
 				this.contentView = new ContentView();
 
-				if(Auth.isLogged()) { Auth.logout(); }
+				//if(Auth.isLogged()) { Auth.logout(); }
 			},
 
 			render: function(){

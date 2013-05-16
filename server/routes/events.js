@@ -9,6 +9,7 @@ var events = function(app, db, middleware) {
 	this.add = this.add.bind(this);
 	this.update = this.update.bind(this);
 	this.remove = this.remove.bind(this);
+	this.vote = this.vote.bind(this);
 
 	this.setRoutes(app, middleware);
 };
@@ -22,8 +23,8 @@ events.prototype.setRoutes = function(app, middleware) {
 	app.post('/events', mw, this.add);
 	app.put('/events/:id', mw, this.update);
 	app.delete('/events/:id', mw, this.remove);
-
 	app.post('/events/vote/:id', mw, this.vote);
+	app.get('/events/vote/:id', mw, this.vote);
 };
 
 
@@ -67,21 +68,38 @@ events.prototype.findById = function(req, res) {
 
 events.prototype.vote = function(req, res) {
 	var id = req.params.id;
-	var db = this.db;
 
-	console.log('POST /events/vote/' + id);
+	console.log('GET /events/vote' + id);
 
-	db.collection('events2', function(err, collection) {
-		collection.findOne( {'_id': mongo.BSONPure.ObjectID(id)}, function(err, item) {
+	this.db.collection('events2', function(err, collection) {
+		collection.findOne( {'_id': mongo.BSONPure.ObjectID(id)}, function(err, items) {
 			if(err) {
 				console.log('!ERROR finding event id ' + id + ': ' + err);
+				res.send('Event ' + id + 'not found', 501);
 			}
 			else {
-				/*
-				if(user._id in item.hearts.users;
-				*/
-				console.log('Adding a heart');
-				res.send(item);				
+				console.log('adding heart to ' + items._id + ', ' + items.hearts.number);
+
+				if(items.hearts.users.indexOf(req.session.userId) != -1) {
+					console.log('Warning: user already voted, event:' + id + ', user: ' + req.session.userId);
+					res.send('Warning: user already voted, event:' + id + ', user: ' + req.session.userId, 501);
+				}
+
+				else {
+					console.log(items.hearts.users);
+
+					items.hearts.number += 1;
+					items.hearts.users.push(req.session.userId);
+					collection.update( {'_id': mongo.BSONPure.ObjectID(id)}, {$set: {hearts: {number: items.hearts.number, users: items.hearts.users}}}, {safe: true}, function(err, result) {
+						if(err) {
+							console.log('!ERROR updating event: ' + err, 501);
+						}
+						else {
+							console.log('Update OK: ' + result);
+							res.send(items);
+						}
+					});
+				}	
 			}
 		});
 	});

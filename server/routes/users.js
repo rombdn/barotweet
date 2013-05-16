@@ -9,6 +9,7 @@ var Users = function(app, db, middleware) {
 	this.add = this.add.bind(this);
 	this.update = this.update.bind(this);
 	this.remove = this.remove.bind(this);
+	this.logout = this.logout.bind(this);
 
 	this.setRoutes(app, middleware);
 };
@@ -18,6 +19,7 @@ Users.prototype.setRoutes = function(app, middleware) {
 	var mw = middleware || function(req, res) {};
 
 	app.get('/users', mw, this.findAll);
+	app.get('/logout', mw, this.logout);
 	app.get('/users/:id', mw, this.findById);
 	app.post('/users', mw, this.add);
 	app.put('/users/:id', mw, this.update);
@@ -25,12 +27,26 @@ Users.prototype.setRoutes = function(app, middleware) {
 };
 
 
+Users.prototype.logout = function(req, res) {
+	req.session.userId = undefined;
+	res.send(200);
+}
+
+
 Users.prototype.findAll = function(req, res) {
 	if(req.query.name) {
 		console.log('GET /users?name=' + req.query.name);
 		this.db.collection('users', function(err, collection) {
 			collection.findOne( {'name': req.query.name}, function(err, items) {
-				res.send(items);
+				if(err) {}
+				else {
+					if(items) {
+						req.session.userId = items._id;
+					}
+
+					console.log(items);
+					res.send(items);
+				}
 			});
 		});
 	}
@@ -39,7 +55,8 @@ Users.prototype.findAll = function(req, res) {
 
 		this.db.collection('users', function(err, collection) {
 			collection.find().toArray(function(err, items) {
-				res.send(items);
+				//res.send(items);
+				res.send('.');
 			});
 		});
 	}
@@ -77,6 +94,7 @@ Users.prototype.add = function(req, res) {
 			}
 			else {
 				console.log('Insert OK: ' + JSON.stringify(result[0]));
+				req.session.userId = result[0]._id;
 				res.send(result[0]);
 			}
 		});
