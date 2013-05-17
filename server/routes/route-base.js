@@ -25,32 +25,85 @@ Model.prototype.setRoutes = function(app, middleware) {
 	var mw = middleware || function(req, res) {};
 
 	console.log('setting routes for ' + this.modelName);
-	app.get('/' + this.modelName, mw, this.findAll);
-	app.get('/' + this.modelName + '/:id', mw, this.findById);
-	app.post('/' + this.modelName, mw, this.add);
-	app.put('/' + this.modelName + '/:id', mw, this.update);
-	app.delete('/' + this.modelName + '/:id', mw, this.remove);
+
+	if(this.authorizedRoutes) {
+		this.authorizedRoutes.forEach(function(routeName) {
+			if(routeName === 'findAll') { app.get('/' + this.modelName, mw, this.findAll); }
+			if(routeName === 'findById'){ app.get('/' + this.modelName + '/:id', mw, this.findById); }
+			if(routeName === 'add') 	{ app.post('/' + this.modelName, mw, this.add); }
+			if(routeName === 'update') 	{ app.put('/' + this.modelName + '/:id', mw, this.update); }
+			if(routeName === 'remove') 	{ app.delete('/' + this.modelName + '/:id', mw, this.remove); }
+		}, this);
+	}
+	else {
+		app.get('/' + this.modelName, mw, this.findAll);
+		app.get('/' + this.modelName + '/:id', mw, this.findById);
+		app.post('/' + this.modelName, mw, this.add);
+		app.put('/' + this.modelName + '/:id', mw, this.update);
+		app.delete('/' + this.modelName + '/:id', mw, this.remove);
+	}
+
+
+	//optional routes
+	if(this.additionalRoutes) {
+
+		this.additionalRoutes.forEach(function(route) {
+			//console.log(route);
+			//route.callback.call(this);
+
+			if(route.method === 'post') {
+				app.post(route.url, mw, route.callback.bind(this));
+			}
+			else if(route.method === 'get') {
+				app.get(route.url, mw, route.callback.bind(this));
+			}
+
+		}, this);
+	}
 };
 
 
 
 Model.prototype.findAll = function(req, res) {
-	if(req.query) {
-		if(this.attributesFindable) {
+
+	if(Object.keys(req.query).length > 0) {
+
+		if(this.attributesFindable && this.attributesFindable.length > 0) {
+
+			console.log('attributesFindable: true');
+
 			this.attributesFindable.forEach(function(attr) {
-				if(req.query[attr]) {
+
+				console.log('attr: ' + attr.name);
+				if(req.query[attr.name]) {
+
 					this.db.collection(this.modelName, function(err, collection) {
+
 						var mongoQuery = {}
-						mongoQuery[attr] = req.query[attr]
-						collection.find( mongoQuery ).toArray(function(err, items) {
-							res.send(items);
-						});
+						mongoQuery[attr.name] = req.query[attr.name]
+
+						if(!attr.uniq) {
+							collection.find( mongoQuery ).toArray(function(err, items) {
+								res.send(items);
+							});
+						}
+						else {
+							collection.findOne( mongoQuery, function(err, items) {
+								res.send(items);
+							});							
+						}
+
 					});
 				}
+
 			}, this);
+		}
+		else {
+			res.send(404);
 		}
 	}
 	else {
+		console.log('find all ' + this.modelName);
 		this.db.collection(this.modelName, function(err, collection) {
 			collection.find().toArray(function(err, items) {
 				res.send(items);
@@ -127,15 +180,15 @@ Model.prototype.remove = function(req, res) {
 Model.prototype.validate = function(attr) {
 	//validation with backbone model
 
-	if(!this.backboneModel)
+	if(!this.backboneModel) {
+		console.log('model doesn t exists');
 		return true;
+	}
 
 	var validErrors = this.backboneModel.validate(attr);
 
 	if( validErrors !== false) {
-		console.log('model not valid');
 		res.send(400);
-
 		return false;
 	}
 
