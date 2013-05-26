@@ -4,7 +4,7 @@ var express = require('express');
 var app = express();
 var mongo = require('mongodb');
 //var Places = require('./server/models/places');
-//var Place = require('models/place.js');
+//var Place = require('./public/js/models/place.js');
 
 
 app.use(express.cookieParser());

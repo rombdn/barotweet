@@ -4,7 +4,10 @@
 	"private": true,
 	"dependencies": {
 		"requirejs": "latest",
-		"mongodb": "latest"
+		"mongodb": "latest",
+		"underscore": "latest",
+		"backbone": "latest",
+		"amdefine": "latest"
 	},
 	"devDependencies": {
 		"mocha": "latest",
