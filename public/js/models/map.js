@@ -16,7 +16,7 @@ define(function(require, exports, module){
 
 
 		initialize: function() {
-			this.zoom = 12;
+			this.zoom = 14;
 		},
 
 		setLeafletMap: function(htmlelement) {
@@ -51,6 +51,7 @@ define(function(require, exports, module){
 
 		locError: function(data) {
 			console.log(data);
+			//this.gotoPosition([48.85293755, 2.35005223818182]);
 			Backbone.trigger('map:locatefail', data);
 		},
 

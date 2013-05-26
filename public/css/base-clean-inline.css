@@ -3,10 +3,6 @@ body {
 	padding-top: 60px;
 }
 
-.brand.brand-button {
-	padding: 0;
-}
-
 @media (max-width: 979px) {
 	body {
 		padding-top: 0;
@@ -49,7 +45,7 @@ body {
 
 @media (max-width: 767px) {
     .map {
-        height: 100px;
+        height: 150px;
     }
 }
 

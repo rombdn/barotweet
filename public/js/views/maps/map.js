@@ -68,6 +68,10 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				else if(this.address){
 					this.map.gotoAddress(this.address);
 				}
+				else {
+					this.position = [48.85293755, 2.35005223818182];
+					this.map.gotoPosition(this.position);
+				}
 
 				this._setMarkers();
 

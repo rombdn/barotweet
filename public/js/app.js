@@ -14,8 +14,6 @@ define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu
 				Auth.logout();
 				this.menuView = new MenuView();
 				this.contentView = new ContentView();
-
-				//if(Auth.isLogged()) { Auth.logout(); }
 			},
 
 			render: function(){
@@ -23,7 +21,7 @@ define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu
 
 				this.$el.append(this.menuView.el);
 				this.$el.append(this.contentView.el);
-				//$('#content').html(this.contentView.el);
+
 				this.menuView.render();
 				this.contentView.render();
 			},

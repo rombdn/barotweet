@@ -9,27 +9,26 @@ define(['jquery', 'underscore', 'backbone', 'views/places/places-list', 'views/m
 
 
 			initialize: function(){
-				console.log("creating Wall View");
-
 				this.mapView = new MapView();
-				this.mapView.setPosition([48.85293755, 2.35005223818182]);
+				//this.mapView.setPosition([48.85293755, 2.35005223818182]);
 
+				//getting the places coords to create map markers
+				//todo: neighborhood filter
 				this.placeListView = new PlaceListView();
-
 				this.placeListView.getCollectionCoords(
 					_.bind(this.mapView.setMarkers, this.mapView)
 				);
 			},
 
 			render: function(view){
-
 				this.$el.append( this.mapView.el );
-				this.$el.append( this.placeListView.el );
+				
+				//this.$el.append( this.placeListView.el );
 
 				this.mapView.render();
 				this.mapView.locateUser();
 
-				this.placeListView.render();
+				//this.placeListView.render();
 
 				return this;
 			}
