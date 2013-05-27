@@ -10,7 +10,7 @@ define(function(require, exports, module){
 	var Com = Backbone.Model.extend({
 
 		idAttribute: '_id',
-		
+
 		defaults: {
 			_userId: -1,
 			_parentPlaceId: -1,
@@ -19,6 +19,10 @@ define(function(require, exports, module){
 
 		validate: function(attr) {
 			var errors = [];
+
+			if(attr.text.length < 1 || attr.text.length > 142) {
+				errors.push({name: 'text', message: 'Comments must be between 1 and 142 characters'});
+			}
 
 			return errors.length > 0 ? errors : false;
 		}

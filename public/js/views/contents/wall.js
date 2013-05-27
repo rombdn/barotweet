@@ -2,7 +2,7 @@ define(['jquery', 'underscore', 'backbone', 'views/places/places-list', 'views/m
 
 	function( $ , _ , Backbone , PlaceListView, MapView ){
 
-		var WallView = Backbone.View.extend({
+		var View = Backbone.View.extend({
 
 			tagname: 'div',
 			className: 'wall',
@@ -10,30 +10,49 @@ define(['jquery', 'underscore', 'backbone', 'views/places/places-list', 'views/m
 
 			initialize: function(){
 				this.mapView = new MapView();
-				//this.mapView.setPosition([48.85293755, 2.35005223818182]);
 
 				//getting the places coords to create map markers
 				//todo: neighborhood filter
+				//todo: remplacer place list par placecollection
 				this.placeListView = new PlaceListView();
+				
 				this.placeListView.getCollectionCoords(
 					_.bind(this.mapView.setMarkers, this.mapView)
 				);
+
+				this.setEventListeners();
 			},
 
 			render: function(view){
-				this.$el.append( this.mapView.el );
 				
-				//this.$el.append( this.placeListView.el );
+				//render map only once
+				if( !this._mapRendered) {
+					this.$el.append( this.mapView.el );
+					this.mapView.render();
+					this.mapView.locateUser();
+					this._mapRendered = true;
+				}
 
-				this.mapView.render();
-				this.mapView.locateUser();
-
-				//this.placeListView.render();
+				if(this.placeProfileView) {
+					this.$el.append( this.placeProfileView.el );
+					this.placeProfileView.render();
+				}
 
 				return this;
+			},
+
+			setEventListeners: function() {
+				this.listenTo(Backbone, 'map:popup-click', this.loadPlaceProfile);
+			},
+
+			loadPlaceProfile: function(placeId) {
+				if(!placeId) throw "placeId not defined: unable to create profile view";
+				
+				this.placeProfileView = new PlaceProfileView({modelId: placeId});
+				this.render();
 			}
 		});
 
 
-		return WallView;
+		return View;
 });

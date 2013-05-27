@@ -7,6 +7,12 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			className: 'row-fluid map-container',
 			template: _.template(Tpl),
 
+			events: {
+				'click .map-popup-link': 'triggerPopupClick'
+			},
+
+			triggerPopupClick: function(e) { Backbone.trigger('map:popup-click', e.target.data('placeId')); },
+
 
 			initialize: function(options) {
 				this.map = new Map();

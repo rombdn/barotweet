@@ -44,7 +44,7 @@ define([ 'jquery', 'underscore', 'backbone', 'models/place', 'collections/places
 					lat: model.get('lat'),
 					lon: model.get('lon'),
 					icon: 'place',
-					infos: model.get('name')
+					infos: '<a href="#" class="map-popup-link" data-place-id="' + model.get('_id') + '">' + model.get('name') + '</a>'
 				};
 			});
 

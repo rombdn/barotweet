@@ -90,7 +90,12 @@ define(function(require, exports, module){
 
 			if(icon) marker.setIcon(Icons[icon]);
 
-			if(infos) marker.bindPopup(infos);
+			if(infos) {
+				marker.bindPopup(infos, {
+					closeButton: false,
+					zoomAnimation: false
+				});
+			}
 
 			marker.addTo(this.leafletMap);
 		},
