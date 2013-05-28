@@ -31,6 +31,8 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				this.listenTo(Backbone, 'map:locating', function() { console.log('***MAP:LOCATING'); });
 				this.listenTo(Backbone, 'map:located', function() { console.log('***MAP:LOCATED'); });
 				this.listenTo(Backbone, 'map:locatefail', this.showErrorLoc);
+
+				//_.bind(this.setMarkers, this);
 			},
 
 			setPosition: function(position) {
@@ -40,7 +42,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			locateUser: function() {
 				this.map.locate();
 			},
-
+/*
 			setMarkers: function(coords) {
 				this.markers = coords;
 
@@ -57,7 +59,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 					}
 				}
 			},
-
+*/
 			render: function(){
 				console.log('render map');
 				this.$el.html( this.template() );
@@ -79,9 +81,9 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 					this.map.gotoPosition(this.position);
 				}
 
-				this._setMarkers();
+				//this._setMarkers();
 
-				this.rendered = true;
+				//this.rendered = true;
 
 				return this;
 			},
