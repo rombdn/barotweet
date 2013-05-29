@@ -7,20 +7,16 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			className: 'row-fluid map-container',
 			template: _.template(Tpl),
 
-			events: {
-				'click .map-popup-link': 'triggerPopupClick'
-			},
-
-			triggerPopupClick: function(e) { Backbone.trigger('map:popup-click', e.target.data('placeId')); },
-
 
 			initialize: function(options) {
 				this.map = new Map();
 				
+				/*
 				if(options) {
 					if(options.position) this.position = options.position;
 					if(options.address) this.address = options.address;
 				}
+				*/
 
 				this.listenTo(Backbone, 'menu:locate', _.bind(this.map.locate, this.map));
 
@@ -35,13 +31,17 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				//_.bind(this.setMarkers, this);
 			},
 
+
+			/*
 			setPosition: function(position) {
 				this.position = position;
 			},
-
+			*/
+/*
 			locateUser: function() {
 				this.map.locate();
 			},
+			*/
 /*
 			setMarkers: function(coords) {
 				this.markers = coords;
@@ -61,7 +61,6 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			},
 */
 			render: function(){
-				console.log('render map');
 				this.$el.html( this.template() );
 
 				//leaflet map must have a rendered map div
@@ -70,6 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				this.map.setLeafletMap('map');
 
 				//render a position, an address or user location
+				/*
 				if(this.position) {
 					this.map.gotoPosition(this.position);
 				}
@@ -80,6 +80,9 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 					this.position = [48.85293755, 2.35005223818182];
 					this.map.gotoPosition(this.position);
 				}
+				*/
+
+				this.map.gotoPosition([48.85293755, 2.35005223818182]);
 
 				//this._setMarkers();
 
@@ -100,6 +103,8 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			},
 
 			remove: function() {
+				//a DOM element is attached to 'this.map' 
+				//so we need to manually remove it to avoid memory leaks
 				this.map.removeMap();
 				Backbone.View.prototype.remove.call(this);
 			}

@@ -99,7 +99,8 @@ define(['jquery', 'underscore', 'backbone'],
 					success: _.bind(function(model, response) {
 						console.log('FORM: save ok: ' + model.toJSON());
 
-						this.eventSaved();
+						//this.eventSaved();
+						this.remove();
 
 					}, this),
 
@@ -112,11 +113,14 @@ define(['jquery', 'underscore', 'backbone'],
 
 			clickCancel: function(e) { 
 				e.preventDefault();
-				this.eventCanceled(); 
+				this.model.destroy();
+				this.remove();
+				//this.eventCanceled(); 
 			},
+
 			clickDelete: function(e) { 
 				e.preventDefault();
-				this.eventDeleted();
+				//this.eventDeleted();
 			}
 
 		});

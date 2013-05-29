@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place'],
+define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place', 'views/contents/place-profile'],
 
-	function( $ , _ , Backbone , PlaceCollection, MapView, Place ){
+	function( $ , _ , Backbone , PlaceCollection, MapView, Place, PlaceProfileView ){
 
 		var View = Backbone.View.extend({
 
@@ -10,39 +10,43 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 
 			initialize: function(){
 				this.mapView = new MapView();
-
-				//getting the places coords to create map markers
-				//todo: neighborhood filter
-				//todo: remplacer place list par placecollection
-				//this.placeListView = new PlaceListView();
-				
 				this.placeCollection = new PlaceCollection();
-
-				/*
-				this.placeListView.getCollectionCoords(
-					_.bind(this.mapView.setMarkers, this.mapView)
-				);
-				*/
-
 				this.setEventListeners();
+				this.placeCollection.fetch();
 			},
 
+			setEventListeners: function() {
+				this.listenTo(Backbone, 'map:popup-click', this.loadPlaceProfile);
+				this.listenTo(this.placeCollection, 'sync', this.displayMarkers);
+			},
+
+			loadPlaceProfile: function(placeId) {
+				if(!placeId) throw "placeId not defined: unable to create profile view";
+
+				this.place = new Place(({_id: placeId}));
+				this.placeProfileView = new PlaceProfileView({model: this.place});
+				this.place.fetch();
+
+				this.render();
+			},
+
+			//get places coords to create map markers
+			//todo: neighborhood filter
 			displayMarkers: function() {
-				this.placeCollection.fetch({
-					success: this.setMapMarkers
-				});
-			},
-
-			setMapMarkers: function(collection, response, options) {
-
-				collection.models.each(function(model) {
+				this.placeCollection.models.forEach(function(model) {
 					
-					this.mapView.map.setMarker({
+					var placeProfileLink = $('<a href="#" class="map-popup-link" data-place-id="' + model.get('_id') + '">' + model.get('name') + '</a>').click(function(e){
+						Backbone.trigger('map:popup-click', $(e.target).data('placeId'));
+					})[0];
+
+					var markerDef = {
 						lat: model.get('lat'),
 						lon: model.get('lon'),
-						icon: 'place',
-						content: '<a href="#" class="map-popup-link" data-place-id="' + model.get('_id') + '">' + model.get('name') + '</a>'
-					});
+						icon: null,
+						content: placeProfileLink
+					};
+
+					this.mapView.map.setMarker(markerDef);
 
 				}, this);
 			},
@@ -54,10 +58,8 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 					this.$el.append( this.mapView.el );
 					this.mapView.render();
 					
-					this.mapView.locateUser();
+					this.mapView.map.locate();
 					this._mapRendered = true;
-					
-					this.displayMarkers();
 				}
 
 				if(this.placeProfileView) {
@@ -66,18 +68,8 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 				}
 
 				return this;
-			},
-
-			setEventListeners: function() {
-				this.listenTo(Backbone, 'map:popup-click', this.loadPlaceProfile);
-			},
-
-			loadPlaceProfile: function(placeId) {
-				if(!placeId) throw "placeId not defined: unable to create profile view";
-
-				this.placeProfileView = new PlaceProfileView({modelId: placeId});
-				this.render();
 			}
+
 		});
 
 

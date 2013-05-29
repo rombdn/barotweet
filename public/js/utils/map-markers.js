@@ -13,7 +13,8 @@ define(['leaflet'],
 		});
 
 		var icons = {
-			user: new LeafIcon({iconUrl: 'img/markers/1up.png'})
+			user: new LeafIcon({iconUrl: 'img/markers/1up.png'}),
+			place: new LeafIcon({iconUrl: 'img/markers/1up.png'})
 		};
 
 		return icons;

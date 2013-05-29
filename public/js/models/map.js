@@ -45,7 +45,11 @@ define(function(require, exports, module){
 
 		locFound: function(data) {
 			this.setView(data.latlng.lat, data.latlng.lng);
-			this.setMarker(data.latlng.lat, data.latlng.lng, 'user', "it's me!");
+			this.setMarker({
+				lat: data.latlng.lat, 
+				lon: data.latlng.lng, 
+				icon: 'user', 
+				content: "it's me!"});
 			Backbone.trigger('map:located', data);
 		},
 
@@ -77,7 +81,6 @@ define(function(require, exports, module){
 		},
 
 		setView: function(lat, lon, marker) {
-			console.log('setView: ' + lat + ', ' + lon);
 			this.leafletMap.setView([lat, lon], this.zoom);
 
 			if(marker) {
@@ -85,13 +88,13 @@ define(function(require, exports, module){
 			}
 		},
 
-		setMarker: function(lat, lon, icon, infos) {
-			var marker = L.marker( [lat, lon] );
+		setMarker: function(markerDef) {
+			var marker = L.marker( /*[markerDef.lat, markerDef.lon]*/ [48.85293755, 2.35005223818182] );
 
-			if(icon) marker.setIcon(Icons[icon]);
+			if(markerDef.icon) marker.setIcon(Icons[markerDef.icon]);
 
-			if(infos) {
-				marker.bindPopup(infos, {
+			if(markerDef.content) {
+				marker.bindPopup(markerDef.content, {
 					closeButton: false,
 					zoomAnimation: false
 				});

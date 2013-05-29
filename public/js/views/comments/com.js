@@ -9,7 +9,7 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 			template: _.template( Tpl ),
 
 			events: {
-				'click #com-btn-delete': 'clickCom'
+				'click .com-btn-delete': 'clickCom'
 			},
 
 			initialize: function() {
@@ -22,6 +22,8 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 				this.listenTo(this.model, 'sync', this.findUser);
 				this.listenTo(this.user, 'sync', this.render);
 
+				this.listenTo(this.model, 'destroy', this.remove);
+
 				if(!this.model.isNew()) this.findUser();
 			},
 
@@ -32,21 +34,28 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 			},
 
 			render: function(){
-				console.log('rendering');
+				console.log('rendering com');
 
 				if(this.userFetched) {
 					console.log('rendering with user' + this.user.get('name'));
 					this.$el.html( this.template( _.extend(this.model.toJSON(), {name: this.user.get('name')} ) ));
 				}
-				else {
+				else if(!this.model.isNew()){
 					this.$el.html( 'loading comment' );
 				}
 
 				return this;
 			},
 
-			clickCom: function() {
-				Backbone.trigger('com:click', this.model);
+			clickCom: function(e) {
+				e.preventDefault();
+
+				//console.log('com ' + this.model.get('_id') + 'clicked');
+				this.model.destroy();
+				this.remove();
+				//Backbone.trigger('com:delete', this.model);
+
+				//this.listenTo(Backbone, 'com:delete', function() { console.log('in comView: click listened'); });
 			}
 
 		});

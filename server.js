@@ -80,7 +80,7 @@ function auth(req, res, next) {
 		res.send('unauth', 401);
 	}
 	else {
-		next();
+		setTimeout(next, 500);
 	}
 }
 

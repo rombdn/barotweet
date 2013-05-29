@@ -1,5 +1,5 @@
 define(['jquery', 'underscore', 'backbone', 
-	'views/contents/profile', 
+	'views/contents/place-profile', 
 	'views/places/place-form', 
 	'views/events/event-form', 
 	'views/comments/com-form', 
@@ -29,9 +29,9 @@ define(['jquery', 'underscore', 'backbone',
 				Backbone.on('pevent:cancel', this.navigProfile, this);
 				Backbone.on('pevent:delete', this.navigProfile, this);
 				
-				Backbone.on('coms:add', this.navigFormCom, this);
-				Backbone.on('com:save', this.navigProfile, this);
-				Backbone.on('com:cancel', this.navigProfile, this);
+				//Backbone.on('coms:add', this.navigFormCom, this);
+				//Backbone.on('com:save', this.navigProfile, this);
+				//Backbone.on('com:cancel', this.navigProfile, this);
 				
 				Backbone.on('place:click', this.navigProfile, this);
 				Backbone.on('place:edit', this.eClickedPlace, this);
