@@ -8,8 +8,15 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'models/com', 't
 			template: _.template( Tpl ),
 
 
-			inputs: [ 'text', '_parentPlaceId', '_userId' ]
+			inputs: [ 'text', '_parentPlaceId', '_userId' ],
+
+			customEvents: {
+				save: 'form:com-save',
+				remove: 'form:com-remove',
+				cancel: 'form:com-cancel'
+			}
 /*
+
 			eventSaved: function() {
 				Backbone.trigger('com:save', this.model, this.model.get('_parentPlaceId'));
 			},

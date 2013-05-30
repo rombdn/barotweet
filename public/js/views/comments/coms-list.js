@@ -13,41 +13,48 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 
 		initialize: function(options) {
 			this.views = [];
-			
 			this.place = options.place;
-
 			this.comsCollection = new ComsCollection();
+
 			this.comsCollection.fetch({ 
-				data: { _parentPlaceId: this.place.get('_id') }
+				data: { _parentPlaceId: this.place.get('_id') },
+				success: function() { this.collectionFetched = true; this.render(); }.bind(this)
 			});
 
-			this.listenTo(this.comsCollection, 'sync', this.populateViews);
+			this.listenTo(this.comsCollection, 'add', this.addComView);
+			this.listenTo(this.comsCollection, 'remove', this.removeComView);
 		},
 
-		populateViews: function(model, resp, options){
-
-			if(!this.populated) {
-				this.removeAllViews();
-			
-				_.each(this.comsCollection.models, function(model){
-					this.views.push( new ComView({model: model}) );
-				}, this);
-				
-				this.populated = true;
-			}
-
+		//called as soon as the user click 'add comment'
+		//in case of form cancelation removeComView is called
+		//to do the cleanup
+		addComView: function(model, resp, opts) {
+			this.views.push( new ComView({model: model}));
 			this.render();
 		},
 
-		removeAllViews: function() {
-			if(this.views.length > 0) {
-				_.each(this.views, function(view){
-					view.remove();
-				}, this);
+		//called when a com is deleted OR when form is canceled
+		//because form cancelation cause the new com to be deleted
+		removeComView: function(model, resp, opts) {
+			this.views = this.views.filter(function(view) {
+				if(view.model.get('_id') == model.get('_id')) {
+					return false;
+				}
 
-				//avoid memory leaks
-				this.views.length = 0;
-			}
+				return true;
+			});
+		},
+
+		//append the form
+		showComForm: function(e) {
+			e.preventDefault();
+
+			this.newCom = new Com( { _parentPlaceId: this.place.get('_id'), _userId: Auth.getUserId()});
+			this.comsCollection.add(this.newCom);
+
+			this.comFormView = new ComFormView({model: this.newCom});
+			this.$el.append( this.comFormView.el );
+			this.comFormView.render();
 		},
 
 		render: function(){
@@ -55,9 +62,7 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 
 			if(this.comFormView) { this.comFormView.remove(); }
 
-			//this.populateViews();
-
-			if(this.populated) {
+			if(this.collectionFetched) {
 				_.each(this.views, function(view){
 					this.$el.append( view.el );
 					view.render();
@@ -71,22 +76,19 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 			this.$el.append( this.template( { parentName: this.place.get('name') }) );
 		},
 
-		//create a new com and show form
-		showComForm: function(e) {
-			e.preventDefault();
+		remove: function() {
+			if(this.views.length > 0) {
+				_.each(this.views, function(view){
+					view.remove();
+				}, this);
 
-			//create empty com
-			this.newCom = new Com( { _parentPlaceId: this.place.get('_id'), _userId: Auth.getUserId()});
-			this.comsCollection.add(this.newCom);
+				//avoid memory leaks
+				this.views.length = 0;
+			}
 
-			//create the view for the new com
-			//!!! CANCEL !!!
-			this.views.push(new ComView({model: this.newCom}));
-
-			this.comFormView = new ComFormView({model: this.newCom});
-			this.$el.append( this.comFormView.el );
-			this.comFormView.render();
+			Backbone.View.prototype.remove.call(this);
 		}
+
 	});
 
 	return ComsListView;

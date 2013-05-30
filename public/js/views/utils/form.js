@@ -101,6 +101,10 @@ define(['jquery', 'underscore', 'backbone'],
 
 						//this.eventSaved();
 						this.remove();
+						
+						if(this.customEvents.save) {
+							Backbone.trigger(this.customEvents.save, this.model);
+						}
 
 					}, this),
 
@@ -113,13 +117,24 @@ define(['jquery', 'underscore', 'backbone'],
 
 			clickCancel: function(e) { 
 				e.preventDefault();
-				this.model.destroy();
+				
+				if(this.customEvents.cancel) {
+					Backbone.trigger(this.customEvents.cancel, this.model);
+				}
+				
+				if(this.model.isNew())
+					this.model.destroy();
+				
 				this.remove();
 				//this.eventCanceled(); 
 			},
 
 			clickDelete: function(e) { 
 				e.preventDefault();
+
+				if(this.customEvents.remove) {
+					Backbone.trigger(this.customEvents.remove, this.model);
+				}
 				//this.eventDeleted();
 			}
 

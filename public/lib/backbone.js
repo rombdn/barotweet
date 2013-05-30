@@ -510,15 +510,11 @@
         model.trigger('destroy', model, model.collection, options);
       };
 
-      console.log('*** BACKBONE 1');
-
       options.success = function(resp) {
         if (options.wait || model.isNew()) destroy();
         if (success) success(model, resp, options);
         if (!model.isNew()) model.trigger('sync', model, resp, options);
       };
-
-      console.log('*** BACKBONE 2');
 
       if (this.isNew()) {
         console.log('*** BACKBONE : IS NEW');
@@ -526,8 +522,6 @@
         return false;
       }
       wrapError(this, options);
-
-      console.log('*** BACKBONE 3');
 
       var xhr = this.sync('delete', this, options);
 
