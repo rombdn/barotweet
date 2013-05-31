@@ -7,8 +7,8 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'models/com', 't
 			className: 'row-fluid form-event',
 			template: _.template( Tpl ),
 
-
-			inputs: [ 'text', '_parentPlaceId', '_userId' ],
+			//editable inputs
+			inputs: [ 'text' ],
 
 			customEvents: {
 				save: 'form:com-save',

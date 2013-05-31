@@ -1,13 +1,13 @@
 define(['jquery', 'underscore', 'backbone', 
 	'views/contents/place-profile', 
-	'views/places/place-form', 
+	//'views/places/place-form', 
 	'views/events/event-form', 
 	'views/comments/com-form', 
 	'views/contents/wall',
 	'views/contents/login',
 	'utils/auth'],
 
-	function( $ , _ , Backbone , ProfileView, PlaceFormView, EventFormView, ComFormView, WallView, LoginView, Auth ){
+	function( $ , _ , Backbone , ProfileView, EventFormView, ComFormView, WallView, LoginView, Auth ){
 
 		var NavigView = Backbone.View.extend({
 
@@ -63,11 +63,11 @@ define(['jquery', 'underscore', 'backbone',
 			},
 
 			navigFormPlace: function(place) {
-				this.render(new PlaceFormView({model: place}));
+				//this.render(new PlaceFormView({model: place}));
 			},
 
 			eClickedPlace: function(place) {
-				this.render(new PlaceFormView({model: place}));
+				//this.render(new PlaceFormView({model: place}));
 			},
 
 

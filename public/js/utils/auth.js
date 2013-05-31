@@ -81,6 +81,14 @@ define(['backbone', 'models/user'],
 				}
 
 				return false;
+			},
+
+			getUser: function() {
+				if(this.user) {
+					return this.user;
+				}
+
+				return false;
 			}
 		};
 

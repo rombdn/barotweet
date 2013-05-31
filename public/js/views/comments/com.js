@@ -15,30 +15,18 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 			initialize: function() {
 				this.user = new User();
 
-				this.listenTo(this.model, 'sync', this.findUser);
-				this.listenTo(this.user, 'sync', this.render);
+				this.listenTo(this.model, 'sync', this.render );
 				this.listenTo(this.model, 'destroy', this.remove);
-				this.listenTo(this.model, 'change', this.render);
-
-				if(!this.model.isNew()) this.findUser();
-			},
-
-			findUser: function() {
-				this.user.set({_id: this.model.get('_userId')});
-				this.user.fetch({success: _.bind(function() { this.userFetched = true; }, this)});
 			},
 
 			render: function(){
-				if(this.userFetched) {
-					this.$el.html( this.template( _.extend(this.model.toJSON(), {name: this.user.get('name')} ) ));
+				if(!this.model.isNew()) {
+					this.$el.html( this.template( this.model.toJSON() ));
 				}
-				else if(!this.model.isNew()){
-					this.$el.html( 'loading comment' );
-				}
-				else {
+/*				else {
 					this.$el.html( 'new comment' );
 				}
-
+*/
 				return this;
 			},
 

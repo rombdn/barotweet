@@ -80,7 +80,9 @@ function auth(req, res, next) {
 		res.send('unauth', 401);
 	}
 	else {
-		setTimeout(next, 500);
+		var wait = Math.random()*1000+200;
+		console.log('delay ' + wait);
+		setTimeout(next, wait);
 	}
 }
 

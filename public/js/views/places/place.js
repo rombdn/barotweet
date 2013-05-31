@@ -1,4 +1,4 @@
-define(['jquery', 'underscore', 'backbone', 'text!templates/place.html', 'views/places/place-drink-form'],
+define(['jquery', 'underscore', 'backbone', 'text!templates/place.html'],
 
 	function( $ , _ , Backbone , placeTpl, DrinkFormView ){
 
@@ -7,47 +7,17 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/place.html', 'views/
 			tagname: 'div',
 			className: 'row-fluid profile place',
 			template: _.template( placeTpl ),
-			//template_drink: _.template( drinkTpl),
-
-			events: {
-				'click .place-info': 'clickPlace',
-				'click #btn-edit-place': 'editPlace'
-			},
 
 			initialize: function() {
-				this.listenTo(this.model, 'sync', this.render);
-
-				//this.listenTo(Backbone, 'place:drinksave', this.close)
-			},
-
-			clickPlace: function() {
-				Backbone.trigger('place:click', this.model, this.model.get('_id'));
-			},
-
-
-			editPlace: function() {
-				Backbone.trigger('place:edit', this.model, this.model.get('_id'));
+				this.listenTo(this.model, 'sync', function() { this.fetched = true; this.render(); });
 			},
 
 			render: function(){
-				if(this.drinkFormView) { 
-					this.drinkFormView.remove();
-				}
-				
-				this.drinkFormView = new DrinkFormView({model: this.model});
+				if(this.fetched) //this.isNew doesn't fit cause id is set
+					this.$el.html( this.template( this.model.toJSON() ));
+				else
+					this.$el.html( 'loading place...' );
 
-				this.$el.html( this.template( this.model.toJSON() ));
-				//this.$el.append(this.drinkFormView.el);
-				
-
-				$('#btn-edit-prices').popover({
-					html: true,
-					content: this.drinkFormView.el,
-					trigger: 'click'
-				});
-
-				this.drinkFormView.render();
-				
 				return this;
 			}
 

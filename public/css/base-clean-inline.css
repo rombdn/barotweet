@@ -53,11 +53,11 @@ body {
 .map-container {
   position: relative;
 }
-
-#map-info {
+/*
+.alert-custom {
   display: none;
 }
-
+*/
 
 /* profile */
 .profile {

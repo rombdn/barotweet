@@ -13,7 +13,7 @@ _.extend(Coms.prototype, RouteBase.prototype, {
 	backboneModelPath: 'models/com.js',
 	attributesFindable: [
 		{
-			name: '_parentPlaceId',
+			name: 'place._id',
 			uniq: false
 		}
 	]

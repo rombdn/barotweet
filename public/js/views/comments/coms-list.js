@@ -17,8 +17,8 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 			this.comsCollection = new ComsCollection();
 
 			this.comsCollection.fetch({ 
-				data: { _parentPlaceId: this.place.get('_id') },
-				success: function() { this.collectionFetched = true; this.render(); }.bind(this)
+				data: { 'place._id': this.place.get('_id') },
+				success: function(collec) { this.collectionFetched = true; this.render(); }.bind(this)
 			});
 
 			this.listenTo(this.comsCollection, 'add', this.addComView);
@@ -49,7 +49,17 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 		showComForm: function(e) {
 			e.preventDefault();
 
-			this.newCom = new Com( { _parentPlaceId: this.place.get('_id'), _userId: Auth.getUserId()});
+			this.newCom = new Com( { 
+				place: {
+					_id: this.place.get('_id'),
+					name: this.place.get('name')
+				}, 
+				user: {
+					_id: Auth.getUserId(),
+					name: Auth.getUserName()
+				}
+			});
+
 			this.comsCollection.add(this.newCom);
 
 			this.comFormView = new ComFormView({model: this.newCom});
@@ -60,7 +70,7 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 		render: function(){
 			this.$el.empty();
 
-			if(this.comFormView) { this.comFormView.remove(); }
+			//if(this.comFormView) { this.comFormView.remove(); }
 
 			if(this.collectionFetched) {
 				_.each(this.views, function(view){

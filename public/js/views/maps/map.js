@@ -1,16 +1,17 @@
-define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templates/map.html' ],
+define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templates/map.html', 'models/alert' ],
 
-	function( $ , _ , Backbone , Leaflet, Map, Tpl){
+	function( $ , _ , Backbone , Leaflet, Map, Tpl, Alert){
 
 		var MapView = Backbone.View.extend({
 
 			className: 'row-fluid map-container',
 			template: _.template(Tpl),
+			//alertTpl : _.template(AlertTpl),
 
 
 			initialize: function(options) {
 				this.map = new Map();
-				
+
 				/*
 				if(options) {
 					if(options.position) this.position = options.position;
@@ -24,9 +25,9 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				//used to display infos
 				this.listenTo(Backbone, 'map:loading', function() { console.log('***MAP:LOADING'); });
 				this.listenTo(Backbone, 'map:loaded', function() { console.log('***MAP:LOADED'); });
-				this.listenTo(Backbone, 'map:locating', function() { console.log('***MAP:LOCATING'); });
-				this.listenTo(Backbone, 'map:located', function() { console.log('***MAP:LOCATED'); });
-				this.listenTo(Backbone, 'map:locatefail', this.showErrorLoc);
+				this.listenTo(Backbone, 'map:locating', function() { Backbone.trigger('alert', new Alert({ id: 'maploc', status: 'info', msg: 'Locating...'}) );/*this.alertView.showInfo('Locating...', 'info');*/ });
+				this.listenTo(Backbone, 'map:located', function() { Backbone.trigger('alert', new Alert({ id: 'maploc', status: 'remove' })); });
+				this.listenTo(Backbone, 'map:locatefail', function() { Backbone.trigger('alert', new Alert({ id: 'maploc', status: 'error', msg: 'Location failed'}) ); /*this.alertView.showInfo('Locating failed', 'error');*/ });
 
 				//_.bind(this.setMarkers, this);
 			},
@@ -61,7 +62,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 			},
 */
 			render: function(){
-				this.$el.html( this.template() );
+				this.$el.append( this.template() );
 
 				//leaflet map must have a rendered map div
 				//to be initialized
@@ -89,17 +90,6 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				//this.rendered = true;
 
 				return this;
-			},
-
-			showErrorLoc: function() {
-				$('#map-info').hide();
-				$('#map-info-text').html('<strong>Erreur :</strong> localisation impossible');
-				$('#map-info').show();
-			},
-
-			hideInfo: function() {
-				console.log('loaded');
-				$('#map-info').hide();
 			},
 
 			remove: function() {

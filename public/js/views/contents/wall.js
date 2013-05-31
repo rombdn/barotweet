@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place', 'views/contents/place-profile'],
+define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place', 'views/contents/place-profile', 'views/utils/alerts'],
 
-	function( $ , _ , Backbone , PlaceCollection, MapView, Place, PlaceProfileView ){
+	function( $ , _ , Backbone , PlaceCollection, MapView, Place, PlaceProfileView, AlertHandler ){
 
 		var View = Backbone.View.extend({
 
@@ -13,6 +13,8 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 				this.placeCollection = new PlaceCollection();
 				this.setEventListeners();
 				this.placeCollection.fetch();
+
+				this.alertHandler = new AlertHandler();
 			},
 
 			setEventListeners: function() {
@@ -52,6 +54,9 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 			},
 
 			render: function(view){
+
+				this.$el.append( this.alertHandler.el );
+				this.alertHandler.render();
 				
 				//render map only once
 				if( !this._mapRendered) {

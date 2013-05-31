@@ -12,8 +12,14 @@ define(function(require, exports, module){
 		idAttribute: '_id',
 
 		defaults: {
-			_userId: -1,
-			_parentPlaceId: -1,
+			user: {
+				_id: -1,
+				name: 'foo'
+			},
+			place: {
+				_id: -1,
+				name: 'unknown'
+			},
 			text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
 		},
 
