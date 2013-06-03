@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templates/map.html', 'models/alert' ],
+define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templates/map.html', 'collections/places', 'models/alert' ],
 
-	function( $ , _ , Backbone , Leaflet, Map, Tpl, Alert){
+	function( $ , _ , Backbone , Leaflet, Map, Tpl, PlaceCollection, Alert){
 
 		var MapView = Backbone.View.extend({
 
@@ -11,90 +11,70 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 
 			initialize: function(options) {
 				this.map = new Map();
+				this.placeCollection = new PlaceCollection();
 
-				/*
-				if(options) {
-					if(options.position) this.position = options.position;
-					if(options.address) this.address = options.address;
-				}
-				*/
+				this.loadMarkers();
+				this.setListeners();
+			},
 
+			setListeners: function() {
 				this.listenTo(Backbone, 'menu:locate', _.bind(this.map.locate, this.map));
 
 				//map events
 				//used to display infos
 				this.listenTo(Backbone, 'map:loading', function() { console.log('***MAP:LOADING'); });
 				this.listenTo(Backbone, 'map:loaded', function() { console.log('***MAP:LOADED'); });
-				this.listenTo(Backbone, 'map:locating', function() { Backbone.trigger('alert', new Alert({ id: 'maploc', status: 'info', msg: 'Locating...'}) );/*this.alertView.showInfo('Locating...', 'info');*/ });
-				this.listenTo(Backbone, 'map:located', function() { Backbone.trigger('alert', new Alert({ id: 'maploc', status: 'remove' })); });
-				this.listenTo(Backbone, 'map:locatefail', function() { Backbone.trigger('alert', new Alert({ id: 'maploc', status: 'error', msg: 'Location failed'}) ); /*this.alertView.showInfo('Locating failed', 'error');*/ });
+				this.listenTo(Backbone, 'map:locating', function() { Backbone.trigger('alert-top', new Alert({ id: 'maploc', status: 'progress', msg: 'Locating...'}) );/*this.alertView.showInfo('Locating...', 'info');*/ });
+				this.listenTo(Backbone, 'map:located', function() { Backbone.trigger('alert-top', new Alert({ id: 'maploc', status: 'remove' })); });
+				this.listenTo(Backbone, 'map:locatefail', function() { Backbone.trigger('alert-top', new Alert({ id: 'maploc', status: 'error', msg: 'Location failed'}) ); /*this.alertView.showInfo('Locating failed', 'error');*/ });
 
-				//_.bind(this.setMarkers, this);
 			},
 
-
-			/*
-			setPosition: function(position) {
-				this.position = position;
-			},
-			*/
-/*
-			locateUser: function() {
-				this.map.locate();
-			},
-			*/
-/*
-			setMarkers: function(coords) {
-				this.markers = coords;
-
-				if(this.rendered) {
-					this._setMarkers();
-				}
-			},
-
-			_setMarkers: function() {
-				if(this.markers) {
-					for(var i = 0; i<this.markers.length; i++) {
-						console.log(this.markers[i]);
-						this.map.setMarker(this.markers[i].lat, this.markers[i].lon, 'user', this.markers[i].infos);
-					}
-				}
-			},
-*/
 			render: function(){
 				this.$el.append( this.template() );
 
-				//leaflet map must have a rendered map div
-				//to be initialized
-				//so we do it in render...
+				//setLeafletMap must be called after the map div container is rendered
 				this.map.setLeafletMap('map');
 
-				//render a position, an address or user location
-				/*
-				if(this.position) {
-					this.map.gotoPosition(this.position);
-				}
-				else if(this.address){
-					this.map.gotoAddress(this.address);
-				}
-				else {
-					this.position = [48.85293755, 2.35005223818182];
-					this.map.gotoPosition(this.position);
-				}
-				*/
-
+				//default position (paris center)
 				this.map.gotoPosition([48.85293755, 2.35005223818182]);
-
-				//this._setMarkers();
-
-				//this.rendered = true;
 
 				return this;
 			},
 
+			loadMarkers: function() {
+				Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'progress', msg: 'Loading places...'}));
+				this.placeCollection.fetch({
+					success: this.displayMarkers.bind(this)
+				});
+			},
+
+			//get places coords to create map markers
+			//todo: neighborhood filter
+			displayMarkers: function() {
+				this.placeCollection.models.forEach(function(model) {
+					
+					var placeProfileLink = $('<a href="#" class="map-popup-link" data-place-id="' + model.get('_id') + '">' + model.get('name') + '</a>').click(function(e){
+						Backbone.trigger('map:popup-click', $(e.target).data('placeId'));
+					})[0];
+
+					var markerDef = {
+						lat: model.get('lat'),
+						lon: model.get('lon'),
+						icon: null,
+						content: placeProfileLink
+					};
+
+					this.map.setMarker(markerDef);
+
+				}, this);
+
+				Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'remove' }));
+
+			},
+
 			remove: function() {
-				//a DOM element is attached to 'this.map' 
-				//so we need to manually remove it to avoid memory leaks
+				//DOM element attached to 'this.map' needs be to manually removed to avoid memory leaks
 				this.map.removeMap();
 				Backbone.View.prototype.remove.call(this);
 			}

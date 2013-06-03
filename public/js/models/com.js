@@ -12,10 +12,7 @@ define(function(require, exports, module){
 		idAttribute: '_id',
 
 		defaults: {
-			user: {
-				_id: -1,
-				name: 'foo'
-			},
+			userName: '',
 			place: {
 				_id: -1,
 				name: 'unknown'
@@ -28,6 +25,10 @@ define(function(require, exports, module){
 
 			if(attr.text.length < 1 || attr.text.length > 142) {
 				errors.push({name: 'text', message: 'Comments must be between 1 and 142 characters'});
+			}
+
+			if(attr.userName.length < 1 || attr.userName.length > 50) {
+				errors.push({name: 'text', message: 'userName must be between 1 and 50 characters'});
 			}
 
 			return errors.length > 0 ? errors : false;

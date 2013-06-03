@@ -12,27 +12,20 @@ define(function(require, exports, module){
 		urlRoot: '/users',
 		
 		defaults: {
+			id: -1,
 			name: ''
 		},
 
 		validate: function(attr) {
 			var errors = [];
 
-			return errors.length > 0 ? errors : false;
-		},
-
-		/*,
-
-		url: function() {
-			if(this.isNew() && this.get('name').length > 0) {
-				var url = this.urlRoot + '?name=' + this.get('name');
-				console.log(url);
-				return url;
+			if(attr.name.length < 1 || attr.name.length > 50) {
+				errors.push({name: 'name', message: 'Name must be between 1 and 50 characters'});
 			}
 			
-			return this.urlRoot;
-		}*/
 
+			return errors.length > 0 ? errors : false;
+		}
 	});
 
 	return Model;

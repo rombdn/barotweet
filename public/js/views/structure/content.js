@@ -1,109 +1,51 @@
-define(['jquery', 'underscore', 'backbone', 
-	'views/contents/place-profile', 
-	//'views/places/place-form', 
-	'views/events/event-form', 
-	'views/comments/com-form', 
-	'views/contents/wall',
-	'views/contents/login',
-	'utils/auth'],
+define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place', 'views/contents/place-profile', 'views/utils/alerts'],
 
-	function( $ , _ , Backbone , ProfileView, EventFormView, ComFormView, WallView, LoginView, Auth ){
+	function( $ , _ , Backbone , PlaceCollection, MapView, Place, PlaceProfileView, AlertHandler ){
 
-		var NavigView = Backbone.View.extend({
+		var View = Backbone.View.extend({
 
-			id: 'content',
+			tagname: 'div',
 			className: 'container',
 
+
 			initialize: function(){
-				this.currentView = null;
-				this.setListeners();
+				this.alertHandler = new AlertHandler({eventListened: 'alert-top'});
+				this.mapView = new MapView();
+				this.setEventListeners();
 			},
 
-			events: {
-				'click #home': 'navigWall'
+			setEventListeners: function() {
+				this.listenTo(Backbone, 'map:popup-click', this.loadPlaceProfile);
 			},
 
-			setListeners: function() {
-				Backbone.on('pevent:click', this.navigFormEvent, this);
-				Backbone.on('pevent:save', this.navigProfile, this);
-				Backbone.on('pevent:cancel', this.navigProfile, this);
-				Backbone.on('pevent:delete', this.navigProfile, this);
+			loadPlaceProfile: function(placeId) {
+				if(!placeId) throw "placeId not defined: unable to create profile view";
+
+				if(this.placeProfileView) {
+					this.placeProfileView.remove();
+				}
+
+				this.place = new Place(({_id: placeId}));
+				this.placeProfileView = new PlaceProfileView({model: this.place});
+				this.place.fetch();
+
+				this.$el.append( this.placeProfileView.el );
+				this.placeProfileView.render();
+			},
+
+			render: function(){
+				this.$el.append( this.alertHandler.el );
+				this.alertHandler.render();
 				
-				//Backbone.on('coms:add', this.navigFormCom, this);
-				//Backbone.on('com:save', this.navigProfile, this);
-				//Backbone.on('com:cancel', this.navigProfile, this);
-				
-				Backbone.on('place:click', this.navigProfile, this);
-				Backbone.on('place:edit', this.eClickedPlace, this);
-				Backbone.on('place:save', this.navigProfile, this);
-				Backbone.on('place:cancel', this.navigWall, this);
-				Backbone.on('place-list:add', this.navigFormPlace, this);
-
-				Backbone.on('auth:logged', this.render, this);
-			},
-
-
-			/*** EVENT HANDLERS ***/
-
-			navigWall: function() {
-				this.render(new WallView());
-			},
-
-			navigProfile: function(model, placeId) {
-				if(!(this.currentView instanceof ProfileView))
-					this.render(new ProfileView({_id: placeId}));
-			},
-
-			navigFormEvent: function(pevent) {
-				this.render(new EventFormView({model: pevent}));
-			},
-
-			navigFormCom: function(com) {
-				this.render(new ComFormView({model: com}));
-			},
-
-			navigFormPlace: function(place) {
-				//this.render(new PlaceFormView({model: place}));
-			},
-
-			eClickedPlace: function(place) {
-				//this.render(new PlaceFormView({model: place}));
-			},
-
-
-			//render displays only one view
-			//when a new view is passed the previous view is removed
-			render: function(view){			
-
-				//remove the view currently displayed
-				if(this.currentView) {
-					this.currentView.remove();
-					delete this.currentView;
-				}
-
-				if(Auth.isLogged()) {
-
-					if(!view || !(view instanceof Backbone.View)) {
-						view = new WallView();
-					}
-
-					//show the new view
-					this.currentView = view;
-					this.$el.html( '' );
-					this.$el.append( this.currentView.el );
-					this.currentView.render();
-				}
-				else {
-					view = new LoginView();
-					this.$el.html( '' );
-					this.$el.append( view.el );
-					view.render();
-				}
+				this.$el.append( this.mapView.el );
+				this.mapView.render();
+					
+				this.mapView.map.locate();
 
 				return this;
 			}
 		});
 
 
-		return NavigView;
+		return View;
 });

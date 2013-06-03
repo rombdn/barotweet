@@ -1,6 +1,6 @@
 define(['jquery', 'underscore', 'backbone', 'text!templates/alert.html'],
 
-    function( $ , _ , Backbone , Tpl ){
+    function( $ , _ , Backbone , Tpl){
 
         var View = Backbone.View.extend({
 
@@ -22,18 +22,16 @@ define(['jquery', 'underscore', 'backbone', 'text!templates/alert.html'],
                 this.$el.removeClass('alert-info');
                 this.$el.removeClass('alert-error');
 
-                if(this.model.get('type') == 'error') {
+                if(this.model.get('status') == 'error') {
                     this.$el.addClass('alert-error');
-                    //this.$el.children('.map-info-text').html('<strong>Erreur :</strong>' + msg);
                 }
 
-                else if(this.model.get('type') == 'info') {
+                else if(this.model.get('status') == 'info') {
                     this.$el.addClass('alert-info');
-                    //this.$el.children('.map-info-text').html(msg);
                 }
 
                 else {
-                    //this.$el.children('#map-info-text').html('<strong>Attention :</strong>' + msg);
+                    //default bootstrap warning
                 }
             }
 

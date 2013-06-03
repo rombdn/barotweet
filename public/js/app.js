@@ -1,5 +1,5 @@
-define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu', 'views/structure/content', 'utils/auth'],
-	function( $ , _ , Backbone , Bootstrap , MenuView, ContentView, Auth){
+define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu', 'views/structure/content'],
+	function( $ , _ , Backbone , Bootstrap , MenuView, ContentView){
 
 		var App = Backbone.View.extend({
 
@@ -11,7 +11,6 @@ define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu
 			},
 
 			initialize: function() {
-				Auth.logout();
 				this.menuView = new MenuView();
 				this.contentView = new ContentView();
 			},

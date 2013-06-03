@@ -1,6 +1,6 @@
-define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments/com', 'views/comments/com-form', 'models/com', 'text!templates/coms-list.html', 'utils/auth' ], 
+define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments/com', 'views/comments/com-form', 'models/com', 'text!templates/coms-list.html', 'models/alert', 'views/utils/progress'], 
 
-	function( $ , _ , Backbone , ComsCollection , ComView, ComFormView, Com, ComListTpl, Auth ){
+	function( $ , _ , Backbone , ComsCollection , ComView, ComFormView, Com, ComListTpl, Alert, ProgressView ){
 
 	var ComsListView = Backbone.View.extend({
 
@@ -20,6 +20,8 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 				data: { 'place._id': this.place.get('_id') },
 				success: function(collec) { this.collectionFetched = true; this.render(); }.bind(this)
 			});
+
+			this.progressView = new ProgressView( {model: new Alert({id: 'place', status: 'progress', msg: 'Loading comment...'}) } );
 
 			this.listenTo(this.comsCollection, 'add', this.addComView);
 			this.listenTo(this.comsCollection, 'remove', this.removeComView);
@@ -53,10 +55,6 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 				place: {
 					_id: this.place.get('_id'),
 					name: this.place.get('name')
-				}, 
-				user: {
-					_id: Auth.getUserId(),
-					name: Auth.getUserName()
 				}
 			});
 
@@ -80,7 +78,8 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 				}, this);
 			}
 			else {
-				this.$el.append( 'Loading comments...' );
+				this.$el.html( this.progressView.el );
+				this.progressView.render();
 			}
 
 			this.$el.append( this.template( { parentName: this.place.get('name') }) );

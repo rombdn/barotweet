@@ -8,7 +8,7 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'models/com', 't
 			template: _.template( Tpl ),
 
 			//editable inputs
-			inputs: [ 'text' ],
+			inputs: [ 'text', 'userName' ],
 
 			customEvents: {
 				save: 'form:com-save',

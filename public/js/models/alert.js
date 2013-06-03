@@ -7,8 +7,6 @@ define(function(require, exports, module){
 
 	var Model = Backbone.Model.extend({
 
-		idAttribute: '_id',
-
 		defaults: {
 			id: 'default',
 			msg: 'Warning',
