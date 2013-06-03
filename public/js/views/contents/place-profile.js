@@ -1,10 +1,9 @@
 define(['jquery', 'underscore', 'backbone', 
 	'views/maps/map',
 	'models/place', 'views/places/place', 
-	'views/events/event', 
 	'views/comments/coms-list'],
 
-	function( $ , _ , Backbone , MapView, Place, PlaceView, EventView, ComsListView){
+	function( $ , _ , Backbone , MapView, Place, PlaceView, ComsListView){
 
 
 		var ProfileView = Backbone.View.extend({

@@ -1,18 +1,20 @@
-<form id="form-place" action="#">
-    <fieldset>
-        <legend>Add Comment</legend>
-
-        <div class="control-group" id="control-group-name">
-            <label class="control-label" for="name">Text</label>
-            <div class="controls">
-                <input id="text" type="text" class="input-medium">
-            </div>
+<form class="form-inline">
+    <div class="control-group" id="control-group-userName">
+        <label class="control-label" for="userName">User name</label>
+        <div class="controls">
+            <input id="userName" type="text" class="input-medium" placeholder="<%= userName %>">
         </div>
+    </div>
 
-        <div>
-            <button type="submit" class="btn btn-primary" id="save">Save</button>
-            <button type="submit" class="btn" id="cancel">Cancel</button>
+    <div class="control-group" id="control-group-text">
+        <label class="control-label" for="userName">Comment</label>
+        <div class="controls">
+            <textarea id="text" rows="2" placeholder="<%= text %>"></textarea>
         </div>
+    </div>
 
-    </fieldset>
+    <div>
+        <button type="submit" class="btn btn-primary" id="save">Save</button>
+        <button type="submit" class="btn" id="cancel">Cancel</button>
+    </div>
 </form>

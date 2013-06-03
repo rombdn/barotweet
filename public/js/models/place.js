@@ -4,8 +4,6 @@ define(function(require, exports, module){
 
 	var _ = require('underscore');
 	var Backbone = require('backbone');
-	var PEvent = require('models/pevent');
-	//var Map = require('models/map');
 
 	var Place = Backbone.Model.extend({
 
@@ -28,26 +26,7 @@ define(function(require, exports, module){
 		},
 
 		initialize: function() {
-			//this.map = new Map();
 		},
-/*
-		save: function(attr, options) {
-			
-			console.log('save go' + attr.lat + ' ' + attr.lon);
-
-			if(attr.lat == 0 || attr.lon == 0) {
-				this.map.geoCode(attr.address, 
-					_.bind(function(data) {
-						attr.lat = data[0].lat;
-						attr.lon = data[0].lon;
-						console.log(attr);
-						//Backbone.Model.prototype.save.call(this, attr, options);
-					}, this),
-					function() { console.log('Error: geocode failed'); }
-				);
-			}
-		},
-*/
 
 		validate: function(attr) {
 			var errors = [];
@@ -112,7 +91,7 @@ define(function(require, exports, module){
 
 			//===
 
-			if(attr.lat == 0 || attr.lon == 0) {
+			if(attr.lat === 0 || attr.lon === 0) {
 				errors.push({name: 'position', message: "position cannot be 0"});
 			}
 

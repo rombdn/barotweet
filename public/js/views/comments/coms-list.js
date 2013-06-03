@@ -51,12 +51,16 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 		showComForm: function(e) {
 			e.preventDefault();
 
+			//if(this.comFormView) { return; }
+
 			this.newCom = new Com( { 
 				place: {
 					_id: this.place.get('_id'),
 					name: this.place.get('name')
 				}
 			});
+
+			console.log(this.newCom);
 
 			this.comsCollection.add(this.newCom);
 
@@ -67,9 +71,12 @@ define([ 'jquery', 'underscore', 'backbone', 'collections/coms', 'views/comments
 
 		render: function(){
 			this.$el.empty();
-
-			//if(this.comFormView) { this.comFormView.remove(); }
-
+/*
+			if(this.comFormView) { 
+				this.comFormView.remove();
+				delete this.comFormView;
+			}
+*/
 			if(this.collectionFetched) {
 				_.each(this.views, function(view){
 					this.$el.append( view.el );
