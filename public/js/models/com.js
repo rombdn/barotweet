@@ -10,6 +10,7 @@ define(function(require, exports, module){
 	var Com = Backbone.Model.extend({
 
 		idAttribute: '_id',
+		urlRoot: '/coms',
 
 		defaults: {
 			userName: '',

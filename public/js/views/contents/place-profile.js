@@ -48,11 +48,6 @@ define(['jquery', 'underscore', 'backbone',
 
 				//coms
 				this.comsListView = new ComsListView({place: this.place});
-
-
-				//events
-				this.listenTo(Backbone, 'com:click', this.destroyCom);
-				//Backbone.on('com:click', this.destroyCom, this);
 			},
 /*
 			initPostFetch: function() {
@@ -88,13 +83,7 @@ define(['jquery', 'underscore', 'backbone',
 				//this.mapView.remove();
 
 				Backbone.View.prototype.remove.call(this);
-			},
-
-
-			destroyCom: function(com) {
-				com.destroy({wait: true});
 			}
-
 		});
 
 		return ProfileView;

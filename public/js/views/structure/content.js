@@ -1,6 +1,6 @@
-define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place', 'views/contents/place-profile', 'views/utils/alerts'],
+define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/map', 'models/place', 'views/contents/place-profile', 'views/utils/alerts', 'models/alert'],
 
-	function( $ , _ , Backbone , PlaceCollection, MapView, Place, PlaceProfileView, AlertHandler ){
+	function( $ , _ , Backbone , PlaceCollection, MapView, Place, PlaceProfileView, AlertHandler, Alert ){
 
 		var View = Backbone.View.extend({
 
@@ -11,6 +11,16 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 			initialize: function(){
 				this.alertHandler = new AlertHandler({eventListened: 'alert-top'});
 				this.mapView = new MapView();
+				
+				Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'progress', msg: 'Loading places...'}));
+				this.placeCollection = new PlaceCollection();
+				this.placeCollection.fetch({
+					success: function() {
+						this.mapView.displayMarkers(this.placeCollection);
+						Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'remove' }));
+					}.bind(this)
+				});
+
 				this.setEventListeners();
 			},
 
@@ -25,23 +35,26 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 					this.placeProfileView.remove();
 				}
 
-				this.place = new Place(({_id: placeId}));
+				this.place = this.placeCollection.get(placeId);/*new Place(({_id: placeId}));*/
 				this.placeProfileView = new PlaceProfileView({model: this.place});
-				this.place.fetch();
+				//this.place.fetch();
 
 				this.$el.append( this.placeProfileView.el );
 				this.placeProfileView.render();
 			},
 
 			render: function(){
+				this.$el.empty();
+
 				this.$el.append( this.alertHandler.el );
 				this.alertHandler.render();
 				
-				this.$el.append( this.mapView.el );
-				this.mapView.render();
+				if(this.mapView) {
+					this.$el.append( this.mapView.el );
+					this.mapView.render();
+					this.mapView.map.locate();
+				}
 					
-				this.mapView.map.locate();
-
 				return this;
 			}
 		});

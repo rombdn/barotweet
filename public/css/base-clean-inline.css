@@ -1,4 +1,5 @@
 /* body et navbar */
+
 body {
 	padding-top: 60px;
 }
@@ -153,12 +154,12 @@ hr {
 
 
 /* comment */
-
+/*
 .comment-button {
     text-align: right;
     margin-bottom: 10px;
 }
-
+*/
 .com-img {
   width: 30px;
   height: 30px;

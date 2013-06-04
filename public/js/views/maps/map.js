@@ -11,9 +11,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 
 			initialize: function(options) {
 				this.map = new Map();
-				this.placeCollection = new PlaceCollection();
 
-				this.loadMarkers();
 				this.setListeners();
 			},
 
@@ -39,20 +37,22 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				//default position (paris center)
 				this.map.gotoPosition([48.85293755, 2.35005223818182]);
 
+				//this.displayMarkers();
+
 				return this;
 			},
-
+/*
 			loadMarkers: function() {
 				Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'progress', msg: 'Loading places...'}));
 				this.placeCollection.fetch({
 					success: this.displayMarkers.bind(this)
 				});
 			},
-
+*/
 			//get places coords to create map markers
 			//todo: neighborhood filter
-			displayMarkers: function() {
-				this.placeCollection.models.forEach(function(model) {
+			displayMarkers: function(placeCollection) {
+				placeCollection.models.forEach(function(model) {
 					
 					var placeProfileLink = $('<a href="#" class="map-popup-link" data-place-id="' + model.get('_id') + '">' + model.get('name') + '</a>').click(function(e){
 						Backbone.trigger('map:popup-click', $(e.target).data('placeId'));
@@ -69,8 +69,7 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 
 				}, this);
 
-				Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'remove' }));
-
+				//Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'remove' }));
 			},
 
 			remove: function() {

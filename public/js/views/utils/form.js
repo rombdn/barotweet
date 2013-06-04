@@ -99,12 +99,15 @@ define(['jquery', 'underscore', 'backbone'],
 					success: _.bind(function(model, response) {
 						console.log('FORM: save ok: ' + model.toJSON());
 
+						this.trigger('form:save');
 						//this.eventSaved();
+						/*
 						this.remove();
 						
 						if(this.customEvents.save) {
 							Backbone.trigger(this.customEvents.save, this.model);
 						}
+						*/
 
 					}, this),
 
@@ -117,7 +120,9 @@ define(['jquery', 'underscore', 'backbone'],
 
 			clickCancel: function(e) { 
 				e.preventDefault();
-				
+
+				this.trigger('form:cancel');
+/*				
 				if(this.customEvents.cancel) {
 					Backbone.trigger(this.customEvents.cancel, this.model);
 				}
@@ -127,15 +132,7 @@ define(['jquery', 'underscore', 'backbone'],
 				
 				this.remove();
 				//this.eventCanceled(); 
-			},
-
-			clickDelete: function(e) { 
-				e.preventDefault();
-
-				if(this.customEvents.remove) {
-					Backbone.trigger(this.customEvents.remove, this.model);
-				}
-				//this.eventDeleted();
+*/
 			}
 
 		});
