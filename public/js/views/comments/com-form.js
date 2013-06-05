@@ -8,13 +8,9 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'models/com', 't
 			template: _.template( Tpl ),
 
 			//editable inputs
-			inputs: [ 'text', 'userName' ],
+			inputs: [ 'text', 'userName' ]
 
-			customEvents: {
-				save: 'form:com-save',
-				remove: 'form:com-remove',
-				cancel: 'form:com-cancel'
-			}
+
 /*
 
 			eventSaved: function() {

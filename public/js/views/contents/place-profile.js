@@ -11,65 +11,21 @@ define(['jquery', 'underscore', 'backbone',
 			constructorName: 'ProfileView',
 			tagname: 'div',
 			className: 'profile-all',
-			//template: _.template( profileAllTpl ),
 
-			initialize: function(options){
-/*				
-				//map
-				this.mapPositioned = false;
-				this.mapView = new MapView();
-*/
-
-				//place
-				if(options._id || options._modelId) {
-					this.place = new Place({'_id': options._id});
-					this.place.fetch(/*{
-						success: _.bind(this.initPostFetch, this)
-					}*/);
-				}
-				//or if whole model is given
-				else if (options.place) {
-					this.place = options.place;
-					this.mapView.setPosition([this.place.get('lat'), this.place.get('lon')]);
-					this.mapPositioned = true;
-				}
-				else if (this.model) {
-					this.place = this.model;
-				}
-				else {
-					throw 'ERROR Profile: no place specified';
-				}
-
+			initialize: function(){
+				if(!this.model) throw "No place for profile";
+				
+				this.place = this.model;
 				this.placeView = new PlaceView({model: this.place});
 
-				//events
-				//this.eventView = new EventView({place: this.place});
-
-
-				//coms
 				this.comsListView = new ComsListView({place: this.place});
 			},
-/*
-			initPostFetch: function() {
-				console.log('post fetch');
-				this.mapView.setPosition([this.place.get('lat'), this.place.get('lon')]);
-				this.mapPositioned = true;
-				this.mapView.render();
-			},
-*/
+
 			render: function(){
-				//this.$el.append(this.mapView.el);
 				this.$el.append(this.placeView.el);
-				//this.$el.append( this.eventView.el );
 				this.$el.append( this.comsListView.el );
 
-/*
-				if(this.mapPositioned)
-					this.mapView.render();
-*/				
-
 				this.placeView.render();
-				//this.eventView.render();
 				this.comsListView.render();				
 
 				return this;
@@ -78,9 +34,7 @@ define(['jquery', 'underscore', 'backbone',
 
 			remove: function() {
 				this.placeView.remove();
-				//this.eventView.remove();
 				this.comsListView.remove();
-				//this.mapView.remove();
 
 				Backbone.View.prototype.remove.call(this);
 			}

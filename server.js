@@ -38,7 +38,8 @@ db.open(function(err, db) {
 
 //network simulation
 function delay(req, res, next) {
-	setTimeout(next, Math.random()*1000+200);
+	//setTimeout(next, Math.random()*1000+200);
+	next();
 }
 
 

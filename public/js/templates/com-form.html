@@ -1,20 +1,25 @@
-<form class="form-horizontal">
-    <div class="control-group" id="control-group-userName">
-        <label class="control-label" for="userName">User name</label>
-        <div class="controls">
-            <input id="userName" type="text" class="input-small" placeholder="<%= userName %>">
-        </div>
-    </div>
+<div style="width: 90%; position: fixed; bottom: 0px; background-color: #fff; z-index: 5;" >
+    <hr style="margin-top: 0px;">
 
-    <div class="control-group" id="control-group-text">
-        <label class="control-label" for="userName">Comment</label>
-        <div class="controls">
-            <textarea id="text" rows="2" placeholder="<%= text %>"></textarea>
+    <form class="form-horizontal" style="margin: 0;">
+        <div class="control-group" id="control-group-userName" style="margin-bottom: 5px;">
+            <div class="controls">
+                <div class="input-prepend">
+                    <div class="add-on" style="width: 50px; padding: 0px 5px 0px 5px; font-size: 10px;">Name</div>
+                    <input id="userName" type="text" class="input-mini" style="height: 12px; font-size: 10px;" size="5" placeholder="<%= userName %>">
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="control-group" id="control-group-text" style="margin-bottom: 5px;">
+            <div class="controls">
+                <div class="input-prepend">
+                    <div class="add-on" style="width: 50px; padding: 0px 5px 0px 5px; font-size: 10px;">Message</div>
+                    <input id="text" type="text" class="input-medium" style="height: 12px; font-size: 10px;" size="25" placeholder="<%= text %>">
+                </div>
+                <button type="button" class="btn btn-primary" id="save" style="float: right; padding: 0px 5px 0px 5px; font-size: 10px;">Reply</button>
+            </div>
+        </div>
 
-    <div>
-        <button type="submit" class="btn btn-primary" id="save">Save</button>
-        <button type="submit" class="btn" id="cancel">Cancel</button>
-    </div>
-</form>
+
+    </form>
+</div>

@@ -6,37 +6,33 @@ define([ 'jquery', 'underscore', 'backbone',
 	var ComsListView = Backbone.View.extend({
 
 		tagName: "div",
-		comListTpl: _.template(ComListTpl),
-		addBtnTpl: _.template(AddBtnTpl),
-
-
-		events: {
-			'click #comment-add': 'showComForm'
-		},
 
 		initialize: function(options) {
 			this.views = [];
 			this.place = options.place;
 			this.comsCollection = new ComsCollection();
-			this.progressView = new ProgressView( {model: new Alert({id: 'place', status: 'progress', msg: 'Loading comment...'}) } );
-
+			this.progressView = new ProgressView( {model: new Alert({id: 'places', status: 'progress', msg: 'Loading comments...'}) } );
 
 			this.comsCollection.fetch({ 
 				data: { 'place._id': this.place.get('_id') },
-				success: function(collec) {
-					collec.models.forEach(function(com) {
-						this.views.push( new ComView({model: com}));
-					}, this);
-					this.collectionFetched = true;
-					this.render();
-				}.bind(this)
+				success: function() { this.progressView.remove(); this.fetched = true; this.render();}.bind(this)
 			});
+
+			this.listenTo(this.comsCollection, 'add', this.addCom);
 		},
 
-		showComForm: function(e) {
-			e.preventDefault();
+		addCom: function(com) {
+			var newView = new ComView({model: com});
+			this.views.push( newView );
+			this.$el.children('.com-list').append( newView.el );
+			newView.render();
+		},
 
-			if(this.comFormView) { return; }
+		newForm: function() {
+			if(this.comFormView) {
+				this.stopListening(this.comFormView);
+				this.comFormView.remove();
+			}
 
 			var newCom = new Com( { 
 				place: {
@@ -51,31 +47,19 @@ define([ 'jquery', 'underscore', 'backbone',
 
 			this.listenTo(this.comFormView, 'form:save', function() {
 				this.comsCollection.add(newCom);
-				this.views.push( new ComView({model: newCom}));
-				this.render();
-			});
-
-			this.listenTo(this.comFormView, 'form:save form:cancel', function() {
-				this.comFormView.remove();
-				delete this.comFormView;
+				this.newForm();
 			});
 		},
 
 		render: function(){
-			this.$el.empty();
-
-			if(this.collectionFetched) {
-				_.each(this.views, function(view){
-					this.$el.append( view.el );
-					view.render();
-					view.delegateEvents(); //this.$el.empty() remove events
-				}, this);
-
-				this.$el.append( this.comListTpl( /*{ parentName: this.place.get('name') }*/) );
+			if(!this.fetched) {
+				this.$el.append( this.progressView.el );
+				this.progressView.render();
+				//this.$el.append( '<div style="max-height:100px; overflow: auto;" class="com-list"></div>' );
+				this.$el.append( '<div class="com-list"></div>' );
 			}
 			else {
-				this.$el.html( this.progressView.el );
-				this.progressView.render();
+				this.newForm();
 			}
 		},
 
@@ -85,7 +69,6 @@ define([ 'jquery', 'underscore', 'backbone',
 					view.remove();
 				}, this);
 
-				//avoid memory leaks
 				this.views.length = 0;
 			}
 
