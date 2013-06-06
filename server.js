@@ -38,10 +38,14 @@ db.open(function(err, db) {
 
 //network simulation
 function delay(req, res, next) {
-	//setTimeout(next, Math.random()*1000+200);
-	next();
+	setTimeout(next, Math.random()*500+200);
+	//next();
 }
 
+app.post('/log', function(req, res) {
+	console.log(req.body);
+	res.send(200);
+});
 
 app.listen(3000);
 console.log("listening on port 3000");

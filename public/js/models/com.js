@@ -18,6 +18,7 @@ define(function(require, exports, module){
 				_id: -1,
 				name: 'unknown'
 			},
+			timestamp: 0,
 			text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus."
 		},
 

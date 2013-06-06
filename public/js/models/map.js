@@ -89,18 +89,20 @@ define(function(require, exports, module){
 		},
 
 		setMarker: function(markerDef) {
-			var marker = L.marker( /*[markerDef.lat, markerDef.lon]*/ [48.85293755, 2.35005223818182] );
-
-			if(markerDef.icon) marker.setIcon(Icons[markerDef.icon]);
-
-			if(markerDef.content) {
-				marker.bindPopup(markerDef.content, {
-					closeButton: false,
-					zoomAnimation: false
-				});
-			}
-
+			//var marker = L.marker( [markerDef.lat, markerDef.lon] );
+			var marker = L.marker( [48.85293755, 2.35005223818182] );
 			marker.addTo(this.leafletMap);
+			
+			marker.bindPopup(
+				markerDef.content,
+				{
+					closeButton: false
+				}
+			);
+
+			if(markerDef.icon) {
+				marker.setIcon(Icons[markerDef.icon]);
+			}
 		},
 
 		removeMap: function() {

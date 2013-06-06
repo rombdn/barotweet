@@ -7,18 +7,38 @@ define([ 'jquery', 'underscore', 'backbone',
 
 		tagName: "div",
 
+		events: {
+			'click #more': 'fetchMore'
+		},
+
 		initialize: function(options) {
 			this.views = [];
 			this.place = options.place;
 			this.comsCollection = new ComsCollection();
+			this.comPage = 0;
 			this.progressView = new ProgressView( {model: new Alert({id: 'places', status: 'progress', msg: 'Loading comments...'}) } );
 
 			this.comsCollection.fetch({ 
-				data: { 'place._id': this.place.get('_id') },
-				success: function() { this.progressView.remove(); this.fetched = true; this.render();}.bind(this)
+				data: { 
+					'page': this.comPage,
+					'place._id': this.place.get('_id') 
+				},
+				success: function() { this.progressView.$el.hide(); this.$el.children('#fetch').show(); this.fetched = true; this.render();}.bind(this)
 			});
 
 			this.listenTo(this.comsCollection, 'add', this.addCom);
+		},
+
+		fetchMore: function() {
+			this.progressView.$el.show();
+			this.comPage += 1;
+			this.comsCollection.fetch({
+				data: {
+					'page': this.comPage,
+					'place._id': this.place.get('_id')
+				},
+				success: function() { this.progressView.$el.hide(); }.bind(this)
+			});
 		},
 
 		addCom: function(com) {
@@ -53,6 +73,8 @@ define([ 'jquery', 'underscore', 'backbone',
 
 		render: function(){
 			if(!this.fetched) {
+				this.$el.append( '<div id="fetch" style="margin-bottom: 5px; text-align: center;"><button type="button" class="btn btn-mini" id="more">Fetch more</button></div>' );				
+				this.$el.children('#fetch').hide();
 				this.$el.append( this.progressView.el );
 				this.progressView.render();
 				//this.$el.append( '<div style="max-height:100px; overflow: auto;" class="com-list"></div>' );

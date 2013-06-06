@@ -26,6 +26,24 @@ Model.prototype.setRoutes = function(app, middleware) {
 
 	console.log('setting routes for ' + this.modelName);
 
+	//optional routes
+	if(this.additionalRoutes) {
+
+		this.additionalRoutes.forEach(function(route) {
+			console.log(route);
+			//route.callback.call(this);
+
+			if(route.method === 'post') {
+				app.post(route.url, mw, route.callback.bind(this));
+			}
+			else if(route.method === 'get') {
+				app.get(route.url, mw, route.callback.bind(this));
+			}
+
+		}, this);
+	}
+
+
 	if(this.authorizedRoutes) {
 		this.authorizedRoutes.forEach(function(routeName) {
 			if(routeName === 'findAll') { app.get('/' + this.modelName, mw, this.findAll); }
@@ -41,24 +59,6 @@ Model.prototype.setRoutes = function(app, middleware) {
 		app.post('/' + this.modelName, mw, this.add);
 		app.put('/' + this.modelName + '/:id', mw, this.update);
 		app.delete('/' + this.modelName + '/:id', mw, this.remove);
-	}
-
-
-	//optional routes
-	if(this.additionalRoutes) {
-
-		this.additionalRoutes.forEach(function(route) {
-			//console.log(route);
-			//route.callback.call(this);
-
-			if(route.method === 'post') {
-				app.post(route.url, mw, route.callback.bind(this));
-			}
-			else if(route.method === 'get') {
-				app.get(route.url, mw, route.callback.bind(this));
-			}
-
-		}, this);
 	}
 };
 
@@ -79,8 +79,8 @@ Model.prototype.findAll = function(req, res) {
 
 					this.db.collection(this.modelName, function(err, collection) {
 
-						var mongoQuery = {}
-						mongoQuery[attr.name] = req.query[attr.name]
+						var mongoQuery = {};
+						mongoQuery[attr.name] = req.query[attr.name];
 
 						if(!attr.uniq) {
 							collection.find( mongoQuery ).toArray(function(err, items) {
@@ -129,6 +129,10 @@ Model.prototype.add = function(req, res) {
 	var model = req.body;
 
 	if(!this.validate(model)) return false;
+
+	if(this.timestamp) {
+		model.timestamp = new Date();
+	}
 
 	this.db.collection(this.modelName, function(err, collection) {
 		collection.insert( model, {safe: true}, function(err, result) {
