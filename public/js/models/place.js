@@ -14,10 +14,6 @@ define(function(require, exports, module){
 		defaults: {
 			pic: "img/place/placeholder.png",
 			name: "Unnamed place",
-			open: '20',
-			close: '2',
-			cocktailPrice: '7.5',
-			beerPrice: '5.5',
 			address: -1,
 			city: 'Paris',
 			country: 'FR',

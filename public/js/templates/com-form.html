@@ -1,25 +1,8 @@
-<div style="width: 90%; position: fixed; bottom: 0px; background-color: #fff; z-index: 5;" >
-    <hr style="margin-top: 0px;">
+<div class="well well-small">
 
-    <form class="form-horizontal" style="margin: 0;">
-        <div class="control-group" id="control-group-userName" style="margin-bottom: 5px;">
-            <div class="controls">
-                <div class="input-prepend">
-                    <div class="add-on" style="width: 50px; padding: 0px 5px 0px 5px; font-size: 10px;">Name</div>
-                    <input id="userName" type="text" class="input-mini" style="height: 12px; font-size: 10px;" size="5" placeholder="<%= userName %>">
-                </div>
-            </div>
-        </div>
-        <div class="control-group" id="control-group-text" style="margin-bottom: 5px;">
-            <div class="controls">
-                <div class="input-prepend">
-                    <div class="add-on" style="width: 50px; padding: 0px 5px 0px 5px; font-size: 10px;">Message</div>
-                    <input id="text" type="text" class="input-medium" style="height: 12px; font-size: 10px;" size="25" placeholder="<%= text %>">
-                </div>
-                <button type="button" class="btn btn-primary" id="save" style="float: right; padding: 0px 5px 0px 5px; font-size: 10px;">Reply</button>
-            </div>
-        </div>
-
-
+    <form class="form-inline">
+        <input id="userName" class="user-name" type="text" maxlength="30" placeholder="Name">
+        <textarea id="text" class="comment-body" type="text" row="1" placeholder="Comment... (142 characters max)"></textarea>
+        <button type="button" class="btn btn-primary" data-loading-text="Saving..." id="save">Reply</button>
     </form>
 </div>

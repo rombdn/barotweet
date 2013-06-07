@@ -1,27 +1,29 @@
-<div style="float: left;">
-   <img class="com-img" src="img/heman.jpg">
+<div class="picture-container">
+   <img class="user-picture" src="img/heman.jpg">
 </div>
 
-<div style="float: left; margin-left: 5px;">
+<div class="comment-details">
     <strong><%= userName %></strong>
-    <span class="muted"><small>
-        <% 
-            var time = Math.round(new Date().getTime() / 1000) - parseInt(_id.slice(0,8), 16);
-            var minutes = Math.round(time / 60);
-            var hours = Math.round(minutes / 60);
-            var days = Math.round(hours / 24);
+    <span class="muted">
+        <small>
+            <% 
+                var time = Math.round(new Date().getTime() / 1000) - parseInt(_id.slice(0,8), 16);
+                var minutes = Math.round(time / 60);
+                var hours = Math.round(minutes / 60);
+                var days = Math.round(hours / 24);
 
-            if(days > 0)
-                readableDate = days + ' days';
-            else if(hours > 0)
-                readableDate = hours + ' hours';
-            else if(minutes > 0)
-                readableDate = minutes + ' minutes';
-            else
-                readableDate = time + ' seconds';
-        %>
-        <%= readableDate %> ago
-    </span></small>
+                if(days > 0)
+                    readableDate = days + ' days';
+                else if(hours > 0)
+                    readableDate = hours + ' hours';
+                else if(minutes > 0)
+                    readableDate = minutes + ' minutes';
+                else
+                    readableDate = time + ' seconds';
+            %>
+            <%= readableDate %> ago
+        </small>
+    </span>
     <br>
     <%= text %>
 </div>

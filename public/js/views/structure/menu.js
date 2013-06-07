@@ -9,16 +9,8 @@ define(['jquery', 'underscore', 'backbone',
 			className: 'navbar navbar-inverse navbar-fixed-top',
 			template: _.template(Tpl),
 
-			initialize: function() {
-				this.listenTo(Backbone, 'auth:logged', this.render);
-			},
-
 			render: function() {
-				if(Auth.isLogged())
-					this.$el.html(this.template({user: Auth.getUserName()}));
-				else
-					this.$el.html(this.template({user: 'not identified'}));
-
+				this.$el.html(this.template());
 			}
 		});
 

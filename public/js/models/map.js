@@ -44,7 +44,7 @@ define(function(require, exports, module){
 		},
 
 		locFound: function(data) {
-			this.setView(data.latlng.lat, data.latlng.lng);
+			//this.setView(data.latlng.lat, data.latlng.lng);
 			this.setMarker({
 				lat: data.latlng.lat, 
 				lon: data.latlng.lng, 

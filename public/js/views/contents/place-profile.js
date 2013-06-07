@@ -10,15 +10,13 @@ define(['jquery', 'underscore', 'backbone',
 
 			constructorName: 'ProfileView',
 			tagname: 'div',
-			className: 'profile-all',
+			className: '',
 
 			initialize: function(){
 				if(!this.model) throw "No place for profile";
 				
-				this.place = this.model;
-				this.placeView = new PlaceView({model: this.place});
-
-				this.comsListView = new ComsListView({place: this.place});
+				this.placeView = new PlaceView({model: this.model});
+				this.comsListView = new ComsListView({place: this.model});
 			},
 
 			render: function(){
@@ -26,7 +24,7 @@ define(['jquery', 'underscore', 'backbone',
 				this.$el.append( this.comsListView.el );
 
 				this.placeView.render();
-				this.comsListView.render();				
+				this.comsListView.render();
 
 				return this;
 			},

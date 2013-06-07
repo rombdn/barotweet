@@ -1,51 +1,58 @@
 define([ 'jquery', 'underscore', 'backbone', 
-	'collections/coms', 'views/comments/com', 'views/comments/com-form', 'models/com', 'text!templates/com-button.html', 'models/alert', 'views/utils/progress', 'text!templates/com-list.html'], 
+	'collections/coms', 'views/comments/com', 'views/comments/com-form', 'models/com', 'models/alert', 'views/utils/progress', 'text!templates/com-list.html', 'views/comments/button-fetch'], 
 
-	function( $ , _ , Backbone , ComsCollection , ComView, ComFormView, Com, AddBtnTpl, Alert, ProgressView, ComListTpl ){
+	function( $ , _ , Backbone , ComsCollection , ComView, ComFormView, Com, Alert, ProgressView, Tpl, ButtonFetchView ){
 
 	var ComsListView = Backbone.View.extend({
 
-		tagName: "div",
-
-		events: {
-			'click #more': 'fetchMore'
-		},
+		className: "comment-list",
+		template: _.template(Tpl),
 
 		initialize: function(options) {
 			this.views = [];
 			this.place = options.place;
 			this.comsCollection = new ComsCollection();
 			this.comPage = 0;
+			
 			this.progressView = new ProgressView( {model: new Alert({id: 'places', status: 'progress', msg: 'Loading comments...'}) } );
+			this.buttonFetchView = new ButtonFetchView();
 
 			this.comsCollection.fetch({ 
 				data: { 
 					'page': this.comPage,
 					'place._id': this.place.get('_id') 
 				},
-				success: function() { this.progressView.$el.hide(); this.$el.children('#fetch').show(); this.fetched = true; this.render();}.bind(this)
+				success: function() { 
+					this.render("commentsFetched"); 
+				}.bind(this)
 			});
 
 			this.listenTo(this.comsCollection, 'add', this.addCom);
+			this.listenTo(this.comsCollection, 'reset', this.addAllCom);
+			this.listenTo(this.buttonFetchView, 'click-button-fetch', this.fetchMore);
 		},
 
 		fetchMore: function() {
-			this.progressView.$el.show();
+			this.buttonFetchView.loadingState();
 			this.comPage += 1;
 			this.comsCollection.fetch({
 				data: {
 					'page': this.comPage,
 					'place._id': this.place.get('_id')
 				},
-				success: function() { this.progressView.$el.hide(); }.bind(this)
+				success: function() { this.buttonFetchView.resetState(); }.bind(this)
 			});
 		},
 
 		addCom: function(com) {
 			var newView = new ComView({model: com});
 			this.views.push( newView );
-			this.$el.children('.com-list').append( newView.el );
+			this.$el.children('.list').append( newView.el );
 			newView.render();
+		},
+
+		addAllCom: function(collection) {
+			collection.models.forEach( this.addCom, this );
 		},
 
 		newForm: function() {
@@ -66,26 +73,39 @@ define([ 'jquery', 'underscore', 'backbone',
 			this.comFormView.render();
 
 			this.listenTo(this.comFormView, 'form:save', function() {
-				this.comsCollection.add(newCom);
+				this.removeViews();
+				this.progressView.$el.show();
+				this.comsCollection.fetch({
+					data: {
+						'page': 0,
+						'place._id': this.place.get('_id')
+					},
+					reset: true,
+					success: function() { this.progressView.$el.hide(); }.bind(this)
+				});
 				this.newForm();
 			});
 		},
 
-		render: function(){
-			if(!this.fetched) {
-				this.$el.append( '<div id="fetch" style="margin-bottom: 5px; text-align: center;"><button type="button" class="btn btn-mini" id="more">Fetch more</button></div>' );				
-				this.$el.children('#fetch').hide();
+		render: function(action){
+			if(!action) {
 				this.$el.append( this.progressView.el );
 				this.progressView.render();
-				//this.$el.append( '<div style="max-height:100px; overflow: auto;" class="com-list"></div>' );
-				this.$el.append( '<div class="com-list"></div>' );
+				
+				this.$el.append( this.template() );
+				
+				this.$el.append( this.buttonFetchView.el );				
+				this.buttonFetchView.render();
+				this.buttonFetchView.$el.hide();
 			}
 			else {
+				this.progressView.$el.hide(); 
+				this.buttonFetchView.$el.show(); 
 				this.newForm();
 			}
 		},
 
-		remove: function() {
+		removeViews: function() {
 			if(this.views.length > 0) {
 				_.each(this.views, function(view){
 					view.remove();
@@ -93,6 +113,10 @@ define([ 'jquery', 'underscore', 'backbone',
 
 				this.views.length = 0;
 			}
+		},
+
+		remove: function() {
+			this.removeViews();
 
 			Backbone.View.prototype.remove.call(this);
 		}

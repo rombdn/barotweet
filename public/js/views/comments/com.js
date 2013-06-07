@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'backbone', 'models/user', 'text!templates/com.h
 		var ComView = Backbone.View.extend({
 
 			tagname: 'div',
-			className: 'row-fluid profile',
+			className: 'row-fluid comment',
 			template: _.template( Tpl ),
 
 			initialize: function() {

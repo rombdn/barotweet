@@ -50,7 +50,7 @@ define(['jquery', 'underscore', 'backbone'],
 				//set alone doesnt fire invalid event
 				//and {validate: true} cause save to pass in every case...
 				//so we simply use isValid instead of {validate: true} in set
-				this.model.isValid();
+				return this.model.isValid();
 			},
 
 			//called by checkForm
@@ -93,13 +93,17 @@ define(['jquery', 'underscore', 'backbone'],
 				if(e !== undefined) e.preventDefault();
 				console.log('saving');
 				//just to be sure the values are set
-				this.checkForm();
+				if(!this.checkForm()) return;
+
+				this.$('#save').button('loading');
 
 				this.model.save(this.data, {
 					success: _.bind(function(model, response) {
 						console.log('FORM: save ok: ' + model.toJSON());
 
 						this.trigger('form:save');
+
+						this.$('#save').button('reset');
 						//this.eventSaved();
 						/*
 						this.remove();

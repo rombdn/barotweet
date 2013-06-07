@@ -4,7 +4,7 @@ define(['jquery', 'underscore', 'backbone', 'views/utils/form', 'models/com', 't
 
 		var ComFormView = FormView.extend({
 
-			className: 'row-fluid form-event',
+			className: 'row-fluid form-container',
 			template: _.template( Tpl ),
 
 			//editable inputs

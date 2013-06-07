@@ -5,11 +5,6 @@ define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu
 
 			el: $('body'),
 
-			events: {
-				'click #home': 'navigHome',
-				'click #locate': 'clickLocate'
-			},
-
 			initialize: function() {
 				this.menuView = new MenuView();
 				this.contentView = new ContentView();
@@ -23,14 +18,6 @@ define( [ 'jquery', 'underscore', 'backbone', 'bootstrap', 'views/structure/menu
 
 				this.menuView.render();
 				this.contentView.render();
-			},
-
-			navigHome: function() {
-				this.contentView.navigWall();
-			},
-
-			clickLocate: function() {
-				Backbone.trigger('menu:locate');
 			}
 		});
 

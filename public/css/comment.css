@@ -1,0 +1,111 @@
+.comment .picture-container {
+    float: left;
+}
+
+.comment .comment-details {
+    float: left; 
+    margin-left: 1em;
+}
+
+@media (min-width: 768px) {
+    .comment {
+        margin-bottom: 1.5em;
+    }
+
+    .comment .user-picture {
+        width: 4em;
+        height: 4em;
+    }
+}
+
+@media (max-width: 767px) {
+    .comment {
+        margin-bottom: 1em;
+        font-size: 0.9em;
+    }
+
+    .comment .user-picture {
+        width: 3em;
+        height: 3em;
+    }
+}
+
+
+/*** FETCH BUTTON ***/
+.comment .fetch-button-container {
+    margin-top: 1em;
+}
+
+
+/*** FORM ***/
+
+.comment-list .form-container {
+    width: 100%; 
+    margin: 0; 
+    background-color: #fff; 
+}
+
+.comment-list .form-container .well {
+     margin-bottom: 0;
+}
+
+.comment-list form .user-name {
+    width: 20%;
+}
+
+.comment-list form .comment-body {
+    width: 50%; 
+    resize: none;
+}
+
+.comment-list form button {
+    float: right; 
+    width: 15%
+}
+
+.comment-list form {
+     margin: 0;
+}
+
+@media (min-width: 768px) {
+    .comment-list form .comment-body {
+        height: 20px; 
+        line-height: 20px; 
+        margin-left: 2em;
+    }
+
+    .comment-list .form-container {
+        margin-top: 30px;
+    }
+
+    .comment-list .form-container .well {
+        padding: 19px;
+    }
+}
+
+
+@media (max-width: 767px) {
+    .comment-list form .user-name {
+        height: 12px; 
+        line-height: 12px; 
+        font-size: 10px; 
+        width: 20%;
+    }
+
+    .comment-list form .comment-body {
+        height: 12px; 
+        line-height: 12px; 
+        font-size: 10px;
+    }
+    .comment-list form button {
+        padding: 0 5px 0 5px; 
+        font-size: 12px; 
+    }
+
+    .comment-list .form-container {
+        position: fixed; 
+        left: 0; 
+        bottom: 0;
+        z-index: 10;
+    }
+}
