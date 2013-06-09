@@ -24,7 +24,9 @@ define(function(require, exports, module){
 			this.leafletMap = L.map(htmlelement);
 
 			this.layer = L.tileLayer(
-				'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+				'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',
+				//'http://a.tile.openstreetmap.org/$%7Bz%7D/$%7Bx%7D/$%7By%7D.png',
+				//'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 				{
 					attribution: '&copy; OpenStreetMap'
 				}

@@ -1,6 +1,6 @@
 @media (min-width: 768px) {
     .map { 
-        height: 20em;
+        height: 25em;
         margin-bottom: 2em;
     }
 }
@@ -8,7 +8,7 @@
 
 @media (max-width: 767px) {
     .map { 
-        height: 12em;
+        height: 14em;
         margin-bottom: 1em;
     }
 }
