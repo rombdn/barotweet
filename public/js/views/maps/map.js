@@ -35,9 +35,11 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 				this.map.setLeafletMap('map');
 
 				//default position (paris center)
-				this.map.gotoPosition([48.85293755, 2.35005223818182]);
+				//this.map.gotoPosition([48.85293755, 2.35005223818182]);
 
 				//this.displayMarkers();
+
+				//this.map.getNewPlaces();
 
 				return this;
 			},

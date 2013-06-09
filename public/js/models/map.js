@@ -34,6 +34,7 @@ define(function(require, exports, module){
 			//events
 			this.leafletMap.on('locationfound', this.locFound, this);
 			this.leafletMap.on('locationerror', this.locError, this);
+			this.leafletMap.on('zoomend', this.getNewPlaces, this);
 			this.layer.on('loading', function() { Backbone.trigger('map:loading'); });
 			this.layer.on('load', function() { Backbone.trigger('map:loaded'); });
 		},
@@ -44,18 +45,19 @@ define(function(require, exports, module){
 		},
 
 		locFound: function(data) {
-			//this.setView(data.latlng.lat, data.latlng.lng);
+			this.setView(data.latlng.lat, data.latlng.lng);
 			this.setMarker({
 				lat: data.latlng.lat, 
 				lon: data.latlng.lng, 
 				icon: 'user', 
-				content: "it's me!"});
+				content: "It's you!"});
 			Backbone.trigger('map:located', data);
+			this.getNewPlaces();
 		},
 
 		locError: function(data) {
 			console.log(data);
-			//this.gotoPosition([48.85293755, 2.35005223818182]);
+			this.gotoPosition([48.85293755, 2.35005223818182]);
 			Backbone.trigger('map:locatefail', data);
 		},
 
@@ -89,8 +91,8 @@ define(function(require, exports, module){
 		},
 
 		setMarker: function(markerDef) {
-			//var marker = L.marker( [markerDef.lat, markerDef.lon] );
-			var marker = L.marker( [48.85293755, 2.35005223818182] );
+			var marker = L.marker( [markerDef.lat, markerDef.lon] );
+			//var marker = L.marker( [48.85293755, 2.35005223818182] );
 			marker.addTo(this.leafletMap);
 			
 			marker.bindPopup(
@@ -109,6 +111,35 @@ define(function(require, exports, module){
 			this.leafletMap.closePopup();
 			this.leafletMap.removeLayer(this.layer);
 			delete this.leafletMap;
+		},
+
+		getNewPlaces: function() {
+			var setMarker = this.setMarker.bind(this);
+			var query = 'bar+pub';
+			var limit = 50;
+			var viewbox = this.leafletMap.getBounds()._southWest.lng + ',' +
+							this.leafletMap.getBounds()._southWest.lat + ',' +
+							this.leafletMap.getBounds()._northEast.lng + ',' +
+							this.leafletMap.getBounds()._northEast.lat + ',';
+
+			$.getJSON('http://nominatim.openstreetmap.org/search?q='+query+
+						'&bounded=1&format=json&limit='+limit+'&viewbox='+viewbox, function(result) {
+				$.ajax({
+					type: 'POST',
+					url: '/places/new',
+					data: {
+						placeList: result
+					},
+					success: function(data, status, jqXHR) { 
+						console.log(data);
+						data.forEach(function(place) {
+							setMarker({lat: place.lat, lon: place.lon});
+						}); 
+					},
+					error: function(jqXHR, status, error) { console.log('ko'); }
+				});
+			});
+
 		}
 
 	});

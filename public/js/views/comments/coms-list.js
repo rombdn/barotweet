@@ -100,8 +100,14 @@ define([ 'jquery', 'underscore', 'backbone',
 			}
 			else {
 				this.progressView.$el.hide(); 
-				this.buttonFetchView.$el.show(); 
 				this.newForm();
+
+				if(this.comsCollection.models.length === 0) {
+					this.$el.children('.list').html('<div class="alert alert-info">Be the first to comment!</div>');
+				}
+				else {
+					this.buttonFetchView.$el.show();
+				}
 			}
 		},
 

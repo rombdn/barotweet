@@ -4,16 +4,16 @@ define(['leaflet'],
 		var LeafIcon = L.Icon.extend({
 			options: {
 			    //shadowUrl: 'leaf-shadow.png',
-			    iconSize:     [50, 50],
-			    shadowSize:   [50, 64],
-			    iconAnchor:   [0, 0],
+			    iconSize:     [25, 41],
+			    shadowSize:   [25, 41],
+			    iconAnchor:   [12, 41],
 			    shadowAnchor: [4, 62],
-			    popupAnchor:  [25, 10]
+			    popupAnchor:  [0, 0]
     		}
 		});
 
 		var icons = {
-			user: new LeafIcon({iconUrl: 'img/markers/1up.png'}),
+			user: new LeafIcon({iconUrl: 'img/markers/marker-icon-red.png'}),
 			place: new LeafIcon({iconUrl: 'img/markers/1up.png'})
 		};
 
