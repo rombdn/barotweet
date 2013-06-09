@@ -6,6 +6,7 @@ define(function(require, exports, module){
 	var Backbone = require('backbone');
 	var Leaflet = require('leaflet');
 	var Icons = require('utils/map-markers');
+	var Alert = require('models/alert');
 
 	var Map = Backbone.Model.extend({
 
@@ -52,7 +53,7 @@ define(function(require, exports, module){
 				icon: 'user', 
 				content: "It's you!"});
 			Backbone.trigger('map:located', data);
-			this.getNewPlaces();
+			//this.getNewPlaces();
 		},
 
 		locError: function(data) {
@@ -114,9 +115,10 @@ define(function(require, exports, module){
 		},
 
 		getNewPlaces: function() {
+			Backbone.trigger('alert-top', new Alert({ id: 'mapnewmarkers', status: 'progress', msg: 'Getting new Places...'}));
 			var setMarker = this.setMarker.bind(this);
 			var query = 'bar+pub';
-			var limit = 50;
+			var limit = 10;
 			var viewbox = this.leafletMap.getBounds()._southWest.lng + ',' +
 							this.leafletMap.getBounds()._southWest.lat + ',' +
 							this.leafletMap.getBounds()._northEast.lng + ',' +
@@ -131,14 +133,16 @@ define(function(require, exports, module){
 						placeList: result
 					},
 					success: function(data, status, jqXHR) { 
-						console.log(data);
 						data.forEach(function(place) {
+							console.log(place);
 							var placeProfileLink = $('<a href="#" class="map-popup-link" data-place-id="' + place._id + '">' + place.name + '</a>').click(function(e){
 								Backbone.trigger('map:popup-click', $(e.target).data('placeId'));
 							})[0];
 
 							setMarker({lat: place.lat, lon: place.lon, content: placeProfileLink});
-						}); 
+						});
+						Backbone.trigger('map:newplaces', data);
+						Backbone.trigger('alert-top', new Alert({ id: 'mapnewmarkers', status: 'remove' }));
 					},
 					error: function(jqXHR, status, error) { console.log('ko'); }
 				});

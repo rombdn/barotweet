@@ -45,6 +45,10 @@ define([ 'jquery', 'underscore', 'backbone',
 		},
 
 		addCom: function(com) {
+			if(this.views.length === 0) {
+				//remove the 'be the first...' message
+				this.$el.children('.list').empty();
+			}
 			var newView = new ComView({model: com});
 			this.views.push( newView );
 			this.$el.children('.list').append( newView.el );
@@ -87,8 +91,8 @@ define([ 'jquery', 'underscore', 'backbone',
 			});
 		},
 
-		render: function(action){
-			if(!action) {
+		render: function(initialRender){
+			if(!initialRender) {
 				this.$el.append( this.progressView.el );
 				this.progressView.render();
 				

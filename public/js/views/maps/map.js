@@ -30,29 +30,11 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 
 			render: function(){
 				this.$el.append( this.template() );
-
-				//setLeafletMap must be called after the map div container is rendered
 				this.map.setLeafletMap('map');
-
-				//default position (paris center)
-				//this.map.gotoPosition([48.85293755, 2.35005223818182]);
-
-				//this.displayMarkers();
-
-				//this.map.getNewPlaces();
-
 				return this;
 			},
-/*
-			loadMarkers: function() {
-				Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'progress', msg: 'Loading places...'}));
-				this.placeCollection.fetch({
-					success: this.displayMarkers.bind(this)
-				});
-			},
-*/
+
 			//get places coords to create map markers
-			//todo: neighborhood filter
 			displayMarkers: function(placeCollection) {
 				placeCollection.models.forEach(function(model) {
 					
@@ -70,8 +52,6 @@ define(['jquery', 'underscore', 'backbone', 'leaflet', 'models/map', 'text!templ
 					this.map.setMarker(markerDef);
 
 				}, this);
-
-				//Backbone.trigger('alert-top', new Alert({ id: 'mapmarkers', status: 'remove' }));
 			},
 
 			remove: function() {

@@ -1,22 +1,14 @@
 {
-	"name": "nite!live",
+	"name": "Barotweet",
 	"version": "0.0.1",
 	"private": true,
 	"dependencies": {
 		"requirejs": "latest",
-		"mongodb": "latest",
+		"mongodb": "1.2.8",
 		"underscore": "latest",
 		"backbone": "latest",
-		"amdefine": "latest"
-	},
-	"devDependencies": {
-		"mocha": "latest",
-		"chai": "1.5.0",
-		"grunt": "latest",
-		"grunt-exec": "latest",
-		"grunt-contrib-requirejs": "latest"
-	},
-	"scripts": {
-		"grunt": "node_modules/.bin/grunt"
+		"amdefine": "latest",
+		"express": "latest"
 	}
+	/* export NODE_PATH=`pwd`/public/js */
 }

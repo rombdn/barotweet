@@ -26,6 +26,8 @@ _.extend(Place.prototype, RouteBase.prototype, {
                 var processed = 0;
                 var newlyCreated = [];
 
+                if(!req.body.placeList) return;
+
                 console.log('Nombre a traiter: ' + req.body.placeList.length);
                 req.body.placeList.forEach(function(place) {
                     this.db.collection('places', function(err, collection) {

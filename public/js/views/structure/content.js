@@ -26,6 +26,18 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 
 			setEventListeners: function() {
 				this.listenTo(Backbone, 'map:popup-click', this.loadPlaceProfile);
+				this.listenTo(Backbone, 'map:newplaces', function(newPlaces) {
+					console.log(newPlaces);
+					newPlaces.forEach( function(place) { 
+						this.placeCollection.add(new Place({
+							_id: place._id,
+							name: place.name,
+							lat: place.lat,
+							lon: place.lon,
+							place_id: place.place_id
+						}));
+					}, this);
+				}.bind(this));
 			},
 
 			loadPlaceProfile: function(placeId) {
@@ -35,9 +47,8 @@ define(['jquery', 'underscore', 'backbone', 'collections/places', 'views/maps/ma
 					this.placeProfileView.remove();
 				}
 
-				this.place = this.placeCollection.get(placeId);/*new Place(({_id: placeId}));*/
+				this.place = this.placeCollection.get(placeId);
 				this.placeProfileView = new PlaceProfileView({model: this.place});
-				//this.place.fetch();
 
 				this.$el.append( this.placeProfileView.el );
 				this.placeProfileView.render();

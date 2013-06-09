@@ -18,7 +18,8 @@ define(function(require, exports, module){
 			city: 'Paris',
 			country: 'FR',
 			lat: 0,
-			lon: 0
+			lon: 0,
+			place_id: -1 //OSM Nominatim
 		},
 
 		initialize: function() {
