@@ -133,7 +133,11 @@ define(function(require, exports, module){
 					success: function(data, status, jqXHR) { 
 						console.log(data);
 						data.forEach(function(place) {
-							setMarker({lat: place.lat, lon: place.lon});
+							var placeProfileLink = $('<a href="#" class="map-popup-link" data-place-id="' + place._id + '">' + place.name + '</a>').click(function(e){
+								Backbone.trigger('map:popup-click', $(e.target).data('placeId'));
+							})[0];
+
+							setMarker({lat: place.lat, lon: place.lon, content: placeProfileLink});
 						}); 
 					},
 					error: function(jqXHR, status, error) { console.log('ko'); }

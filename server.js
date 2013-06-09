@@ -36,6 +36,11 @@ db.open(function(err, db) {
 });
 
 
+app.get('*.webapp', function (req, res, next) {
+  res.header('Content-Type', 'application/x-web-app-manifest+json');
+  next();
+});
+
 //network simulation
 function delay(req, res, next) {
 	setTimeout(next, Math.random()*500+200);
@@ -47,5 +52,5 @@ app.post('/log', function(req, res) {
 	res.send(200);
 });
 
-app.listen(3000);
+app.listen(3001);
 console.log("listening on port 3000");
