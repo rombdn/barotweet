@@ -4,9 +4,10 @@ define(function(require, exports, module){
 
 	var _ = require('underscore');
 	var Backbone = require('backbone');
-	var Leaflet = require('leaflet');
+	var LeafletLS = require('../../lib/leaflet.restoreview');
 	var Icons = require('utils/map-markers');
 	var Alert = require('models/alert');
+
 
 	var Map = Backbone.Model.extend({
 
@@ -21,9 +22,9 @@ define(function(require, exports, module){
 		},
 
 		setLeafletMap: function(htmlelement) {
-			this.leafletMap = L.map(htmlelement);
+			this.leafletMap = LeafletLS.map(htmlelement);
 
-			this.layer = L.tileLayer(
+			this.layer = LeafletLS.tileLayer(
 				'http://{s}.tile.stamen.com/watercolor/{z}/{x}/{y}.jpg',
 				//'http://a.tile.openstreetmap.org/$%7Bz%7D/$%7Bx%7D/$%7By%7D.png',
 				//'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
@@ -46,16 +47,27 @@ define(function(require, exports, module){
 			this.leafletMap.locate({setView: false, maxZoom: this.zoom, timeout: 2000});
 			Backbone.trigger('map:locating');
 		},
-
+/*
+		isInViewbox: function(latLng) {
+			return latLng.lng >= this.leafletMap.getBounds()._southWest.lng &&
+					latLng.lng <= this.leafletMap.getBounds()._northEast.lng &&
+					latLng.lat >= this.leafletMap.getBounds()._southWest.lat &&
+					latLng.lat <= this.leafletMap.getBounds()._northEast.lat;
+		},
+*/
 		locFound: function(data) {
-			this.setView(data.latlng.lat, data.latlng.lng);
+			//if(data.latlng in lastviewboxstoredinlocalstorage) {
+			//	getTilesFromlocalStorage
+			//}
+			//else {
+				this.setView(data.latlng.lat, data.latlng.lng);
+			//}
 			this.setMarker({
 				lat: data.latlng.lat, 
 				lon: data.latlng.lng, 
 				icon: 'user', 
 				content: "It's you!"});
 			Backbone.trigger('map:located', data);
-			//this.getNewPlaces();
 		},
 
 		locError: function(data) {
@@ -64,38 +76,13 @@ define(function(require, exports, module){
 			Backbone.trigger('map:locatefail', data);
 		},
 
-		gotoAddress: function(address) {
-			//TODO: check if address already geocoded
-			this.geoCode(address, _.bind(function(data) {
-				this.setView(data[0].lat, data[0].lon, false);
-			}, this));
-		},
-
 		gotoPosition: function(position) {
-			this.setView(position[0], position[1], false);
-		},
-
-		geoCode: function(address, callback) {
-			var country = 'fr',
-				street = address,
-				city = 'Paris';
-
-			$.getJSON("http://nominatim.openstreetmap.org/search?format=json&country=" + country + "&street="+ street+"&city="+ city,
-				callback
-			);
-		},
-
-		setView: function(lat, lon, marker) {
-			this.leafletMap.setView([lat, lon], this.zoom);
-
-			if(marker) {
-				this.setMarker(lat, lon);
-			}
+			this.leafletMap.setView(position[0], position[1], this.zoom);
 		},
 
 		setMarker: function(markerDef) {
-			var marker = L.marker( [markerDef.lat, markerDef.lon] );
-			//var marker = L.marker( [48.85293755, 2.35005223818182] );
+			var marker = LeafletLS.marker( [markerDef.lat, markerDef.lon] );
+			//var marker = LeafletLS.marker( [48.85293755, 2.35005223818182] );
 			marker.addTo(this.leafletMap);
 			
 			marker.bindPopup(

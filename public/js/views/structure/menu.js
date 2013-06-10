@@ -6,7 +6,7 @@ define(['jquery', 'underscore', 'backbone',
 
 		var View = Backbone.View.extend({
 			id: 'nav',
-			className: 'navbar navbar-inverse',
+			className: 'navbar navbar-inverse navbar-fixed-top',
 			template: _.template(Tpl),
 
 			render: function() {

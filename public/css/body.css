@@ -1,3 +1,9 @@
 body {
     margin-bottom: 4em;
 }
+
+@media (min-width: 979px) {
+    body {
+        margin-top: 4.5em;
+    }
+}
