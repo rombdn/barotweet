@@ -2,9 +2,9 @@ barotweet
 =========
 
 Social night life application :
- - Find bars around you and show them on a map
+ - Find bars around you and see them on a map
  - See other people comments/tweets and leave yours
- - Responsive design
+ - Mobile/Desktop
 
 
 Demo
