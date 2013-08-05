@@ -77,7 +77,7 @@ define(function(require, exports, module){
 		},
 
 		gotoPosition: function(position) {
-			this.leafletMap.setView(position[0], position[1], this.zoom);
+			this.leafletMap.setView(position, this.zoom);
 		},
 
 		setMarker: function(markerDef) {
