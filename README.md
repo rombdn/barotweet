@@ -15,11 +15,11 @@ http://www.barotweet.com
 
 *Mobile*
 
-![sh2](rombdn.github.com/barotweet/img/screenshot2.png)
+![sh2](http://www.rombdn.com/barotweet/img/screenshot2.png)
 
 *Desktop*
 
-![sh1](rombdn.github.com/barotweet/img/screenshot1.png)
+![sh1](http://www.rombdn.com/barotweet/img/screenshot1.png)
 
 
 
