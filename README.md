@@ -1,16 +1,19 @@
 barotweet
 =========
 
-Social night life application :
- - Find bars around you and see them on a map
+Social night life webapp built with Backbone, Leaflet, Bootstrap, Node.js and MongoDB using Responsive Design
+
+ - Find bars around you on a map
  - See other people comments/tweets and leave yours
  - Mobile/Desktop
+
+More info on http://www.rombdn.com/blog/2013/09/11/backbone-leaflet-nightlife-app/
 
 
 Demo
 ------
 
-http://www.barotweet.com
+http://www.barotweet.com (currently down)
 
 
 *Mobile*
@@ -25,10 +28,10 @@ http://www.barotweet.com
 
 
 
-Libraries
-----------
+Lib/Frameworks
+---------------
 
-Front :
+Front-end :
 
  - Backbone
  - RequireJS
@@ -38,7 +41,7 @@ Front :
  - JQuery
  
  
-Back : 
+Back-end : 
 
  - Node / Express
  - MongoDB
